@@ -12,10 +12,10 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Tecnodim</RootNamespace>
-    <AssemblyName>Tecnodim</AssemblyName>
+    <RootNamespace>ApiTecnodim</RootNamespace>
+    <AssemblyName>ApiTecnodim</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -94,7 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\DocumentsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -130,9 +130,21 @@
       <Project>{008b818a-ade8-4772-81a9-c327f49e1cad}</Project>
       <Name>DataEF</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Helper\Helper.csproj">
+      <Project>{9ecddcfb-d233-46d6-b2a3-31f96e24085f}</Project>
+      <Name>Helper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\i18n\i18n.csproj">
       <Project>{d1eceb7f-0d76-415f-9e3b-627e2ba86abd}</Project>
       <Name>i18n</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{9b431499-44c3-434c-8771-1ef05f1c9f5b}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Repository\Repository.csproj">
+      <Project>{9ae6cc7e-115b-44e9-bea3-fbeabb7a1448}</Project>
+      <Name>Repository</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
@@ -150,7 +162,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>50859</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:50859/</IISUrl>
+          <IISUrl>http://localhost:9099</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

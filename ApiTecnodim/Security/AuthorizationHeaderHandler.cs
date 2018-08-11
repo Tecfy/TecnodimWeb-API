@@ -9,9 +9,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using Tecnodim.Properties;
+using ApiTecnodim.Properties;
 
-namespace Tecnodim.Security
+namespace ApiTecnodim.Security
 {
     /// <summary>
     /// Authorization for web API class.

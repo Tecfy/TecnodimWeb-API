@@ -135,8 +135,23 @@
   <data name="Hash" xml:space="preserve">
     <value>Hash</value>
   </data>
+  <data name="Identifier" xml:space="preserve">
+    <value>Identificador</value>
+  </data>
   <data name="LastLogin" xml:space="preserve">
     <value>Último Login</value>
+  </data>
+  <data name="Source" xml:space="preserve">
+    <value>Fonte</value>
+  </data>
+  <data name="Text" xml:space="preserve">
+    <value>Texto</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="UnknownError" xml:space="preserve">
+    <value>Erro desconhecido!</value>
   </data>
   <data name="User" xml:space="preserve">
     <value>Usuário</value>
