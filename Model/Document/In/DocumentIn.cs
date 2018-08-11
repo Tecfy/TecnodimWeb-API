@@ -8,6 +8,6 @@ namespace Model.In
 {
     public class DocumentIn
     {
-        public int DocumentId { get; set; }
+        public int documentId { get; set; }
     }
 }

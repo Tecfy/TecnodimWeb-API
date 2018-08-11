@@ -7,9 +7,9 @@ namespace Model.Out
     {
         public DocumentOut()
         {
-            this.Result = new DocumentVM();
+            this.result = new DocumentVM();
         }
 
-        public DocumentVM Result { get; set; }
+        public DocumentVM result { get; set; }
     }
 }

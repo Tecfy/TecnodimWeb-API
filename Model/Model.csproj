@@ -42,7 +42,10 @@
   <ItemGroup>
     <Compile Include="Common\ResultServiceVM.cs" />
     <Compile Include="Document\In\DocumentIn.cs" />
+    <Compile Include="Document\Out\DocumentsOut.cs" />
     <Compile Include="Document\Out\DocumentOut.cs" />
+    <Compile Include="Document\VM\Document.cs" />
+    <Compile Include="Document\VM\DocumentsVM.cs" />
     <Compile Include="Document\VM\DocumentVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

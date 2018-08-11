@@ -13,28 +13,28 @@ namespace Model.Common
         /// </summary>
         public ResultServiceVM()
         {
-            this.Messages = new List<string>();
-            this.SuccessMessage = null;
+            this.messages = new List<string>();
+            this.successMessage = null;
         }
 
         /// <summary>
         /// Operation Result Validation
         /// </summary>
-        public bool Success
+        public bool success
         {
             get
             {
-                return this.Messages.Count == 0;
+                return this.messages.Count == 0;
             }
         }
         /// <summary>
         /// Error Messages
         /// </summary>
-        public List<string> Messages { get; set; }
+        public List<string> messages { get; set; }
 
         /// <summary>
         /// Success Message
         /// </summary>
-        public string SuccessMessage { get; set; }
+        public string successMessage { get; set; }
     }
 }

@@ -2,6 +2,6 @@
 {
     public class DocumentVM
     {
-        public string Archive { get; set; }
+        public string archive { get; set; }
     }
 }
