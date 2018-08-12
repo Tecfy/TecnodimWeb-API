@@ -1,11 +1,9 @@
-﻿using Model.Document.VM;
-using Model.Out;
+﻿using Model.Out;
 using Model.VM;
 using Repository.RegisterEvent;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Http;
 
 namespace ApiTecnodim.Controllers
