@@ -1,6 +1,6 @@
 ﻿using Model.Out;
 using Model.VM;
-using Repository.RegisterEvent;
+using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;

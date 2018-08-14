@@ -1,9 +1,7 @@
-﻿using Model.Out;
-using Model.VM;
-using Repository.RegisterEvent;
+﻿using Model.In;
+using Model.Out;
+using Repository;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web.Http;
 
 namespace ApiTecnodim.Controllers
@@ -11,6 +9,30 @@ namespace ApiTecnodim.Controllers
     public class CategoriesController : ApiController
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        CategoryRepository categoryRepository = new CategoryRepository();
+
+        [Authorize, HttpGet]
+        public CategoryOut GetCategory(int categoryId)
+        {
+            CategoryOut categoryOut = new CategoryOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                CategoryIn categoryIn = new CategoryIn() { categoryId = categoryId, userId = new Guid(User.Identity.Name), key = Key };
+
+                categoryOut = categoryRepository.GetCategory(categoryIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.CategoriesController.GetCategory", ex.Message);
+
+                categoryOut.successMessage = null;
+                categoryOut.messages.Add(i18n.Resource.UnknownError);
+            }
+
+            return categoryOut;
+        }
 
         [Authorize, HttpGet]
         public CategoriesOut GetCategories()
@@ -20,12 +42,9 @@ namespace ApiTecnodim.Controllers
 
             try
             {
-                List<Category> categories = new List<Category>();
-                categories = CreateCategories();
+                CategoriesIn categoriesIn = new CategoriesIn() { userId = new Guid(User.Identity.Name), key = Key };
 
-                categoriesOut.result = categories.Select(x => new CategoriesVM() { categoryId = x.categoryId, name = x.name }).ToList();
-
-                return categoriesOut;
+                categoriesOut = categoryRepository.GetCategories(categoriesIn);
             }
             catch (Exception ex)
             {
@@ -33,21 +52,9 @@ namespace ApiTecnodim.Controllers
 
                 categoriesOut.successMessage = null;
                 categoriesOut.messages.Add(i18n.Resource.UnknownError);
-
-                return categoriesOut;
             }
-        }
 
-        private List<Category> CreateCategories()
-        {
-            List<Category> categories = new List<Category>
-            {
-                new Category {categoryId = 1, name = "Cursos de Graduação" },
-                new Category {categoryId = 2, name = "Vida acadêmica dos alunos" },
-                new Category {categoryId = 3, name = "Documentação acadêmica" },
-            };
-
-            return categories;
+            return categoriesOut;
         }
     }
 }

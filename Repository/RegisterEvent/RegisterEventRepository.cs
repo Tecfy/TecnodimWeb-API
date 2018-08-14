@@ -1,7 +1,7 @@
 ﻿using DataEF.DataAccess;
 using System;
 
-namespace Repository.RegisterEvent
+namespace Repository
 {
     public class RegisterEventRepository
     {

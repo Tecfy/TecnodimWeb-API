@@ -1,6 +1,6 @@
 ﻿namespace Model.In
 {
-    public class CategoriesIn
+    public class CategoriesIn : BaseIn
     {
     }
 }
