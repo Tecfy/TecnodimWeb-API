@@ -1,4 +1,5 @@
-﻿using Model.Out;
+﻿using Model.In;
+using Model.Out;
 using Model.VM;
 using Repository;
 using System;
@@ -11,6 +12,7 @@ namespace ApiTecnodim.Controllers
     public class DocumentsController : ApiController
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        DocumentRepository documentRepository = new DocumentRepository();
 
         [Authorize, HttpGet]
         public DocumentOut GetDocument(int externalId)
@@ -48,9 +50,9 @@ namespace ApiTecnodim.Controllers
         }
 
         [Authorize, HttpGet]
-        public DocumentsOut GetDocuments()
+        public DocumentSaveOut GetDocuments()
         {
-            DocumentsOut documentsOut = new DocumentsOut();
+            DocumentSaveOut documentSaveOut = new DocumentSaveOut();
             Guid Key = Guid.NewGuid();
 
             try
@@ -58,17 +60,22 @@ namespace ApiTecnodim.Controllers
                 List<Document> documents = new List<Document>();
                 documents = CreateDocuments();
 
-                documentsOut.result = documents.Select(x => new DocumentsVM() { externalId = x.externalId, name = x.name, registration = x.registration }).ToList();
+                foreach (var item in documents)
+                {
+                    DocumentSaveIn documentSaveIn = new DocumentSaveIn() { externalId = item.externalId, userId = new Guid(User.Identity.Name), key = Key };
+
+                    documentSaveOut = documentRepository.SaveDocument(documentSaveIn);
+                }                
             }
             catch (Exception ex)
             {
                 registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.DocumentsController.Get", ex.Message);
 
-                documentsOut.successMessage = null;
-                documentsOut.messages.Add(i18n.Resource.UnknownError);
+                documentSaveOut.successMessage = null;
+                documentSaveOut.messages.Add(i18n.Resource.UnknownError);
             }
 
-            return documentsOut;
+            return documentSaveOut;
         }
 
         private List<Document> CreateDocuments()

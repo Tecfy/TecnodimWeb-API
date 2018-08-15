@@ -29,6 +29,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Hom|AnyCPU'">
+    <OutputPath>bin\Hom\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Prod|AnyCPU'">
+    <OutputPath>bin\Prod\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -50,20 +56,20 @@
     <Compile Include="Category\VM\CategoryVM.cs" />
     <Compile Include="Common\In\ResultServiceVM.cs" />
     <Compile Include="Common\VM\ResultServiceVM.cs" />
+    <Compile Include="Document\In\DocumentSaveIn.cs" />
     <Compile Include="Document\In\DocumentIn.cs" />
-    <Compile Include="Document\Out\DocumentsOut.cs" />
+    <Compile Include="Document\Out\DocumentSaveOut.cs" />
     <Compile Include="Document\Out\DocumentOut.cs" />
     <Compile Include="Document\VM\Document.cs" />
-    <Compile Include="Document\VM\DocumentsVM.cs" />
     <Compile Include="Document\VM\DocumentVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Category\In\CategoriesIn.cs" />
     <Compile Include="Category\Out\CategoriesOut.cs" />
     <Compile Include="Category\VM\CategoriesVM.cs" />
-    <Compile Include="Student\In\StudentIn.cs" />
-    <Compile Include="Student\Out\StudentOut.cs" />
-    <Compile Include="Student\VM\Student.cs" />
-    <Compile Include="Student\VM\StudentVM.cs" />
+    <Compile Include="DocumentDetail\In\DocumentDetailIn.cs" />
+    <Compile Include="DocumentDetail\Out\DocumentDetailOut.cs" />
+    <Compile Include="DocumentDetail\VM\DocumentDetail.cs" />
+    <Compile Include="DocumentDetail\VM\DocumentDetailVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdditionalField\In\" />

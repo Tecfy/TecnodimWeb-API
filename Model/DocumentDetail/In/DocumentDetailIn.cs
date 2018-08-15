@@ -2,7 +2,7 @@
 
 namespace Model.In
 {
-    public class StudentIn : BaseIn
+    public class DocumentDetailIn : BaseIn
     {
         [Required]
         [Display(Name = "External", ResourceType = typeof(i18n.Resource))]

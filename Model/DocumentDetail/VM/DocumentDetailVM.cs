@@ -1,6 +1,6 @@
 ﻿namespace Model.VM
 {
-    public class Student
+    public class DocumentDetailVM
     {
         public int externalId { get; set; }
 

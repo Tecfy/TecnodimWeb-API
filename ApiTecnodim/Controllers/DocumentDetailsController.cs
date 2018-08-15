@@ -1,33 +1,31 @@
 ﻿using Model.In;
 using Model.Out;
-using Model.VM;
 using Repository;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
 namespace ApiTecnodim.Controllers
 {
-    public class StudentsController : ApiController
+    public class DocumentDetailsController : ApiController
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        StudentRepository studentRepository = new StudentRepository();
+        DocumentDetailRepository studentRepository = new DocumentDetailRepository();
 
         [Authorize, HttpGet]
-        public StudentOut GetStudent(int externalId)
+        public DocumentDetailOut GetDocumentDetail(int externalId)
         {
-            StudentOut studentOut = new StudentOut();
+            DocumentDetailOut studentOut = new DocumentDetailOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    StudentIn studentIn = new StudentIn() { externalId = externalId, userId = new Guid(User.Identity.Name), key = Key };
+                    DocumentDetailIn studentIn = new DocumentDetailIn() { externalId = externalId, userId = new Guid(User.Identity.Name), key = Key };
 
-                    studentOut = studentRepository.GetStudent(studentIn);
+                    studentOut = studentRepository.GetDocumentDetail(studentIn);
                 }
                 else
                 {
@@ -46,7 +44,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.StudentsController.GetStudent", ex.Message);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.GetDocumentDetail", ex.Message);
 
                 studentOut.result = null;
                 studentOut.successMessage = null;
