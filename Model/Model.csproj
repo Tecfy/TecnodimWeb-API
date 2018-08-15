@@ -34,6 +34,7 @@
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -59,6 +60,10 @@
     <Compile Include="Category\In\CategoriesIn.cs" />
     <Compile Include="Category\Out\CategoriesOut.cs" />
     <Compile Include="Category\VM\CategoriesVM.cs" />
+    <Compile Include="Student\In\StudentIn.cs" />
+    <Compile Include="Student\Out\StudentOut.cs" />
+    <Compile Include="Student\VM\Student.cs" />
+    <Compile Include="Student\VM\StudentVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdditionalField\In\" />
@@ -67,6 +72,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\i18n\i18n.csproj">
+      <Project>{d1eceb7f-0d76-415f-9e3b-627e2ba86abd}</Project>
+      <Name>i18n</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

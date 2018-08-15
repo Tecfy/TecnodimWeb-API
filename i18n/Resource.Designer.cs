@@ -106,6 +106,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Externo.
+        /// </summary>
+        public static string External {
+            get {
+                return ResourceManager.GetString("External", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hash.
         /// </summary>
         public static string Hash {
@@ -138,6 +147,24 @@ namespace i18n {
         public static string RegisterNotFound {
             get {
                 return ResourceManager.GetString("RegisterNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to O campo {0} é obrigatório!.
+        /// </summary>
+        public static string RequiredField {
+            get {
+                return ResourceManager.GetString("RequiredField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to O valor para {0} deve estar entre {1} e {2}..
+        /// </summary>
+        public static string RequiredFieldInt {
+            get {
+                return ResourceManager.GetString("RequiredFieldInt", resourceCulture);
             }
         }
         

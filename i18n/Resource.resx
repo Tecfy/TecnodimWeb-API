@@ -132,6 +132,9 @@
   <data name="EditedDate" xml:space="preserve">
     <value>Data de Edição</value>
   </data>
+  <data name="External" xml:space="preserve">
+    <value>Externo</value>
+  </data>
   <data name="Hash" xml:space="preserve">
     <value>Hash</value>
   </data>
@@ -143,6 +146,12 @@
   </data>
   <data name="RegisterNotFound" xml:space="preserve">
     <value>Registro não encontrado.</value>
+  </data>
+  <data name="RequiredField" xml:space="preserve">
+    <value>O campo {0} é obrigatório!</value>
+  </data>
+  <data name="RequiredFieldInt" xml:space="preserve">
+    <value>O valor para {0} deve estar entre {1} e {2}.</value>
   </data>
   <data name="Source" xml:space="preserve">
     <value>Fonte</value>
