@@ -2,6 +2,6 @@
 {
     public class DocumentSaveIn : BaseIn
     {
-        public int externalId { get; set; }
+        public int documentId { get; set; }
     }
 }

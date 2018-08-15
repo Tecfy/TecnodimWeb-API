@@ -97,6 +97,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Documento.
+        /// </summary>
+        public static string Document {
+            get {
+                return ResourceManager.GetString("Document", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Data de Edição.
         /// </summary>
         public static string EditedDate {

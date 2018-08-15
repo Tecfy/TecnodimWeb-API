@@ -15,7 +15,7 @@ namespace ApiTecnodim.Controllers
         DocumentRepository documentRepository = new DocumentRepository();
 
         [Authorize, HttpGet]
-        public DocumentOut GetDocument(int externalId)
+        public DocumentOut GetDocument(int documentId)
         {
             DocumentOut documentOut = new DocumentOut();
             Guid Key = Guid.NewGuid();
@@ -25,7 +25,7 @@ namespace ApiTecnodim.Controllers
                 List<Document> documents = new List<Document>();
                 documents = CreateDocuments();
 
-                Document document = documents.Where(x => x.externalId == externalId).FirstOrDefault();
+                Document document = documents.Where(x => x.documentId == documentId).FirstOrDefault();
 
                 if (document == null)
                 {
@@ -62,7 +62,7 @@ namespace ApiTecnodim.Controllers
 
                 foreach (var item in documents)
                 {
-                    DocumentSaveIn documentSaveIn = new DocumentSaveIn() { externalId = item.externalId, userId = new Guid(User.Identity.Name), key = Key };
+                    DocumentSaveIn documentSaveIn = new DocumentSaveIn() { documentId = item.documentId, userId = new Guid(User.Identity.Name), key = Key };
 
                     documentSaveOut = documentRepository.SaveDocument(documentSaveIn);
                 }                
@@ -82,9 +82,9 @@ namespace ApiTecnodim.Controllers
         {
             List<Document> Documents = new List<Document>
             {
-                new Document {externalId = 1, name = "Flavia do Nascimento Alves", registration = "01201855", archive = @"C:\\Temp\\Tecnodim\\VICTOR - CONTRATOS.pdf" },
-                new Document {externalId = 2, name = "Cicero Klebson dos Santos Silva", registration = "07020342", archive = @"C:\\Temp\\Tecnodim\\VICTOR - DOCUMENTOS DIVERSOS.pdf"},
-                new Document {externalId = 3, name = "Alessandra Viana de Lima", registration = "01203422", archive = @"C:\\Temp\\Tecnodim\\VICTOR - DOCUMENTOS.pdf" },
+                new Document {documentId = 1, name = "Flavia do Nascimento Alves", registration = "01201855", archive = @"C:\\Temp\\Tecnodim\\VICTOR - CONTRATOS.pdf" },
+                new Document {documentId = 2, name = "Cicero Klebson dos Santos Silva", registration = "07020342", archive = @"C:\\Temp\\Tecnodim\\VICTOR - DOCUMENTOS DIVERSOS.pdf"},
+                new Document {documentId = 3, name = "Alessandra Viana de Lima", registration = "01203422", archive = @"C:\\Temp\\Tecnodim\\VICTOR - DOCUMENTOS.pdf" },
             };
 
             return Documents;

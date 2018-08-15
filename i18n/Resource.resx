@@ -129,6 +129,9 @@
   <data name="DeletedDate" xml:space="preserve">
     <value>Data de Exclusão</value>
   </data>
+  <data name="Document" xml:space="preserve">
+    <value>Documento</value>
+  </data>
   <data name="EditedDate" xml:space="preserve">
     <value>Data de Edição</value>
   </data>

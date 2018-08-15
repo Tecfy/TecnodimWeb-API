@@ -2,7 +2,7 @@
 {
     public class Document
     {
-        public int externalId { get; set; }
+        public int documentId { get; set; }
 
         public string name { get; set; }
 

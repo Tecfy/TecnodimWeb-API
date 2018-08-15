@@ -17,13 +17,13 @@ namespace Repository
 
             using (var db = new DBContext())
             {
-                Documents document = db.Documents.Where(x => x.ExternalId == documentSaveIn.externalId).FirstOrDefault();
+                Documents document = db.Documents.Where(x => x.ExternalId == documentSaveIn.documentId).FirstOrDefault();
 
                 if (document == null)
                 {
                     document = new Documents();
 
-                    document.ExternalId = documentSaveIn.externalId;
+                    document.ExternalId = documentSaveIn.documentId;
                     document.DocumentStatusId = (int)Helper.Enum.EDocumentStatus.New;
 
                     db.Documents.Add(document);

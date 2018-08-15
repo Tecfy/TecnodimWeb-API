@@ -2,7 +2,7 @@
 {
     public class DocumentDetail
     {
-        public int externalId { get; set; }
+        public int documentid { get; set; }
 
         public string registration { get; set; }
 
