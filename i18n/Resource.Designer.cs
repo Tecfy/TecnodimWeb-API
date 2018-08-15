@@ -133,6 +133,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Registro não encontrado..
+        /// </summary>
+        public static string RegisterNotFound {
+            get {
+                return ResourceManager.GetString("RegisterNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fonte.
         /// </summary>
         public static string Source {

@@ -141,6 +141,9 @@
   <data name="LastLogin" xml:space="preserve">
     <value>Último Login</value>
   </data>
+  <data name="RegisterNotFound" xml:space="preserve">
+    <value>Registro não encontrado.</value>
+  </data>
   <data name="Source" xml:space="preserve">
     <value>Fonte</value>
   </data>

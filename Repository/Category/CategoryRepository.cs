@@ -19,24 +19,24 @@ namespace Repository
             using (var db = new DBContext())
             {
                 categoryOut.result = db.Categories
-                                    .Where(x => x.DeletedDate == null && x.Active == true && x.CategoryId == categoryIn.categoryId)
-                                    .Select(x => new CategoryVM()
-                                    {
-                                        categoryId = x.CategoryId,
-                                        code = x.Code,
-                                        name = x.Name,
-                                        parentId = x.ParentId,
-                                        additionalFields = x.CategoryAdditionalFields
-                                                            .Select(y => new AdditionalFieldVM()
-                                                            {
-                                                                categoryAdditionalFieldId = y.CategoryAdditionalFieldId,
-                                                                name = y.AdditionalFields.Name,
-                                                                type = y.AdditionalFields.Type,
-                                                                single = y.Single,
-                                                                required = y.Required,
-                                                                confidential = y.Confidential,
-                                                            }).ToList()
-                                    }).FirstOrDefault();
+                                        .Where(x => x.DeletedDate == null && x.Active == true && x.CategoryId == categoryIn.categoryId)
+                                        .Select(x => new CategoryVM()
+                                        {
+                                            categoryId = x.CategoryId,
+                                            code = x.Code,
+                                            name = x.Name,
+                                            parentId = x.ParentId,
+                                            additionalFields = x.CategoryAdditionalFields
+                                                                .Select(y => new AdditionalFieldVM()
+                                                                {
+                                                                    categoryAdditionalFieldId = y.CategoryAdditionalFieldId,
+                                                                    name = y.AdditionalFields.Name,
+                                                                    type = y.AdditionalFields.Type,
+                                                                    single = y.Single,
+                                                                    required = y.Required,
+                                                                    confidential = y.Confidential,
+                                                                }).ToList()
+                                        }).FirstOrDefault();
             }
 
             if (categoryOut.result.parentId != null)
