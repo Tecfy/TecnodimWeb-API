@@ -9,5 +9,7 @@
         public string registration { get; set; }
 
         public string archive { get; set; }
+
+        public string hash { get; set; }
     }
 }
