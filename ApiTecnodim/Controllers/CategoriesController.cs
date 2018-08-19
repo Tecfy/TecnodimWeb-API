@@ -12,6 +12,29 @@ namespace ApiTecnodim.Controllers
         CategoryRepository categoryRepository = new CategoryRepository();
 
         [Authorize, HttpGet]
+        public SECategoriesOut GetSECategories()
+        {
+            SECategoriesOut seCategoriesOut = new SECategoriesOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                SECategoriesIn seCategoriesIn = new SECategoriesIn() { userId = new Guid(User.Identity.Name), key = Key };
+
+                seCategoriesOut = categoryRepository.GetSECategories(seCategoriesIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.CategoriesController.Get", ex.Message);
+
+                seCategoriesOut.successMessage = null;
+                seCategoriesOut.messages.Add(i18n.Resource.UnknownError);
+            }
+
+            return seCategoriesOut;
+        }
+
+        [Authorize, HttpGet]
         public CategoryOut GetCategory(int categoryId)
         {
             CategoryOut categoryOut = new CategoryOut();

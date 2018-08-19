@@ -51,8 +51,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdditionalField\VM\AdditionalFieldVM.cs" />
+    <Compile Include="Category\In\SECategoriesIn.cs" />
     <Compile Include="Category\In\CategoryIn.cs" />
+    <Compile Include="Category\Out\SECategoriesOut.cs" />
     <Compile Include="Category\Out\CategoryOut.cs" />
+    <Compile Include="Category\VM\SECategoriesVM.cs" />
     <Compile Include="Category\VM\CategoryVM.cs" />
     <Compile Include="Common\In\ResultServiceVM.cs" />
     <Compile Include="Common\VM\ResultServiceVM.cs" />

@@ -76,6 +76,10 @@
       <Project>{9b431499-44c3-434c-8771-1ef05f1c9f5b}</Project>
       <Name>Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SoftExpert\SoftExpert.csproj">
+      <Project>{0513bc0f-6d0c-4c19-997c-c1e7361213ca}</Project>
+      <Name>SoftExpert</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

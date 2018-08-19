@@ -2,6 +2,7 @@
 using Model.In;
 using Model.Out;
 using Model.VM;
+using SoftExpert.Category;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -69,6 +70,17 @@ namespace Repository
 
             registerEventRepository.SaveRegisterEvent(categoriesIn.userId.Value, categoriesIn.key.Value, "Log - End", "Repository.CategoryRepository.GetCategories", "");
             return categoriesOut;
+        }
+
+        public SECategoriesOut GetSECategories(SECategoriesIn seCategoriesIn)
+        {
+            SECategoriesOut seCategoriesOut = new SECategoriesOut();
+            registerEventRepository.SaveRegisterEvent(seCategoriesIn.userId.Value, seCategoriesIn.key.Value, "Log - Start", "Repository.CategoryRepository.GetSECategories", "");
+
+            seCategoriesOut = Category.GetCategories();
+
+            registerEventRepository.SaveRegisterEvent(seCategoriesIn.userId.Value, seCategoriesIn.key.Value, "Log - End", "Repository.CategoryRepository.GetSECategories", "");
+            return seCategoriesOut;
         }
 
         private List<string> GetParents(int parentId, List<string> vs)

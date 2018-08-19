@@ -25,6 +25,8 @@ namespace Repository
 
                     document.ExternalId = documentSaveIn.documentId;
                     document.DocumentStatusId = (int)Helper.Enum.EDocumentStatus.New;
+                    document.Registration = documentSaveIn.registration;
+                    document.Name = documentSaveIn.name;
 
                     db.Documents.Add(document);
                     db.SaveChanges();
