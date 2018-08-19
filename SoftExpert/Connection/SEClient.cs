@@ -3,7 +3,7 @@ using System;
 using System.Net;
 using System.Text;
 
-namespace SoftExpert.Connection
+namespace SoftExpert
 {
     public class SEClient : Documento
     {

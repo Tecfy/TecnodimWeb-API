@@ -59,6 +59,9 @@
     <Compile Include="Category\VM\CategoryVM.cs" />
     <Compile Include="Common\In\ResultServiceVM.cs" />
     <Compile Include="Common\VM\ResultServiceVM.cs" />
+    <Compile Include="DocumentDetail\In\SEDocumentDetailIn.cs" />
+    <Compile Include="DocumentDetail\Out\SEDocumentDetailOut.cs" />
+    <Compile Include="DocumentDetail\VM\SEDocumentDetailVM.cs" />
     <Compile Include="Document\In\DocumentSaveIn.cs" />
     <Compile Include="Document\In\DocumentIn.cs" />
     <Compile Include="Document\Out\DocumentSaveOut.cs" />
@@ -69,10 +72,6 @@
     <Compile Include="Category\In\CategoriesIn.cs" />
     <Compile Include="Category\Out\CategoriesOut.cs" />
     <Compile Include="Category\VM\CategoriesVM.cs" />
-    <Compile Include="DocumentDetail\In\DocumentDetailIn.cs" />
-    <Compile Include="DocumentDetail\Out\DocumentDetailOut.cs" />
-    <Compile Include="DocumentDetail\VM\DocumentDetail.cs" />
-    <Compile Include="DocumentDetail\VM\DocumentDetailVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdditionalField\In\" />

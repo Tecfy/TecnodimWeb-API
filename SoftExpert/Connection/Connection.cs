@@ -1,6 +1,6 @@
 ﻿using System.Web.Configuration;
 
-namespace SoftExpert.Connection
+namespace SoftExpert
 {
     public static class Connection
     {

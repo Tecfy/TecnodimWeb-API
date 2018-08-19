@@ -14,18 +14,18 @@ namespace ApiTecnodim.Controllers
         DocumentDetailRepository studentRepository = new DocumentDetailRepository();
 
         [Authorize, HttpGet]
-        public DocumentDetailOut GetDocumentDetailById(int id)
+        public SEDocumentDetailOut GetDocumentDetail(string registration)
         {
-            DocumentDetailOut studentOut = new DocumentDetailOut();
+            SEDocumentDetailOut seDocumentDetailOut = new SEDocumentDetailOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    DocumentDetailIn studentIn = new DocumentDetailIn() { documentId = id, userId = new Guid(User.Identity.Name), key = Key };
+                    SEDocumentDetailIn seDocumentDetailIn = new SEDocumentDetailIn() { registration = registration, userId = new Guid(User.Identity.Name), key = Key };
 
-                    studentOut = studentRepository.GetDocumentDetail(studentIn);
+                    seDocumentDetailOut = studentRepository.GetDocumentDetail(seDocumentDetailIn);
                 }
                 else
                 {
@@ -46,12 +46,12 @@ namespace ApiTecnodim.Controllers
             {
                 registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.GetDocumentDetail", ex.Message);
 
-                studentOut.result = null;
-                studentOut.successMessage = null;
-                studentOut.messages.Add(ex.Message);
+                seDocumentDetailOut.result = null;
+                seDocumentDetailOut.successMessage = null;
+                seDocumentDetailOut.messages.Add(ex.Message);
             }
 
-            return studentOut;
+            return seDocumentDetailOut;
         }
     }
 }

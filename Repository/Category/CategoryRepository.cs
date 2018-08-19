@@ -2,7 +2,7 @@
 using Model.In;
 using Model.Out;
 using Model.VM;
-using SoftExpert.Category;
+using SoftExpert;
 using System.Collections.Generic;
 using System.Linq;
 

@@ -1,10 +1,9 @@
 ﻿using Model.Out;
 using Model.VM;
 using SoftExpert.com.softexpert.tecfy;
-using SoftExpert.Connection;
 using System.Linq;
 
-namespace SoftExpert.Category
+namespace SoftExpert
 {
     public static class Category
     {
@@ -12,7 +11,7 @@ namespace SoftExpert.Category
         {
             SECategoriesOut seCategoriesOut = new SECategoriesOut();
 
-            SEClient seClient = Connection.Connection.GetConnection();
+            SEClient seClient = Connection.GetConnection();
             searchCategoryReturn searchCategoryReturn = seClient.searchCategory();
 
             seCategoriesOut.result = searchCategoryReturn
