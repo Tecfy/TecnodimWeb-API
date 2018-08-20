@@ -1,6 +1,6 @@
 ﻿namespace Model.VM
 {
-    public class DocumentVM
+    public class SEDocumentVM
     {
         public string hash { get; set; }
 

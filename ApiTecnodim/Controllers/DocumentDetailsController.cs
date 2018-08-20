@@ -14,7 +14,7 @@ namespace ApiTecnodim.Controllers
         DocumentDetailRepository studentRepository = new DocumentDetailRepository();
 
         [Authorize, HttpGet]
-        public SEDocumentDetailOut GetDocumentDetail(string registration)
+        public SEDocumentDetailOut GetSEDocumentDetail(int id)
         {
             SEDocumentDetailOut seDocumentDetailOut = new SEDocumentDetailOut();
             Guid Key = Guid.NewGuid();
@@ -23,9 +23,9 @@ namespace ApiTecnodim.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    SEDocumentDetailIn seDocumentDetailIn = new SEDocumentDetailIn() { registration = registration, userId = new Guid(User.Identity.Name), key = Key };
+                    SEDocumentDetailIn seDocumentDetailIn = new SEDocumentDetailIn() { documentId = id, userId = new Guid(User.Identity.Name), key = Key };
 
-                    seDocumentDetailOut = studentRepository.GetDocumentDetail(seDocumentDetailIn);
+                    seDocumentDetailOut = studentRepository.GetSEDocumentDetail(seDocumentDetailIn);
                 }
                 else
                 {

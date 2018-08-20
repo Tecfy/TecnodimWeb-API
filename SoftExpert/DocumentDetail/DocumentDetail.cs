@@ -9,7 +9,7 @@ namespace SoftExpert
 {
     public static class DocumentDetail
     {
-        public static SEDocumentDetailOut GetDocumentDetail(SEDocumentDetailIn seDocumentDetailIn)
+        public static SEDocumentDetailOut GetSEDocumentDetail(SEDocumentDetailIn seDocumentDetailIn)
         {
             SEDocumentDetailOut seDocumentDetailOut = new SEDocumentDetailOut();
 
@@ -18,12 +18,12 @@ namespace SoftExpert
             attributeDatas[0] = new attributeData
             {
                 //search enrollment
-                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.Document.DocumentDetail.SearchAttributeRegistration"],
+                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.DocumentDetail.SearchAttributeOwnerRegistration"],
                 VLATTRIBUTE = seDocumentDetailIn.registration
             };
 
             searchDocumentFilter searchDocumentFilter = new searchDocumentFilter();
-            searchDocumentFilter.IDCATEGORY = WebConfigurationManager.AppSettings["SoftExpert.Document.DocumentDetail.SearchAttributeCategory"];
+            searchDocumentFilter.IDCATEGORY = WebConfigurationManager.AppSettings["SoftExpert.DocumentDetail.SearchAttributeOwnerCategory"];
             searchDocumentReturn searchDocumentReturn = seClient.searchDocument(searchDocumentFilter, "", attributeDatas);
             documentReturn retorno = new documentReturn();
             if (searchDocumentReturn.RESULTS.Count() > 0)
@@ -32,14 +32,14 @@ namespace SoftExpert
 
                 seDocumentDetailOut.result = new SEDocumentDetailVM()
                 {
-                    centerId = documentDataReturn.ATTRIBUTTES[4].ATTRIBUTTEVALUE[0],
+                    centerId = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == "ATR06").FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault(),
                     center = "0125",
                     courseId = "0125",
-                    course = documentDataReturn.ATTRIBUTTES[1].ATTRIBUTTEVALUE[0],
+                    course = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == "ATR03").FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault(),
                     initials = "0125",
-                    registration = documentDataReturn.ATTRIBUTTES[0].ATTRIBUTTEVALUE[0],
-                    cpf = documentDataReturn.ATTRIBUTTES[2].ATTRIBUTTEVALUE[0],
-                    name = documentDataReturn.ATTRIBUTTES[5].ATTRIBUTTEVALUE[0]
+                    registration = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == "ATR02").FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault(),                    
+                    cpf = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == "ATR04").FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault(),                   
+                    name = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == "ATR01").FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault(),                    
                 };
             }
             else

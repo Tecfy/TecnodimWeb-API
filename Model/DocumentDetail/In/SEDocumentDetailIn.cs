@@ -1,11 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Model.In
+﻿namespace Model.In
 {
     public class SEDocumentDetailIn : BaseIn
     {
-        [Required]
-        [Display(Name = "Registration", ResourceType = typeof(i18n.Resource))]
+        public int documentId { get; set; }
+
         public string registration { get; set; }
     }
 }
