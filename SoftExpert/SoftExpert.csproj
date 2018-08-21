@@ -44,11 +44,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Category\Category.cs" />
-    <Compile Include="Connection\Connection.cs" />
+    <Compile Include="Category\SECategory.cs" />
+    <Compile Include="Connection\SEConnection.cs" />
     <Compile Include="Connection\SEClient.cs" />
-    <Compile Include="DocumentDetail\DocumentDetail.cs" />
-    <Compile Include="Document\Document.cs" />
+    <Compile Include="DocumentDetail\SEDocumentDetail.cs" />
+    <Compile Include="Document\SEDocument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

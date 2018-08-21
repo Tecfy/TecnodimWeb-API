@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.ModelBinding;
 
 namespace ApiTecnodim.Controllers
 {
@@ -15,51 +16,94 @@ namespace ApiTecnodim.Controllers
         DocumentRepository documentRepository = new DocumentRepository();
 
         [Authorize, HttpGet]
-        public SEDocumentOut GetSEDocument(int id)
+        public ECMDocumentOut GetECMDocument(string id)
         {
-            SEDocumentOut seDocumentOut = new SEDocumentOut();
+            ECMDocumentOut ecmDocumentOut = new ECMDocumentOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
-                SEDocumentIn seDocumentIn = new SEDocumentIn() { documentId = id, userId = new Guid(User.Identity.Name), key = Key };
+                ECMDocumentIn ecmDocumentIn = new ECMDocumentIn() { externalId = id, userId = new Guid(User.Identity.Name), key = Key };
 
-                seDocumentOut = documentRepository.GetSEDocument(seDocumentIn);
-
-                return seDocumentOut;
+                ecmDocumentOut = documentRepository.GetECMDocument(ecmDocumentIn);
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.DocumentsController.GetDocument", ex.Message);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.DocumentsController.GetECMDocument", ex.Message);
 
-                seDocumentOut.successMessage = null;
-                seDocumentOut.messages.Add(ex.Message);
-
-                return seDocumentOut;
+                ecmDocumentOut.successMessage = null;
+                ecmDocumentOut.messages.Add(ex.Message);
             }
+
+            return ecmDocumentOut;
         }
 
         [Authorize, HttpGet]
-        public SEDocumentsOut GetSEDocuments()
+        public ECMDocumentsOut GetECMDocuments()
         {
-            SEDocumentsOut seDocumentsOut = new SEDocumentsOut();
+            ECMDocumentsOut ecmDocumentsOut = new ECMDocumentsOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
-                SEDocumentsIn seDocumentsIn = new SEDocumentsIn() { userId = new Guid(User.Identity.Name), key = Key };
+                ECMDocumentsIn ecmDocumentsIn = new ECMDocumentsIn() { userId = new Guid(User.Identity.Name), key = Key };
 
-                seDocumentsOut = documentRepository.GetSEDocuments(seDocumentsIn);
+                ecmDocumentsOut = documentRepository.GetECMDocuments(ecmDocumentsIn);
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.DocumentsController.GetSEDocuments", ex.Message);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.DocumentsController.GetECMDocuments", ex.Message);
 
-                seDocumentsOut.successMessage = null;
-                seDocumentsOut.messages.Add(i18n.Resource.UnknownError);
+                ecmDocumentsOut.successMessage = null;
+                ecmDocumentsOut.messages.Add(ex.Message);
             }
 
-            return seDocumentsOut;
+            return ecmDocumentsOut;
+        }
+
+        [Authorize, HttpPost]
+        public ECMDocumentSaveOut PostECMDocumentSave(ECMDocumentSaveIn ecmDocumentSaveIn)
+        {
+            ECMDocumentSaveOut ecmDocumentSaveOut = new ECMDocumentSaveOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ecmDocumentSaveIn.userId = new Guid(User.Identity.Name);
+                    ecmDocumentSaveIn.key = Key;
+
+                    byte[] archive = System.IO.File.ReadAllBytes(@"C:\\Temp\\Tecnodim\\VICTOR - CONTRATOS.pdf");
+
+                    ecmDocumentSaveIn.archive = Convert.FromBase64String(System.Convert.ToBase64String(archive));
+
+                    ecmDocumentSaveOut = documentRepository.PostECMDocumentSave(ecmDocumentSaveIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.DocumentsController.GetSEDocumentSave", ex.Message);
+
+                ecmDocumentSaveOut.successMessage = null;
+                ecmDocumentSaveOut.messages.Add(ex.Message);
+            }
+
+            return ecmDocumentSaveOut;
         }
     }
 }

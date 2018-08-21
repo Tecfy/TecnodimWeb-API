@@ -70,6 +70,24 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arquivo.
+        /// </summary>
+        public static string Archive {
+            get {
+                return ResourceManager.GetString("Archive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Categoria.
+        /// </summary>
+        public static string Category {
+            get {
+                return ResourceManager.GetString("Category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Código.
         /// </summary>
         public static string Code {
@@ -169,6 +187,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Matrícula.
+        /// </summary>
+        public static string Registration {
+            get {
+                return ResourceManager.GetString("Registration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to O campo {0} é obrigatório!.
         /// </summary>
         public static string RequiredField {
@@ -210,6 +237,15 @@ namespace i18n {
         public static string Text {
             get {
                 return ResourceManager.GetString("Text", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Título.
+        /// </summary>
+        public static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
             }
         }
         

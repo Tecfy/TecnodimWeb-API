@@ -2,7 +2,7 @@
 
 namespace Model.VM
 {
-    public class SEDocumentsVM
+    public class ECMDocumentsVM
     {
         public int documentStatusId { get; set; }
 

@@ -5,19 +5,21 @@ using System.Linq;
 
 namespace SoftExpert
 {
-    public static class Category
+    public static class SECategory
     {
-        public static SECategoriesOut GetCategories()
+        public static ECMCategoriesOut GetSECategories()
         {
-            SECategoriesOut seCategoriesOut = new SECategoriesOut();
+            ECMCategoriesOut ecmCategoriesOut = new ECMCategoriesOut();
 
-            SEClient seClient = Connection.GetConnection();
+            SEClient seClient = SEConnection.GetConnection();
             searchCategoryReturn searchCategoryReturn = seClient.searchCategory();
 
-            seCategoriesOut.result = searchCategoryReturn
+            ecmCategoriesOut.result = searchCategoryReturn
                                     .RESULTARRAY
-                                    .Select(x => new SECategoriesVM()
+                                    .Select(x => new ECMCategoriesVM()
                                     {
+                                        categoryId = x.CDCATEGORY.ToString(),
+                                        parentId = x.CDCATEGORYOWNER.ToString(),
                                         code = x.IDCATEGORY.ToString(),
                                         name = x.NMCATEGORY
                                     })
@@ -25,7 +27,7 @@ namespace SoftExpert
                                     .ToList();
 
 
-            return seCategoriesOut;
+            return ecmCategoriesOut;
         }
     }
 }

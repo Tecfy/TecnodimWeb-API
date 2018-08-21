@@ -10,68 +10,38 @@ namespace Repository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
 
-        public SEDocumentOut GetSEDocument(SEDocumentIn seDocumentIn)
+        public ECMDocumentOut GetECMDocument(ECMDocumentIn seDocumentIn)
         {
-            SEDocumentOut seDocumentOut = new SEDocumentOut();
-            registerEventRepository.SaveRegisterEvent(seDocumentIn.userId.Value, seDocumentIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetSEDocument", "");
+            ECMDocumentOut ecmDocumentOut = new ECMDocumentOut();
+            registerEventRepository.SaveRegisterEvent(seDocumentIn.userId.Value, seDocumentIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetECMDocument", "");
 
-            using (var db = new DBContext())
-            {
-                Documents document = db.Documents.Where(x => x.Active == true && x.DeletedDate == null && x.DocumentId == seDocumentIn.documentId).FirstOrDefault();
+            ecmDocumentOut = SEDocument.GetSEDocument(seDocumentIn);
 
-                if (document == null)
-                {
-                    throw new System.Exception(i18n.Resource.RegisterNotFound);
-                }
-
-                seDocumentIn.externalId = document.ExternalId;
-                seDocumentIn.hash = document.Hash.ToString();
-            }
-
-            seDocumentOut = Document.GetSEDocument(seDocumentIn);
-
-            registerEventRepository.SaveRegisterEvent(seDocumentIn.userId.Value, seDocumentIn.key.Value, "Log - End", "Repository.DocumentRepository.GetSEDocument", "");
-            return seDocumentOut;
+            registerEventRepository.SaveRegisterEvent(seDocumentIn.userId.Value, seDocumentIn.key.Value, "Log - End", "Repository.DocumentRepository.GetECMDocument", "");
+            return ecmDocumentOut;
         }
 
-        public SEDocumentsOut GetSEDocuments(SEDocumentsIn seDocumentsIn)
+        public ECMDocumentsOut GetECMDocuments(ECMDocumentsIn ecmDocumentsIn)
         {
-            SEDocumentsOut seDocumentsOut = new SEDocumentsOut();
-            registerEventRepository.SaveRegisterEvent(seDocumentsIn.userId.Value, seDocumentsIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetSEDocuments", "");
+            ECMDocumentsOut ecmDocumentsOut = new ECMDocumentsOut();
+            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.userId.Value, ecmDocumentsIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetECMDocuments", "");
 
-            seDocumentsOut = Document.GetSEDocuments();
+            ecmDocumentsOut = SEDocument.GetSEDocuments();
 
-            registerEventRepository.SaveRegisterEvent(seDocumentsIn.userId.Value, seDocumentsIn.key.Value, "Log - End", "Repository.DocumentRepository.GetSEDocuments", "");
-            return seDocumentsOut;
+            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.userId.Value, ecmDocumentsIn.key.Value, "Log - End", "Repository.DocumentRepository.GetECMDocuments", "");
+            return ecmDocumentsOut;
         }
 
-        public DocumentSaveOut SaveDocument(DocumentSaveIn documentSaveIn)
+        public ECMDocumentSaveOut PostECMDocumentSave(ECMDocumentSaveIn ecmDocumentSaveIn)
         {
-            DocumentSaveOut documentSaveOut = new DocumentSaveOut();
+            ECMDocumentSaveOut ecmDocumentSaveOut = new ECMDocumentSaveOut();
 
-            registerEventRepository.SaveRegisterEvent(documentSaveIn.userId.Value, documentSaveIn.key.Value, "Log - Start", "Repository.DocumentRepository.SaveDocument", "");
+            registerEventRepository.SaveRegisterEvent(ecmDocumentSaveIn.userId.Value, ecmDocumentSaveIn.key.Value, "Log - Start", "Repository.DocumentRepository.PostECMDocumentSave", "");
 
-            using (var db = new DBContext())
-            {
-                Documents document = db.Documents.Where(x => x.ExternalId == documentSaveIn.externalId).FirstOrDefault();
+            SEDocument.SEDocumentSave(ecmDocumentSaveIn);
 
-                if (document == null)
-                {
-                    document = new Documents();
-
-                    document.ExternalId = documentSaveIn.externalId;
-                    document.DocumentStatusId = (int)Helper.Enum.EDocumentStatus.New;
-                    document.Registration = documentSaveIn.registration;
-                    document.Name = documentSaveIn.name;
-
-                    db.Documents.Add(document);
-                    db.SaveChanges();
-                }
-            }
-
-            registerEventRepository.SaveRegisterEvent(documentSaveIn.userId.Value, documentSaveIn.key.Value, "Log - End", "Repository.DocumentRepository.SaveDocument", "");
-            return documentSaveOut;
+            registerEventRepository.SaveRegisterEvent(ecmDocumentSaveIn.userId.Value, ecmDocumentSaveIn.key.Value, "Log - End", "Repository.DocumentRepository.PostECMDocumentSave", "");
+            return ecmDocumentSaveOut;
         }
-
     }
 }

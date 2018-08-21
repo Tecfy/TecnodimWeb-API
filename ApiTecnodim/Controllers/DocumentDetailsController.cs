@@ -14,18 +14,18 @@ namespace ApiTecnodim.Controllers
         DocumentDetailRepository studentRepository = new DocumentDetailRepository();
 
         [Authorize, HttpGet]
-        public SEDocumentDetailOut GetSEDocumentDetail(int id)
+        public ECMDocumentDetailOut GetECMDocumentDetail(string id)
         {
-            SEDocumentDetailOut seDocumentDetailOut = new SEDocumentDetailOut();
+            ECMDocumentDetailOut ecmDocumentDetailOut = new ECMDocumentDetailOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
                 if (ModelState.IsValid)
                 {
-                    SEDocumentDetailIn seDocumentDetailIn = new SEDocumentDetailIn() { documentId = id, userId = new Guid(User.Identity.Name), key = Key };
+                    ECMDocumentDetailIn ecmDocumentDetailIn = new ECMDocumentDetailIn() { registration = id, userId = new Guid(User.Identity.Name), key = Key };
 
-                    seDocumentDetailOut = studentRepository.GetSEDocumentDetail(seDocumentDetailIn);
+                    ecmDocumentDetailOut = studentRepository.GetECMDocumentDetail(ecmDocumentDetailIn);
                 }
                 else
                 {
@@ -44,14 +44,14 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.GetDocumentDetail", ex.Message);
+                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.GetECMDocumentDetail", ex.Message);
 
-                seDocumentDetailOut.result = null;
-                seDocumentDetailOut.successMessage = null;
-                seDocumentDetailOut.messages.Add(ex.Message);
+                ecmDocumentDetailOut.result = null;
+                ecmDocumentDetailOut.successMessage = null;
+                ecmDocumentDetailOut.messages.Add(ex.Message);
             }
 
-            return seDocumentDetailOut;
+            return ecmDocumentDetailOut;
         }
     }
 }

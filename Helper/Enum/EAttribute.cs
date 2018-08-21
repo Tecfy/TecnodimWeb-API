@@ -4,17 +4,33 @@ namespace Helper.Enum
 {
     public enum EAttribute
     {
-        [Description("SER_NomedoAluno")]
-        SER_NomedoAluno = 1,
-        [Description("SER_Matricula")]
-        SER_Matricula = 2,
-        [Description("SER_CPF")]
-        SER_CPF = 3,
-        [Description("SER_CURSO")]
-        SER_CURSO = 4,
-        [Description("SER_Unidade")]
-        SER_Unidade = 5,
+        [Description("SER_cad_Cpf")]
+        SER_cad_Cpf = 1,
+        [Description("SER_cad_Curso")]
+        SER_cad_Curso = 2,
+        [Description("SER_cad_Matricula")]
+        SER_cad_Matricula = 3,
+        [Description("SER_cad_NomedoAluno")]
+        SER_cad_NomedoAluno = 4,
+        [Description("SER_cad_SituacaoAluno")]
+        SER_cad_SituacaoAluno = 5,
+        [Description("SER_cad_Unidade")]
+        SER_cad_Unidade = 6,
+        [Description("SER_EstagioDoc")]
+        SER_EstagioDoc = 7,
+        [Description("SER_Input_Compl")]
+        SER_Input_Compl = 8,
+        [Description("SER_Input_DataRef")]
+        SER_Input_DataRef = 9,
+        [Description("SER_Input_Data_Vencto")]
+        SER_Input_Data_Vencto = 10,
+        [Description("SER_Input_NumDoc")]
+        SER_Input_NumDoc = 11,
+        [Description("SER_Operador")]
+        SER_Operador = 12,
+        [Description("SER_Paginas")]
+        SER_Paginas = 13,
         [Description("SER_SituacaoDoc")]
-        SER_SituacaoDoc = 6,
+        SER_SituacaoDoc = 14,
     }
 }

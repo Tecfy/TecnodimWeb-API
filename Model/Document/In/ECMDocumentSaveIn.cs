@@ -1,6 +1,6 @@
 ﻿namespace Model.In
 {
-    public class SEDocumentSaveIn : BaseIn
+    public class ECMDocumentSaveIn : BaseIn
     {
         public string registration { get; set; }
 
@@ -10,6 +10,6 @@
 
         public byte[] archive { get; set; }
 
-        public string archiveName { get; set; }
+        public string title { get; set; }
     }
 }

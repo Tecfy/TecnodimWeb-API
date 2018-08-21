@@ -1,6 +1,6 @@
 ﻿namespace Model.VM
 {
-    public class SEDocumentDetailVM
+    public class ECMDocumentDetailVM
     {
         public string unity { get; set; }
 

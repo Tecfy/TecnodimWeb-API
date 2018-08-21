@@ -12,6 +12,17 @@ namespace Repository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
 
+        public ECMCategoriesOut GetECMCategories(ECMCategoriesIn ecmCategoriesIn)
+        {
+            ECMCategoriesOut ecmCategoriesOut = new ECMCategoriesOut();
+            registerEventRepository.SaveRegisterEvent(ecmCategoriesIn.userId.Value, ecmCategoriesIn.key.Value, "Log - Start", "Repository.CategoryRepository.GetECMCategories", "");
+
+            ecmCategoriesOut = SECategory.GetSECategories();
+
+            registerEventRepository.SaveRegisterEvent(ecmCategoriesIn.userId.Value, ecmCategoriesIn.key.Value, "Log - End", "Repository.CategoryRepository.GetECMCategories", "");
+            return ecmCategoriesOut;
+        }
+
         public CategoryOut GetCategory(CategoryIn categoryIn)
         {
             CategoryOut categoryOut = new CategoryOut();
@@ -70,17 +81,6 @@ namespace Repository
 
             registerEventRepository.SaveRegisterEvent(categoriesIn.userId.Value, categoriesIn.key.Value, "Log - End", "Repository.CategoryRepository.GetCategories", "");
             return categoriesOut;
-        }
-
-        public SECategoriesOut GetSECategories(SECategoriesIn seCategoriesIn)
-        {
-            SECategoriesOut seCategoriesOut = new SECategoriesOut();
-            registerEventRepository.SaveRegisterEvent(seCategoriesIn.userId.Value, seCategoriesIn.key.Value, "Log - Start", "Repository.CategoryRepository.GetSECategories", "");
-
-            seCategoriesOut = Category.GetCategories();
-
-            registerEventRepository.SaveRegisterEvent(seCategoriesIn.userId.Value, seCategoriesIn.key.Value, "Log - End", "Repository.CategoryRepository.GetSECategories", "");
-            return seCategoriesOut;
         }
 
         private List<string> GetParents(int parentId, List<string> vs)
