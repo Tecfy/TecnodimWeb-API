@@ -138,6 +138,9 @@
   <data name="External" xml:space="preserve">
     <value>Externo</value>
   </data>
+  <data name="FieldWithError" xml:space="preserve">
+    <value>O campo {0} esta com erro!</value>
+  </data>
   <data name="Hash" xml:space="preserve">
     <value>Hash</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="Source" xml:space="preserve">
     <value>Fonte</value>
+  </data>
+  <data name="StudentNotFound" xml:space="preserve">
+    <value>Aluno não localizado</value>
   </data>
   <data name="Text" xml:space="preserve">
     <value>Texto</value>

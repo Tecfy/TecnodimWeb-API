@@ -62,6 +62,7 @@
     <Compile Include="DocumentDetail\In\SEDocumentDetailIn.cs" />
     <Compile Include="DocumentDetail\Out\SEDocumentDetailOut.cs" />
     <Compile Include="DocumentDetail\VM\SEDocumentDetailVM.cs" />
+    <Compile Include="Document\In\SEDocumentSaveIn.cs" />
     <Compile Include="Document\In\SEDocumentIn.cs" />
     <Compile Include="Document\In\SEDocumentsIn.cs" />
     <Compile Include="Document\In\DocumentSaveIn.cs" />

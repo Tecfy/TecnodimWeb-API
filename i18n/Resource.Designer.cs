@@ -124,6 +124,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to O campo {0} esta com erro!.
+        /// </summary>
+        public static string FieldWithError {
+            get {
+                return ResourceManager.GetString("FieldWithError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hash.
         /// </summary>
         public static string Hash {
@@ -183,6 +192,15 @@ namespace i18n {
         public static string Source {
             get {
                 return ResourceManager.GetString("Source", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Aluno não localizado.
+        /// </summary>
+        public static string StudentNotFound {
+            get {
+                return ResourceManager.GetString("StudentNotFound", resourceCulture);
             }
         }
         
