@@ -11,7 +11,5 @@ namespace Model.VM
         public string registration { get; set; }
 
         public string name { get; set; }
-
-        public Guid hash { get; set; }
     }
 }

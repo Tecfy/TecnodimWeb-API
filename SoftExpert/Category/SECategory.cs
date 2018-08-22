@@ -18,9 +18,9 @@ namespace SoftExpert
                                     .RESULTARRAY
                                     .Select(x => new ECMCategoriesVM()
                                     {
-                                        categoryId = x.CDCATEGORY.ToString(),
-                                        parentId = x.CDCATEGORYOWNER.ToString(),
-                                        code = x.IDCATEGORY.ToString(),
+                                        categoryId = x.CDCATEGORY,
+                                        parentId = x.CDCATEGORYOWNER,
+                                        code = x.IDCATEGORY,
                                         name = x.NMCATEGORY
                                     })
                                     .OrderBy(x => x.code)

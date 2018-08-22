@@ -2,9 +2,9 @@
 {
     public class ECMCategoriesVM
     {
-        public string categoryId { get; set; }
+        public int categoryId { get; set; }
 
-        public string parentId { get; set; }
+        public int parentId { get; set; }
 
         public string code { get; set; }
 
