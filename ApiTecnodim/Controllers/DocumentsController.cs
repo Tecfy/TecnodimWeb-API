@@ -5,6 +5,7 @@ using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Configuration;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
@@ -23,9 +24,18 @@ namespace ApiTecnodim.Controllers
 
             try
             {
-                ECMDocumentIn ecmDocumentIn = new ECMDocumentIn() { externalId = id, userId = new Guid(User.Identity.Name), key = Key };
+                if (WebConfigurationManager.AppSettings["ApiTecnodim.Controllers.SearchFile"].ToString() == "true")
+                {
+                    ECMDocumentIn ecmDocumentIn = new ECMDocumentIn() { externalId = id, userId = new Guid(User.Identity.Name), key = Key };
 
-                ecmDocumentOut = documentRepository.GetECMDocument(ecmDocumentIn);
+                    ecmDocumentOut = documentRepository.GetECMDocument(ecmDocumentIn);
+                }
+                else
+                {
+                    byte[] archive = System.IO.File.ReadAllBytes(WebConfigurationManager.AppSettings["ApiTecnodim.Controllers.LocalFile"]);
+
+                    ecmDocumentOut.result.archive = System.Convert.ToBase64String(archive);
+                }
             }
             catch (Exception ex)
             {

@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attribute\AttributeRepository.cs" />
     <Compile Include="Document\DocumentRepository.cs" />
     <Compile Include="Category\CategoryRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

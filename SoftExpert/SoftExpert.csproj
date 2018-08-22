@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attribute\SEAttribute.cs" />
     <Compile Include="Category\SECategory.cs" />
     <Compile Include="Connection\SEConnection.cs" />
     <Compile Include="Connection\SEClient.cs" />
