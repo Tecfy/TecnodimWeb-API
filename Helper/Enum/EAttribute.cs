@@ -32,5 +32,7 @@ namespace Helper.Enum
         SER_Paginas = 13,
         [Description("SER_SituacaoDoc")]
         SER_SituacaoDoc = 14,
+        [Description("Ser_cad_cod_unidade")]
+        Ser_cad_cod_unidade = 15,
     }
 }
