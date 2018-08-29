@@ -157,7 +157,7 @@ namespace SoftExpert
                             }
                         }
 
-                        var document = seClient.newDocument(seDocumentSaveIn.categoryId, seDocumentSaveIn.registration + "-" + seDocumentSaveIn.categoryId, seDocumentSaveIn.title, "", "", atributos, "", null, 0);
+                        var document = seClient.newDocument(seDocumentSaveIn.categoryId, seDocumentSaveIn.registration.Trim() + "-" + seDocumentSaveIn.categoryId.Trim(), seDocumentSaveIn.title, "", "", atributos, "", null, 0);
 
                         var documentMatrix = document.Split(':');
 
@@ -165,7 +165,7 @@ namespace SoftExpert
                         {
                             if (documentMatrix.Count() >= 3 && documentMatrix[2].ToUpper().Contains("SUCESSO"))
                             {
-                                SEDocumentUpload(seDocumentSaveIn, documentMatrix[1]);
+                                SEDocumentUpload(seDocumentSaveIn, seDocumentSaveIn.registration.Trim() + "-" + seDocumentSaveIn.categoryId.Trim());
                             }
                             else
                             {
@@ -201,7 +201,7 @@ namespace SoftExpert
                     NMFILE = seDocumentSaveIn.title
                 };
 
-                var response = seClient.uploadEletronicFile(documentid, "1", "", eletronicFiles);
+                var response = seClient.uploadEletronicFile(documentid, "", "", eletronicFiles);
 
                 return true;
             }
