@@ -73,6 +73,7 @@ namespace SoftExpert
                         externalId = item.IDDOCUMENT,
                         registration = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Matricula.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Matricula.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
                         name = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_NomedoAluno.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_NomedoAluno.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                        unity = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.Ser_cad_cod_unidade.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.Ser_cad_cod_unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
                     });
                 }
             }
@@ -195,12 +196,12 @@ namespace SoftExpert
                 eletronicFile[] eletronicFiles = new eletronicFile[2];
                 eletronicFiles[0] = new eletronicFile
                 {
-                    BINFILE = seDocumentSaveIn.archive,
+                    BINFILE = Convert.FromBase64String(seDocumentSaveIn.archive),
                     ERROR = "",
                     NMFILE = seDocumentSaveIn.title
                 };
 
-                seClient.uploadEletronicFileAsync(documentid, "", "", eletronicFiles);
+                var response = seClient.uploadEletronicFile(documentid, "1", "", eletronicFiles);
 
                 return true;
             }

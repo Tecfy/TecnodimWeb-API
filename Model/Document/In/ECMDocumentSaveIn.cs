@@ -8,7 +8,7 @@
 
         public string category { get; set; }
 
-        public byte[] archive { get; set; }
+        public string archive { get; set; }
 
         public string title { get; set; }
     }

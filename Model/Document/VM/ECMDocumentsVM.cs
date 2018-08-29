@@ -11,5 +11,7 @@ namespace Model.VM
         public string registration { get; set; }
 
         public string name { get; set; }
+
+        public string unity { get; set; }
     }
 }

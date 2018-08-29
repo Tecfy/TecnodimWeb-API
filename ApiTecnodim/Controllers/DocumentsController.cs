@@ -84,10 +84,6 @@ namespace ApiTecnodim.Controllers
                     ecmDocumentSaveIn.userId = new Guid(User.Identity.Name);
                     ecmDocumentSaveIn.key = Key;
 
-                    byte[] archive = System.IO.File.ReadAllBytes(@"C:\\Temp\\Tecnodim\\VICTOR - CONTRATOS.pdf");
-
-                    ecmDocumentSaveIn.archive = Convert.FromBase64String(System.Convert.ToBase64String(archive));
-
                     ecmDocumentSaveOut = documentRepository.PostECMDocumentSave(ecmDocumentSaveIn);
                 }
                 else
