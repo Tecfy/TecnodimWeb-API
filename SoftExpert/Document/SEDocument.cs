@@ -131,6 +131,39 @@ namespace SoftExpert
                                 }
                             }
                         }
+
+                        foreach (var item in seDocumentSaveIn.additionalFields)
+                        {
+                            try
+                            {
+                                if (item.additionalFieldId == (int)EAdditionalField.Identifier)
+                                {
+                                    var retorno = seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_Input_NumDoc.ToString(), item.value);
+                                }
+                                else if (item.additionalFieldId == (int)EAdditionalField.Competence)
+                                {
+                                    DateTime competence = DateTime.MinValue;
+                                    DateTime.TryParse(item.value, out competence);
+
+                                    var retorno = seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_Input_DataRef.ToString(), competence.ToString("yyyy-MM-dd"));
+                                }
+                                else if (item.additionalFieldId == (int)EAdditionalField.Validity)
+                                {
+                                    DateTime validity = DateTime.MinValue;
+                                    DateTime.TryParse(item.value, out validity);
+
+                                    var retorno = seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_Input_Data_Vencto.ToString(), validity.ToString("yyyy-MM-dd"));
+                                }
+                                else if (item.additionalFieldId == (int)EAdditionalField.DocumentView)
+                                {
+                                    var retorno = seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_Input_Compl.ToString(), item.value);
+                                }
+                            }
+                            catch
+                            {
+                            }
+                        }
+
                         var ds = SEDocumentUpload(seDocumentSaveIn, documentReturn.IDDOCUMENT);
                     }
                 }
@@ -157,6 +190,37 @@ namespace SoftExpert
                             }
                         }
 
+                        foreach (var item in seDocumentSaveIn.additionalFields)
+                        {
+                            try
+                            {
+                                if (item.additionalFieldId == (int)EAdditionalField.Identifier)
+                                {
+                                    atributos += EAttribute.SER_Input_NumDoc.ToString() + "=" + item.value + ";";
+                                }
+                                else if (item.additionalFieldId == (int)EAdditionalField.Competence)
+                                {
+                                    DateTime competence = DateTime.MinValue;
+                                    DateTime.TryParse(item.value, out competence);
+
+                                    atributos += EAttribute.SER_Input_DataRef.ToString() + "=" + competence.ToString("yyyy-MM-dd") + ";";
+                                }
+                                else if (item.additionalFieldId == (int)EAdditionalField.Validity)
+                                {
+                                    DateTime validity = DateTime.MinValue;
+                                    DateTime.TryParse(item.value, out validity);
+
+                                    atributos += EAttribute.SER_Input_Data_Vencto.ToString() + "=" + validity.ToString("yyyy-MM-dd") + ";";
+                                }
+                                else if (item.additionalFieldId == (int)EAdditionalField.DocumentView)
+                                {
+                                    atributos += EAttribute.SER_Input_Compl.ToString() + "=" + item.value + ";";
+                                }
+                            }
+                            catch
+                            {
+                            }
+                        }
                         var document = seClient.newDocument(seDocumentSaveIn.categoryId, seDocumentSaveIn.registration.Trim() + "-" + seDocumentSaveIn.categoryId.Trim(), seDocumentSaveIn.title, "", "", atributos, "", null, 0);
 
                         var documentMatrix = document.Split(':');

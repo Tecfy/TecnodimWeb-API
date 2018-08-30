@@ -50,7 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdditionalField\VM\AdditionalFieldVM.cs" />
+    <Compile Include="AdditionalField\In\ECMAdditionalFieldSaveIn.cs" />
     <Compile Include="Attribute\In\ECMAttributeIn.cs" />
     <Compile Include="Attribute\Out\ECMAttributeOut.cs" />
     <Compile Include="Category\In\ECMCategoriesIn.cs" />
@@ -72,8 +72,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AdditionalField\In\" />
     <Folder Include="AdditionalField\Out\" />
+    <Folder Include="AdditionalField\VM\" />
     <Folder Include="Attribute\VM\" />
     <Folder Include="Common\Out\" />
   </ItemGroup>
