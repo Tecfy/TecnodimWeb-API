@@ -24,18 +24,9 @@ namespace ApiTecnodim.Controllers
 
             try
             {
-                if (WebConfigurationManager.AppSettings["ApiTecnodim.Controllers.SearchFile"].ToString() == "true")
-                {
-                    ECMDocumentIn ecmDocumentIn = new ECMDocumentIn() { externalId = id, userId = new Guid(User.Identity.Name), key = Key };
+                ECMDocumentIn ecmDocumentIn = new ECMDocumentIn() { externalId = id, userId = new Guid(User.Identity.Name), key = Key };
 
-                    ecmDocumentOut = documentRepository.GetECMDocument(ecmDocumentIn);
-                }
-                else
-                {
-                    byte[] archive = System.IO.File.ReadAllBytes(WebConfigurationManager.AppSettings["ApiTecnodim.Controllers.LocalFile"]);
-
-                    ecmDocumentOut.result.archive = System.Convert.ToBase64String(archive);
-                }
+                ecmDocumentOut = documentRepository.GetECMDocument(ecmDocumentIn);
             }
             catch (Exception ex)
             {
