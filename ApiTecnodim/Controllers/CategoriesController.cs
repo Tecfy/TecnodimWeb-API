@@ -19,13 +19,13 @@ namespace ApiTecnodim.Controllers
 
             try
             {
-                ECMCategoriesIn ecmCategoriesIn = new ECMCategoriesIn() { userId = new Guid(User.Identity.Name), key = Key };
+                ECMCategoriesIn ecmCategoriesIn = new ECMCategoriesIn() { userId = User.Identity.Name, key = Key.ToString() };
 
                 ecmCategoriesOut = categoryRepository.GetECMCategories(ecmCategoriesIn);
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.CategoriesController.GetECMCategories", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.CategoriesController.GetECMCategories", ex.Message);
 
                 ecmCategoriesOut.successMessage = null;
                 ecmCategoriesOut.messages.Add(ex.Message);

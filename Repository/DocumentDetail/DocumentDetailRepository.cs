@@ -11,11 +11,11 @@ namespace Repository
         public ECMDocumentDetailOut GetECMDocumentDetail(ECMDocumentDetailIn ecmDocumentDetailIn)
         {
             ECMDocumentDetailOut ecmDocumentDetailOut = new ECMDocumentDetailOut();
-            registerEventRepository.SaveRegisterEvent(ecmDocumentDetailIn.userId.Value, ecmDocumentDetailIn.key.Value, "Log - Start", "Repository.DocumentDetailRepository.GetECMDocumentDetail", "");
+            registerEventRepository.SaveRegisterEvent(ecmDocumentDetailIn.userId, ecmDocumentDetailIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetECMDocumentDetail", "");
 
             ecmDocumentDetailOut = SEDocumentDetail.GetSEDocumentDetail(ecmDocumentDetailIn);
 
-            registerEventRepository.SaveRegisterEvent(ecmDocumentDetailIn.userId.Value, ecmDocumentDetailIn.key.Value, "Log - End", "Repository.DocumentDetailRepository.GetECMDocumentDetail", "");
+            registerEventRepository.SaveRegisterEvent(ecmDocumentDetailIn.userId, ecmDocumentDetailIn.key, "Log - End", "Repository.DocumentDetailRepository.GetECMDocumentDetail", "");
             return ecmDocumentDetailOut;
         }
     }

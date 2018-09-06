@@ -24,13 +24,13 @@ namespace ApiTecnodim.Controllers
 
             try
             {
-                ECMDocumentIn ecmDocumentIn = new ECMDocumentIn() { externalId = id, userId = new Guid(User.Identity.Name), key = Key };
+                ECMDocumentIn ecmDocumentIn = new ECMDocumentIn() { externalId = id, userId = User.Identity.Name, key = Key.ToString() };
 
                 ecmDocumentOut = documentRepository.GetECMDocument(ecmDocumentIn);
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.DocumentsController.GetECMDocument", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentsController.GetECMDocument", ex.Message);
 
                 ecmDocumentOut.successMessage = null;
                 ecmDocumentOut.messages.Add(ex.Message);
@@ -47,13 +47,13 @@ namespace ApiTecnodim.Controllers
 
             try
             {
-                ECMDocumentsIn ecmDocumentsIn = new ECMDocumentsIn() { userId = new Guid(User.Identity.Name), key = Key };
+                ECMDocumentsIn ecmDocumentsIn = new ECMDocumentsIn() { userId = User.Identity.Name, key = Key.ToString() };
 
                 ecmDocumentsOut = documentRepository.GetECMDocuments(ecmDocumentsIn);
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.DocumentsController.GetECMDocuments", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentsController.GetECMDocuments", ex.Message);
 
                 ecmDocumentsOut.successMessage = null;
                 ecmDocumentsOut.messages.Add(ex.Message);
@@ -72,8 +72,8 @@ namespace ApiTecnodim.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    ecmDocumentSaveIn.userId = new Guid(User.Identity.Name);
-                    ecmDocumentSaveIn.key = Key;
+                    ecmDocumentSaveIn.userId = User.Identity.Name;
+                    ecmDocumentSaveIn.key = Key.ToString();
 
                     ecmDocumentSaveOut = documentRepository.PostECMDocumentSave(ecmDocumentSaveIn);
                 }
@@ -94,7 +94,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.DocumentsController.GetSEDocumentSave", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentsController.GetSEDocumentSave", ex.Message);
 
                 ecmDocumentSaveOut.successMessage = null;
                 ecmDocumentSaveOut.messages.Add(ex.Message);

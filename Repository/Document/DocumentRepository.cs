@@ -13,22 +13,22 @@ namespace Repository
         public ECMDocumentOut GetECMDocument(ECMDocumentIn seDocumentIn)
         {
             ECMDocumentOut ecmDocumentOut = new ECMDocumentOut();
-            registerEventRepository.SaveRegisterEvent(seDocumentIn.userId.Value, seDocumentIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetECMDocument", "");
+            registerEventRepository.SaveRegisterEvent(seDocumentIn.userId, seDocumentIn.key, "Log - Start", "Repository.DocumentRepository.GetECMDocument", "");
 
             ecmDocumentOut = SEDocument.GetSEDocument(seDocumentIn);
 
-            registerEventRepository.SaveRegisterEvent(seDocumentIn.userId.Value, seDocumentIn.key.Value, "Log - End", "Repository.DocumentRepository.GetECMDocument", "");
+            registerEventRepository.SaveRegisterEvent(seDocumentIn.userId, seDocumentIn.key, "Log - End", "Repository.DocumentRepository.GetECMDocument", "");
             return ecmDocumentOut;
         }
 
         public ECMDocumentsOut GetECMDocuments(ECMDocumentsIn ecmDocumentsIn)
         {
             ECMDocumentsOut ecmDocumentsOut = new ECMDocumentsOut();
-            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.userId.Value, ecmDocumentsIn.key.Value, "Log - Start", "Repository.DocumentRepository.GetECMDocuments", "");
+            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Log - Start", "Repository.DocumentRepository.GetECMDocuments", "");
 
             ecmDocumentsOut = SEDocument.GetSEDocuments();
 
-            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.userId.Value, ecmDocumentsIn.key.Value, "Log - End", "Repository.DocumentRepository.GetECMDocuments", "");
+            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Log - End", "Repository.DocumentRepository.GetECMDocuments", "");
             return ecmDocumentsOut;
         }
 
@@ -36,11 +36,11 @@ namespace Repository
         {
             ECMDocumentSaveOut ecmDocumentSaveOut = new ECMDocumentSaveOut();
 
-            registerEventRepository.SaveRegisterEvent(ecmDocumentSaveIn.userId.Value, ecmDocumentSaveIn.key.Value, "Log - Start", "Repository.DocumentRepository.PostECMDocumentSave", "");
+            registerEventRepository.SaveRegisterEvent(ecmDocumentSaveIn.userId, ecmDocumentSaveIn.key, "Log - Start", "Repository.DocumentRepository.PostECMDocumentSave", "");
 
             SEDocument.SEDocumentSave(ecmDocumentSaveIn);
 
-            registerEventRepository.SaveRegisterEvent(ecmDocumentSaveIn.userId.Value, ecmDocumentSaveIn.key.Value, "Log - End", "Repository.DocumentRepository.PostECMDocumentSave", "");
+            registerEventRepository.SaveRegisterEvent(ecmDocumentSaveIn.userId, ecmDocumentSaveIn.key, "Log - End", "Repository.DocumentRepository.PostECMDocumentSave", "");
             return ecmDocumentSaveOut;
         }
     }

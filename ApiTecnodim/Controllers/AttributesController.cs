@@ -23,8 +23,8 @@ namespace ApiTecnodim.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    ecmAttributeIn.userId = new Guid(User.Identity.Name);
-                    ecmAttributeIn.key = Key;
+                    ecmAttributeIn.userId = User.Identity.Name;
+                    ecmAttributeIn.key = Key.ToString();
 
                     attributeRepository.ECMAttributeUpdate(ecmAttributeIn);
                 }
@@ -45,7 +45,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.AttributesController.PostECMAttributeUpdate", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.AttributesController.PostECMAttributeUpdate", ex.Message);
 
                 ecmAttributeOut.successMessage = null;
                 ecmAttributeOut.messages.Add(ex.Message);

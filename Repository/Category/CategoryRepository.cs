@@ -17,7 +17,7 @@ namespace Repository
         public ECMCategoriesOut GetECMCategories(ECMCategoriesIn ecmCategoriesIn)
         {
             ECMCategoriesOut ecmCategoriesOut = new ECMCategoriesOut();
-            registerEventRepository.SaveRegisterEvent(ecmCategoriesIn.userId.Value, ecmCategoriesIn.key.Value, "Log - Start", "Repository.CategoryRepository.GetECMCategories", "");
+            registerEventRepository.SaveRegisterEvent(ecmCategoriesIn.userId, ecmCategoriesIn.key, "Log - Start", "Repository.CategoryRepository.GetECMCategories", "");
 
             ecmCategoriesOut = SECategory.GetSECategories();
 
@@ -32,7 +32,7 @@ namespace Repository
             ecmCategoriesOut.result = new List<ECMCategoriesVM>();
             ecmCategoriesOut.result = ecmCategoriesVMs;
 
-            registerEventRepository.SaveRegisterEvent(ecmCategoriesIn.userId.Value, ecmCategoriesIn.key.Value, "Log - End", "Repository.CategoryRepository.GetECMCategories", "");
+            registerEventRepository.SaveRegisterEvent(ecmCategoriesIn.userId, ecmCategoriesIn.key, "Log - End", "Repository.CategoryRepository.GetECMCategories", "");
             return ecmCategoriesOut;
         }
 

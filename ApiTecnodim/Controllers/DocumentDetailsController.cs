@@ -23,7 +23,7 @@ namespace ApiTecnodim.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    ECMDocumentDetailIn ecmDocumentDetailIn = new ECMDocumentDetailIn() { registration = id, userId = new Guid(User.Identity.Name), key = Key };
+                    ECMDocumentDetailIn ecmDocumentDetailIn = new ECMDocumentDetailIn() { registration = id, userId = User.Identity.Name, key = Key.ToString() };
 
                     ecmDocumentDetailOut = studentRepository.GetECMDocumentDetail(ecmDocumentDetailIn);
                 }
@@ -44,7 +44,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(new Guid(User.Identity.Name), Key, "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.GetECMDocumentDetail", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.GetECMDocumentDetail", ex.Message);
 
                 ecmDocumentDetailOut.result = null;
                 ecmDocumentDetailOut.successMessage = null;
