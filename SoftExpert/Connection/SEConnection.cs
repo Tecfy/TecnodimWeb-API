@@ -10,8 +10,10 @@ namespace SoftExpert
 
         public static SEClient GetConnection()
         {
-            SEClient seClient = new SEClient();
-            seClient.Url = URL;
+            SEClient seClient = new SEClient
+            {
+                Url = URL
+            };
             seClient.SetAuthentication(Username, Password);
 
             return seClient;

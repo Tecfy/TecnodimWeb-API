@@ -24,7 +24,7 @@ namespace ApiTecnodim.Controllers
 
             try
             {
-                ECMDocumentIn ecmDocumentIn = new ECMDocumentIn() { externalId = id, userId = User.Identity.Name, key = Key.ToString() };
+                ECMDocumentIn ecmDocumentIn = new ECMDocumentIn() { externalId = id, categoryId = WebConfigurationManager.AppSettings["DocumentRepository.GetECMDocument.SearchAttributePendingCategory"], userId = User.Identity.Name, key = Key.ToString() };
 
                 ecmDocumentOut = documentRepository.GetECMDocument(ecmDocumentIn);
             }
