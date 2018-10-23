@@ -1,8 +1,9 @@
-﻿using DataEF.DataAccess;
+﻿using Helper.ServerMap;
 using Model.In;
 using Model.Out;
 using SoftExpert;
-using System.Linq;
+using System;
+using System.Configuration;
 
 namespace Repository
 {
@@ -10,14 +11,35 @@ namespace Repository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
 
-        public ECMDocumentOut GetECMDocument(ECMDocumentIn seDocumentIn)
+        public ECMDocumentOut GetECMDocument(ECMDocumentIn ecmDocumentIn)
         {
             ECMDocumentOut ecmDocumentOut = new ECMDocumentOut();
-            registerEventRepository.SaveRegisterEvent(seDocumentIn.userId, seDocumentIn.key, "Log - Start", "Repository.DocumentRepository.GetECMDocument", "");
+            registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Log - Start", "Repository.DocumentRepository.GetECMDocument", "");
 
-            ecmDocumentOut = SEDocument.GetSEDocument(seDocumentIn);
+            string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.DocumentRepository.Path"]);
+            string name = ecmDocumentIn.externalId + ".pdf";
 
-            registerEventRepository.SaveRegisterEvent(seDocumentIn.userId, seDocumentIn.key, "Log - End", "Repository.DocumentRepository.GetECMDocument", "");
+            if (System.IO.File.Exists(path + "\\" + name))
+            {
+                byte[] archive = System.IO.File.ReadAllBytes(path + "\\" + name);
+
+                ecmDocumentOut.result.archive = System.Convert.ToBase64String(archive);
+            }
+            else
+            {
+                ecmDocumentOut = SEDocument.GetSEDocument(ecmDocumentIn);
+
+                byte[] archive = System.Convert.FromBase64String(ecmDocumentOut.result.archive);
+
+                if (!System.IO.Directory.Exists(path))
+                {
+                    System.IO.Directory.CreateDirectory(path);
+                }
+
+                System.IO.File.WriteAllBytes(path + "\\" + name, archive);
+            }
+
+            registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Log - End", "Repository.DocumentRepository.GetECMDocument", "");
             return ecmDocumentOut;
         }
 
@@ -42,6 +64,26 @@ namespace Repository
 
             registerEventRepository.SaveRegisterEvent(ecmDocumentSaveIn.userId, ecmDocumentSaveIn.key, "Log - End", "Repository.DocumentRepository.PostECMDocumentSave", "");
             return ecmDocumentSaveOut;
+        }
+
+        public bool DeleteECMDocumentArchive(ECMDocumentDeletedIn ecmDocumentDeletedIn)
+        {
+            try
+            {
+                string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.DocumentRepository.Path"]);
+                string name = ecmDocumentDeletedIn.externalId + ".pdf";
+
+                if (System.IO.File.Exists(path + "\\" + name))
+                {
+                    System.IO.File.Delete(path + "\\" + name);
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
