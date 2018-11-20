@@ -18,5 +18,16 @@ namespace Repository
             registerEventRepository.SaveRegisterEvent(ecmDocumentDetailIn.userId, ecmDocumentDetailIn.key, "Log - End", "Repository.DocumentDetailRepository.GetECMDocumentDetail", "");
             return ecmDocumentDetailOut;
         }
+
+        public ECMDocumentsDetailOut GetECMDocumentsDetail(ECMDocumentsDetailIn ecmDocumentsDetailIn)
+        {
+            ECMDocumentsDetailOut ecmDocumentsDetailOut = new ECMDocumentsDetailOut();
+            registerEventRepository.SaveRegisterEvent(ecmDocumentsDetailIn.userId, ecmDocumentsDetailIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetECMDocumentsDetail", "");
+
+            ecmDocumentsDetailOut = SEDocumentDetail.GetSEDocumentsDetail(ecmDocumentsDetailIn);
+
+            registerEventRepository.SaveRegisterEvent(ecmDocumentsDetailIn.userId, ecmDocumentsDetailIn.key, "Log - End", "Repository.DocumentDetailRepository.GetECMDocumentsDetail", "");
+            return ecmDocumentsDetailOut;
+        }
     }
 }

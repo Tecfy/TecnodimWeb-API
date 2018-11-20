@@ -7,7 +7,7 @@
 // 
 //     Configuration file:     "DataEF\App.config"
 //     Connection String Name: "Default"
-//     Connection String:      "Server=DEVPLACE002;Database=Tecnodim;User Id=Tecnodim; password=**zapped**;"
+//     Connection String:      "Server=35.192.175.82;Database=TecnodimWeb;User Id=tecnodimweb; password=**zapped**;"
 
 // ReSharper disable RedundantUsingDirective
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
@@ -46,9 +46,12 @@ namespace DataEF.DataAccess
         IDbSet<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields
         IDbSet<SlicePages> SlicePages { get; set; } // SlicePages
         IDbSet<Slices> Slices { get; set; } // Slices
+        IDbSet<Sysdiagrams> Sysdiagrams { get; set; } // sysdiagrams
         IDbSet<Units> Units { get; set; } // Units
         IDbSet<Users> Users { get; set; } // Users
         IDbSet<UserUnits> UserUnits { get; set; } // UserUnits
+        IDbSet<WorkCategories> WorkCategories { get; set; } // WorkCategories
+        IDbSet<Works> Works { get; set; } // Works
 
         int SaveChanges();
     }
@@ -73,9 +76,12 @@ namespace DataEF.DataAccess
         public IDbSet<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields
         public IDbSet<SlicePages> SlicePages { get; set; } // SlicePages
         public IDbSet<Slices> Slices { get; set; } // Slices
+        public IDbSet<Sysdiagrams> Sysdiagrams { get; set; } // sysdiagrams
         public IDbSet<Units> Units { get; set; } // Units
         public IDbSet<Users> Users { get; set; } // Users
         public IDbSet<UserUnits> UserUnits { get; set; } // UserUnits
+        public IDbSet<WorkCategories> WorkCategories { get; set; } // WorkCategories
+        public IDbSet<Works> Works { get; set; } // Works
 
         static DBContext()
         {
@@ -113,9 +119,12 @@ namespace DataEF.DataAccess
             modelBuilder.Configurations.Add(new SliceCategoryAdditionalFieldsConfiguration());
             modelBuilder.Configurations.Add(new SlicePagesConfiguration());
             modelBuilder.Configurations.Add(new SlicesConfiguration());
+            modelBuilder.Configurations.Add(new SysdiagramsConfiguration());
             modelBuilder.Configurations.Add(new UnitsConfiguration());
             modelBuilder.Configurations.Add(new UsersConfiguration());
             modelBuilder.Configurations.Add(new UserUnitsConfiguration());
+            modelBuilder.Configurations.Add(new WorkCategoriesConfiguration());
+            modelBuilder.Configurations.Add(new WorksConfiguration());
         OnModelCreatingPartial(modelBuilder);
         }
 
@@ -572,6 +581,7 @@ namespace DataEF.DataAccess
         public virtual ICollection<Categories> Categories2 { get; set; } // Categories.FK_Categories_Parent;
         public virtual ICollection<CategoryAdditionalFields> CategoryAdditionalFields { get; set; } // CategoryAdditionalFields.FK_CategoryAdditionalFields_Categories;
         public virtual ICollection<Slices> Slices { get; set; } // Slices.FK_Slices_Categories;
+        public virtual ICollection<WorkCategories> WorkCategories { get; set; } // WorkCategories.FK_WorkCategories_Categories;
 
         // Foreign keys
         public virtual Categories Categories1 { get; set; } //  ParentId - FK_Categories_Parent
@@ -586,6 +596,7 @@ namespace DataEF.DataAccess
             Categories2 = new List<Categories>();
             CategoryAdditionalFields = new List<CategoryAdditionalFields>();
             Slices = new List<Slices>();
+            WorkCategories = new List<WorkCategories>();
             InitializePartial();
         }
         partial void InitializePartial();
@@ -1206,6 +1217,47 @@ namespace DataEF.DataAccess
         partial void InitializePartial();
     }
 
+	public partial class SysdiagramsMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[StringLength(128, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "name", ResourceType = typeof(i18n.Resource))]
+		public string Name { get; set; } // name
+
+		[Display(Name = "principal_id", ResourceType = typeof(i18n.Resource))]
+		public int PrincipalId { get; set; } // principal_id
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int DiagramId { get; set; } // diagram_id (Primary key)
+
+		[Display(Name = "version", ResourceType = typeof(i18n.Resource))]
+		public int? Version { get; set; } // version
+
+		[Display(Name = "definition", ResourceType = typeof(i18n.Resource))]
+		public byte[] Definition { get; set; } // definition
+
+		*/
+	}
+
+    // sysdiagrams
+	[MetadataType(typeof(SysdiagramsMetadataType))]
+    public partial class Sysdiagrams
+    {
+
+        public string Name { get; set; } // name
+
+        public int PrincipalId { get; set; } // principal_id
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int DiagramId { get; set; } // diagram_id (Primary key)
+
+        public int? Version { get; set; } // version
+
+        public byte[] Definition { get; set; } // definition
+    }
+
 	public partial class UnitsMetadataType
     {
 		/* 
@@ -1307,6 +1359,10 @@ namespace DataEF.DataAccess
 		[Display(Name = "LastName", ResourceType = typeof(i18n.Resource))]
 		public string LastName { get; set; } // LastName
 
+		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Registration", ResourceType = typeof(i18n.Resource))]
+		public string Registration { get; set; } // Registration
+
 		*/
 	}
 
@@ -1335,8 +1391,11 @@ namespace DataEF.DataAccess
 
         public string LastName { get; set; } // LastName
 
+        public string Registration { get; set; } // Registration
+
         // Reverse navigation
         public virtual ICollection<UserUnits> UserUnits { get; set; } // UserUnits.FK_UserUnits_Users;
+        public virtual ICollection<Works> Works { get; set; } // Works.FK_Works_Users;
 
         // Foreign keys
         public virtual AspNetUsers AspNetUsers { get; set; } //  AspNetUserId - FK_Users_AspNetUsers
@@ -1346,6 +1405,7 @@ namespace DataEF.DataAccess
             Active = true;
             CreatedDate = DateTime.Now;
             UserUnits = new List<UserUnits>();
+            Works = new List<Works>();
             InitializePartial();
         }
         partial void InitializePartial();
@@ -1383,6 +1443,181 @@ namespace DataEF.DataAccess
         // Foreign keys
         public virtual Users Users { get; set; } //  UserId - FK_UserUnits_Users
         public virtual Units Units { get; set; } //  UnityId - FK_UserUnits_Units
+    }
+
+	public partial class WorkCategoriesMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int WorkCategoryId { get; set; } // WorkCategoryId (Primary key)
+
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
+		[Display(Name = "Work", ResourceType = typeof(i18n.Resource))]
+		public int WorkId { get; set; } // WorkId
+
+		[Display(Name = "Category", ResourceType = typeof(i18n.Resource))]
+		public int CategoryId { get; set; } // CategoryId
+
+		[StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public string Code { get; set; } // Code
+
+		[Display(Name = "Send", ResourceType = typeof(i18n.Resource))]
+		public bool Send { get; set; } // Send
+
+		[Display(Name = "Sent", ResourceType = typeof(i18n.Resource))]
+		public bool Sent { get; set; } // Sent
+
+		[Display(Name = "Sending", ResourceType = typeof(i18n.Resource))]
+		public bool Sending { get; set; } // Sending
+
+		[Display(Name = "SendingDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? SendingDate { get; set; } // SendingDate
+
+		*/
+	}
+
+    // WorkCategories
+	[MetadataType(typeof(WorkCategoriesMetadataType))]
+    public partial class WorkCategories
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int WorkCategoryId { get; set; } // WorkCategoryId (Primary key)
+
+        public bool Active { get; set; } // Active
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? DeletedDate { get; set; } // DeletedDate
+
+        public int WorkId { get; set; } // WorkId
+
+        public int CategoryId { get; set; } // CategoryId
+
+        public string Code { get; set; } // Code
+
+        public bool Send { get; set; } // Send
+
+        public bool Sent { get; set; } // Sent
+
+        public bool Sending { get; set; } // Sending
+
+        public DateTime? SendingDate { get; set; } // SendingDate
+
+        // Foreign keys
+        public virtual Works Works { get; set; } //  WorkId - FK_WorkCategories_Works
+        public virtual Categories Categories { get; set; } //  CategoryId - FK_WorkCategories_Categories
+
+        public WorkCategories()
+        {
+            Active = true;
+            CreatedDate = DateTime.Now;
+            Send = false;
+            Sent = false;
+            Sending = false;
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+	public partial class WorksMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int WorkId { get; set; } // WorkId (Primary key)
+
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
+		[Display(Name = "User", ResourceType = typeof(i18n.Resource))]
+		public int UserId { get; set; } // UserId
+
+		[StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public string Code { get; set; } // Code
+
+		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Registration", ResourceType = typeof(i18n.Resource))]
+		public string Registration { get; set; } // Registration
+
+		[Display(Name = "Sent", ResourceType = typeof(i18n.Resource))]
+		public bool Sent { get; set; } // Sent
+
+		*/
+	}
+
+    // Works
+	[MetadataType(typeof(WorksMetadataType))]
+    public partial class Works
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int WorkId { get; set; } // WorkId (Primary key)
+
+        public bool Active { get; set; } // Active
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? DeletedDate { get; set; } // DeletedDate
+
+        public int UserId { get; set; } // UserId
+
+        public string Code { get; set; } // Code
+
+        public string Registration { get; set; } // Registration
+
+        public bool Sent { get; set; } // Sent
+
+        // Reverse navigation
+        public virtual ICollection<WorkCategories> WorkCategories { get; set; } // WorkCategories.FK_WorkCategories_Works;
+
+        // Foreign keys
+        public virtual Users Users { get; set; } //  UserId - FK_Works_Users
+
+        public Works()
+        {
+            Active = true;
+            CreatedDate = DateTime.Now;
+            Sent = false;
+            WorkCategories = new List<WorkCategories>();
+            InitializePartial();
+        }
+        partial void InitializePartial();
     }
 
 
@@ -1751,6 +1986,24 @@ namespace DataEF.DataAccess
         partial void InitializePartial();
     }
 
+    // sysdiagrams
+    internal partial class SysdiagramsConfiguration : EntityTypeConfiguration<Sysdiagrams>
+    {
+        public SysdiagramsConfiguration()
+        {
+            ToTable("dbo.sysdiagrams");
+            HasKey(x => x.DiagramId);
+
+            Property(x => x.Name).HasColumnName("name").IsRequired().HasMaxLength(128);
+            Property(x => x.PrincipalId).HasColumnName("principal_id").IsRequired();
+            Property(x => x.DiagramId).HasColumnName("diagram_id").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Version).HasColumnName("version").IsOptional();
+            Property(x => x.Definition).HasColumnName("definition").IsOptional();
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
     // Units
     internal partial class UnitsConfiguration : EntityTypeConfiguration<Units>
     {
@@ -1787,6 +2040,7 @@ namespace DataEF.DataAccess
             Property(x => x.AspNetUserId).HasColumnName("AspNetUserId").IsRequired().HasMaxLength(128);
             Property(x => x.FirstName).HasColumnName("FirstName").IsOptional().HasMaxLength(50);
             Property(x => x.LastName).HasColumnName("LastName").IsOptional().HasMaxLength(255);
+            Property(x => x.Registration).HasColumnName("Registration").IsOptional().HasMaxLength(255);
 
             // Foreign keys
             HasRequired(a => a.AspNetUsers).WithMany(b => b.Users).HasForeignKey(c => c.AspNetUserId); // FK_Users_AspNetUsers
@@ -1810,6 +2064,60 @@ namespace DataEF.DataAccess
             // Foreign keys
             HasRequired(a => a.Users).WithMany(b => b.UserUnits).HasForeignKey(c => c.UserId); // FK_UserUnits_Users
             HasRequired(a => a.Units).WithMany(b => b.UserUnits).HasForeignKey(c => c.UnityId); // FK_UserUnits_Units
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    // WorkCategories
+    internal partial class WorkCategoriesConfiguration : EntityTypeConfiguration<WorkCategories>
+    {
+        public WorkCategoriesConfiguration()
+        {
+            ToTable("dbo.WorkCategories");
+            HasKey(x => x.WorkCategoryId);
+
+            Property(x => x.WorkCategoryId).HasColumnName("WorkCategoryId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
+            Property(x => x.WorkId).HasColumnName("WorkId").IsRequired();
+            Property(x => x.CategoryId).HasColumnName("CategoryId").IsRequired();
+            Property(x => x.Code).HasColumnName("Code").IsRequired().HasMaxLength(50);
+            Property(x => x.Send).HasColumnName("Send").IsRequired();
+            Property(x => x.Sent).HasColumnName("Sent").IsRequired();
+            Property(x => x.Sending).HasColumnName("Sending").IsRequired();
+            Property(x => x.SendingDate).HasColumnName("SendingDate").IsOptional();
+
+            // Foreign keys
+            HasRequired(a => a.Works).WithMany(b => b.WorkCategories).HasForeignKey(c => c.WorkId); // FK_WorkCategories_Works
+            HasRequired(a => a.Categories).WithMany(b => b.WorkCategories).HasForeignKey(c => c.CategoryId); // FK_WorkCategories_Categories
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    // Works
+    internal partial class WorksConfiguration : EntityTypeConfiguration<Works>
+    {
+        public WorksConfiguration()
+        {
+            ToTable("dbo.Works");
+            HasKey(x => x.WorkId);
+
+            Property(x => x.WorkId).HasColumnName("WorkId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
+            Property(x => x.UserId).HasColumnName("UserId").IsRequired();
+            Property(x => x.Code).HasColumnName("Code").IsRequired().HasMaxLength(50);
+            Property(x => x.Registration).HasColumnName("Registration").IsRequired().HasMaxLength(255);
+            Property(x => x.Sent).HasColumnName("Sent").IsRequired();
+
+            // Foreign keys
+            HasRequired(a => a.Users).WithMany(b => b.Works).HasForeignKey(c => c.UserId); // FK_Works_Users
             InitializePartial();
         }
         partial void InitializePartial();

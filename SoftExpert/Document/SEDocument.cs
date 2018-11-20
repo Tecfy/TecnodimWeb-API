@@ -247,6 +247,30 @@ namespace SoftExpert
             }
         }
 
+        public static documentReturn GetSEDocumentByRegistrationAndCategory(string registration, string category)
+        {
+            SEClient seClient = SEConnection.GetConnection();
+            attributeData[] attributeDatas = new attributeData[1];
+            attributeDatas[0] = new attributeData
+            {
+                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.Document.SearchAttributeOwnerRegistration"],
+                VLATTRIBUTE = registration
+            };
+
+            searchDocumentFilter searchDocumentFilter = new searchDocumentFilter();
+            searchDocumentFilter.IDCATEGORY = category;
+            var d = seClient.searchDocument(searchDocumentFilter, "", attributeDatas);
+            documentReturn retorno = new documentReturn();
+            if (d.RESULTS.Count() > 0)
+            {
+                return d.RESULTS[0];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         #endregion
 
         #region .: Private Methods :.
@@ -272,30 +296,6 @@ namespace SoftExpert
             catch (Exception)
             {
                 return false;
-            }
-        }
-
-        private static documentReturn GetSEDocumentByRegistrationAndCategory(string registration, string category)
-        {
-            SEClient seClient = SEConnection.GetConnection();
-            attributeData[] attributeDatas = new attributeData[1];
-            attributeDatas[0] = new attributeData
-            {
-                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.Document.SearchAttributeOwnerRegistration"],
-                VLATTRIBUTE = registration
-            };
-
-            searchDocumentFilter searchDocumentFilter = new searchDocumentFilter();
-            searchDocumentFilter.IDCATEGORY = category;
-            var d = seClient.searchDocument(searchDocumentFilter, "", attributeDatas);
-            documentReturn retorno = new documentReturn();
-            if (d.RESULTS.Count() > 0)
-            {
-                return d.RESULTS[0];
-            }
-            else
-            {
-                return null;
             }
         }
 

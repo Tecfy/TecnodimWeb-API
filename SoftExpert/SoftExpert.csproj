@@ -48,6 +48,7 @@
     <Compile Include="Category\SECategory.cs" />
     <Compile Include="Connection\SEConnection.cs" />
     <Compile Include="Connection\SEClient.cs" />
+    <Compile Include="WorkCategory\SEWorkCategory.cs" />
     <Compile Include="DocumentDetail\SEDocumentDetail.cs" />
     <Compile Include="Document\SEDocument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
