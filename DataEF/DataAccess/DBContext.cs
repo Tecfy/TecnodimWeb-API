@@ -42,6 +42,9 @@ namespace DataEF.DataAccess
         IDbSet<DeletedPages> DeletedPages { get; set; } // DeletedPages
         IDbSet<Documents> Documents { get; set; } // Documents
         IDbSet<DocumentStatus> DocumentStatus { get; set; } // DocumentStatus
+        IDbSet<JobCategories> JobCategories { get; set; } // JobCategories
+        IDbSet<Jobs> Jobs { get; set; } // Jobs
+        IDbSet<JobStatus> JobStatus { get; set; } // JobStatus
         IDbSet<RegisterEvents> RegisterEvents { get; set; } // RegisterEvents
         IDbSet<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields
         IDbSet<SlicePages> SlicePages { get; set; } // SlicePages
@@ -50,8 +53,6 @@ namespace DataEF.DataAccess
         IDbSet<Units> Units { get; set; } // Units
         IDbSet<Users> Users { get; set; } // Users
         IDbSet<UserUnits> UserUnits { get; set; } // UserUnits
-        IDbSet<WorkCategories> WorkCategories { get; set; } // WorkCategories
-        IDbSet<Works> Works { get; set; } // Works
 
         int SaveChanges();
     }
@@ -72,6 +73,9 @@ namespace DataEF.DataAccess
         public IDbSet<DeletedPages> DeletedPages { get; set; } // DeletedPages
         public IDbSet<Documents> Documents { get; set; } // Documents
         public IDbSet<DocumentStatus> DocumentStatus { get; set; } // DocumentStatus
+        public IDbSet<JobCategories> JobCategories { get; set; } // JobCategories
+        public IDbSet<Jobs> Jobs { get; set; } // Jobs
+        public IDbSet<JobStatus> JobStatus { get; set; } // JobStatus
         public IDbSet<RegisterEvents> RegisterEvents { get; set; } // RegisterEvents
         public IDbSet<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields
         public IDbSet<SlicePages> SlicePages { get; set; } // SlicePages
@@ -80,8 +84,6 @@ namespace DataEF.DataAccess
         public IDbSet<Units> Units { get; set; } // Units
         public IDbSet<Users> Users { get; set; } // Users
         public IDbSet<UserUnits> UserUnits { get; set; } // UserUnits
-        public IDbSet<WorkCategories> WorkCategories { get; set; } // WorkCategories
-        public IDbSet<Works> Works { get; set; } // Works
 
         static DBContext()
         {
@@ -115,6 +117,9 @@ namespace DataEF.DataAccess
             modelBuilder.Configurations.Add(new DeletedPagesConfiguration());
             modelBuilder.Configurations.Add(new DocumentsConfiguration());
             modelBuilder.Configurations.Add(new DocumentStatusConfiguration());
+            modelBuilder.Configurations.Add(new JobCategoriesConfiguration());
+            modelBuilder.Configurations.Add(new JobsConfiguration());
+            modelBuilder.Configurations.Add(new JobStatusConfiguration());
             modelBuilder.Configurations.Add(new RegisterEventsConfiguration());
             modelBuilder.Configurations.Add(new SliceCategoryAdditionalFieldsConfiguration());
             modelBuilder.Configurations.Add(new SlicePagesConfiguration());
@@ -123,8 +128,6 @@ namespace DataEF.DataAccess
             modelBuilder.Configurations.Add(new UnitsConfiguration());
             modelBuilder.Configurations.Add(new UsersConfiguration());
             modelBuilder.Configurations.Add(new UserUnitsConfiguration());
-            modelBuilder.Configurations.Add(new WorkCategoriesConfiguration());
-            modelBuilder.Configurations.Add(new WorksConfiguration());
         OnModelCreatingPartial(modelBuilder);
         }
 
@@ -580,8 +583,8 @@ namespace DataEF.DataAccess
         // Reverse navigation
         public virtual ICollection<Categories> Categories2 { get; set; } // Categories.FK_Categories_Parent;
         public virtual ICollection<CategoryAdditionalFields> CategoryAdditionalFields { get; set; } // CategoryAdditionalFields.FK_CategoryAdditionalFields_Categories;
+        public virtual ICollection<JobCategories> JobCategories { get; set; } // JobCategories.FK_WorkCategories_Categories;
         public virtual ICollection<Slices> Slices { get; set; } // Slices.FK_Slices_Categories;
-        public virtual ICollection<WorkCategories> WorkCategories { get; set; } // WorkCategories.FK_WorkCategories_Categories;
 
         // Foreign keys
         public virtual Categories Categories1 { get; set; } //  ParentId - FK_Categories_Parent
@@ -595,8 +598,8 @@ namespace DataEF.DataAccess
             Release = false;
             Categories2 = new List<Categories>();
             CategoryAdditionalFields = new List<CategoryAdditionalFields>();
+            JobCategories = new List<JobCategories>();
             Slices = new List<Slices>();
-            WorkCategories = new List<WorkCategories>();
             InitializePartial();
         }
         partial void InitializePartial();
@@ -901,6 +904,233 @@ namespace DataEF.DataAccess
             InitializePartial();
         }
         partial void InitializePartial();
+    }
+
+	public partial class JobCategoriesMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int JobCategoryId { get; set; } // JobCategoryId (Primary key)
+
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
+		[Display(Name = "Job", ResourceType = typeof(i18n.Resource))]
+		public int JobId { get; set; } // JobId
+
+		[Display(Name = "Category", ResourceType = typeof(i18n.Resource))]
+		public int CategoryId { get; set; } // CategoryId
+
+		[StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public string Code { get; set; } // Code
+
+		[Display(Name = "Send", ResourceType = typeof(i18n.Resource))]
+		public bool Send { get; set; } // Send
+
+		[Display(Name = "Sent", ResourceType = typeof(i18n.Resource))]
+		public bool Sent { get; set; } // Sent
+
+		[Display(Name = "Sending", ResourceType = typeof(i18n.Resource))]
+		public bool Sending { get; set; } // Sending
+
+		[Display(Name = "SendingDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? SendingDate { get; set; } // SendingDate
+
+		*/
+	}
+
+    // JobCategories
+	[MetadataType(typeof(JobCategoriesMetadataType))]
+    public partial class JobCategories
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int JobCategoryId { get; set; } // JobCategoryId (Primary key)
+
+        public bool Active { get; set; } // Active
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? DeletedDate { get; set; } // DeletedDate
+
+        public int JobId { get; set; } // JobId
+
+        public int CategoryId { get; set; } // CategoryId
+
+        public string Code { get; set; } // Code
+
+        public bool Send { get; set; } // Send
+
+        public bool Sent { get; set; } // Sent
+
+        public bool Sending { get; set; } // Sending
+
+        public DateTime? SendingDate { get; set; } // SendingDate
+
+        // Foreign keys
+        public virtual Jobs Jobs { get; set; } //  JobId - FK_WorkCategories_Works
+        public virtual Categories Categories { get; set; } //  CategoryId - FK_WorkCategories_Categories
+
+        public JobCategories()
+        {
+            Active = true;
+            CreatedDate = DateTime.Now;
+            Send = false;
+            Sent = false;
+            Sending = false;
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+	public partial class JobsMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int JobId { get; set; } // JobId (Primary key)
+
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
+		[Display(Name = "User", ResourceType = typeof(i18n.Resource))]
+		public int UserId { get; set; } // UserId
+
+		[StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public string Code { get; set; } // Code
+
+		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Registration", ResourceType = typeof(i18n.Resource))]
+		public string Registration { get; set; } // Registration
+
+		[Display(Name = "Sent", ResourceType = typeof(i18n.Resource))]
+		public bool Sent { get; set; } // Sent
+
+		*/
+	}
+
+    // Jobs
+	[MetadataType(typeof(JobsMetadataType))]
+    public partial class Jobs
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int JobId { get; set; } // JobId (Primary key)
+
+        public bool Active { get; set; } // Active
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? DeletedDate { get; set; } // DeletedDate
+
+        public int UserId { get; set; } // UserId
+
+        public string Code { get; set; } // Code
+
+        public string Registration { get; set; } // Registration
+
+        public bool Sent { get; set; } // Sent
+
+        // Reverse navigation
+        public virtual ICollection<JobCategories> JobCategories { get; set; } // JobCategories.FK_WorkCategories_Works;
+        public virtual ICollection<JobStatus> JobStatus { get; set; } // JobStatus.FK__JobStatus__JobId__7A3223E8;
+
+        // Foreign keys
+        public virtual Users Users { get; set; } //  UserId - FK_Works_Users
+
+        public Jobs()
+        {
+            Active = true;
+            CreatedDate = DateTime.Now;
+            Sent = false;
+            JobCategories = new List<JobCategories>();
+            JobStatus = new List<JobStatus>();
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+	public partial class JobStatusMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "JobStatusId", ResourceType = typeof(i18n.Resource))]
+		public int JobStatusId { get; set; } // JobStatusId (Primary key)
+
+		[Display(Name = "Job", ResourceType = typeof(i18n.Resource))]
+		public int JobId { get; set; } // JobId
+
+		[Display(Name = "Status", ResourceType = typeof(i18n.Resource))]
+		public bool Status { get; set; } // Status
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime DeletedDate { get; set; } // DeletedDate
+
+		*/
+	}
+
+    // JobStatus
+	[MetadataType(typeof(JobStatusMetadataType))]
+    public partial class JobStatus
+    {
+
+        public int JobStatusId { get; set; } // JobStatusId (Primary key)
+
+        public int JobId { get; set; } // JobId
+
+        public bool Status { get; set; } // Status
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime DeletedDate { get; set; } // DeletedDate
+
+        // Foreign keys
+        public virtual Jobs Jobs { get; set; } //  JobId - FK__JobStatus__JobId__7A3223E8
     }
 
 	public partial class RegisterEventsMetadataType
@@ -1394,8 +1624,8 @@ namespace DataEF.DataAccess
         public string Registration { get; set; } // Registration
 
         // Reverse navigation
+        public virtual ICollection<Jobs> Jobs { get; set; } // Jobs.FK_Works_Users;
         public virtual ICollection<UserUnits> UserUnits { get; set; } // UserUnits.FK_UserUnits_Users;
-        public virtual ICollection<Works> Works { get; set; } // Works.FK_Works_Users;
 
         // Foreign keys
         public virtual AspNetUsers AspNetUsers { get; set; } //  AspNetUserId - FK_Users_AspNetUsers
@@ -1404,8 +1634,8 @@ namespace DataEF.DataAccess
         {
             Active = true;
             CreatedDate = DateTime.Now;
+            Jobs = new List<Jobs>();
             UserUnits = new List<UserUnits>();
-            Works = new List<Works>();
             InitializePartial();
         }
         partial void InitializePartial();
@@ -1443,181 +1673,6 @@ namespace DataEF.DataAccess
         // Foreign keys
         public virtual Users Users { get; set; } //  UserId - FK_UserUnits_Users
         public virtual Units Units { get; set; } //  UnityId - FK_UserUnits_Units
-    }
-
-	public partial class WorkCategoriesMetadataType
-    {
-		/* 
-		///Copy this class to an external file
-
-		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
-		public int WorkCategoryId { get; set; } // WorkCategoryId (Primary key)
-
-		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
-		public bool Active { get; set; } // Active
-
-		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
-		public DateTime CreatedDate { get; set; } // CreatedDate
-
-		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
-		public DateTime? EditedDate { get; set; } // EditedDate
-
-		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
-		public DateTime? DeletedDate { get; set; } // DeletedDate
-
-		[Display(Name = "Work", ResourceType = typeof(i18n.Resource))]
-		public int WorkId { get; set; } // WorkId
-
-		[Display(Name = "Category", ResourceType = typeof(i18n.Resource))]
-		public int CategoryId { get; set; } // CategoryId
-
-		[StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
-		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
-		public string Code { get; set; } // Code
-
-		[Display(Name = "Send", ResourceType = typeof(i18n.Resource))]
-		public bool Send { get; set; } // Send
-
-		[Display(Name = "Sent", ResourceType = typeof(i18n.Resource))]
-		public bool Sent { get; set; } // Sent
-
-		[Display(Name = "Sending", ResourceType = typeof(i18n.Resource))]
-		public bool Sending { get; set; } // Sending
-
-		[Display(Name = "SendingDate", ResourceType = typeof(i18n.Resource))]
-		public DateTime? SendingDate { get; set; } // SendingDate
-
-		*/
-	}
-
-    // WorkCategories
-	[MetadataType(typeof(WorkCategoriesMetadataType))]
-    public partial class WorkCategories
-    {
-
-        [DataEF.Attributes.Template.IdentityField()]
-        public int WorkCategoryId { get; set; } // WorkCategoryId (Primary key)
-
-        public bool Active { get; set; } // Active
-
-        [DataEF.Attributes.Template.ExcludeField()]
-        public DateTime CreatedDate { get; set; } // CreatedDate
-
-        [DataEF.Attributes.Template.ExcludeField()]
-        public DateTime? EditedDate { get; set; } // EditedDate
-
-        [DataEF.Attributes.Template.ExcludeField()]
-        public DateTime? DeletedDate { get; set; } // DeletedDate
-
-        public int WorkId { get; set; } // WorkId
-
-        public int CategoryId { get; set; } // CategoryId
-
-        public string Code { get; set; } // Code
-
-        public bool Send { get; set; } // Send
-
-        public bool Sent { get; set; } // Sent
-
-        public bool Sending { get; set; } // Sending
-
-        public DateTime? SendingDate { get; set; } // SendingDate
-
-        // Foreign keys
-        public virtual Works Works { get; set; } //  WorkId - FK_WorkCategories_Works
-        public virtual Categories Categories { get; set; } //  CategoryId - FK_WorkCategories_Categories
-
-        public WorkCategories()
-        {
-            Active = true;
-            CreatedDate = DateTime.Now;
-            Send = false;
-            Sent = false;
-            Sending = false;
-            InitializePartial();
-        }
-        partial void InitializePartial();
-    }
-
-	public partial class WorksMetadataType
-    {
-		/* 
-		///Copy this class to an external file
-
-		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
-		public int WorkId { get; set; } // WorkId (Primary key)
-
-		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
-		public bool Active { get; set; } // Active
-
-		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
-		public DateTime CreatedDate { get; set; } // CreatedDate
-
-		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
-		public DateTime? EditedDate { get; set; } // EditedDate
-
-		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
-		public DateTime? DeletedDate { get; set; } // DeletedDate
-
-		[Display(Name = "User", ResourceType = typeof(i18n.Resource))]
-		public int UserId { get; set; } // UserId
-
-		[StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
-		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
-		public string Code { get; set; } // Code
-
-		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
-		[Display(Name = "Registration", ResourceType = typeof(i18n.Resource))]
-		public string Registration { get; set; } // Registration
-
-		[Display(Name = "Sent", ResourceType = typeof(i18n.Resource))]
-		public bool Sent { get; set; } // Sent
-
-		*/
-	}
-
-    // Works
-	[MetadataType(typeof(WorksMetadataType))]
-    public partial class Works
-    {
-
-        [DataEF.Attributes.Template.IdentityField()]
-        public int WorkId { get; set; } // WorkId (Primary key)
-
-        public bool Active { get; set; } // Active
-
-        [DataEF.Attributes.Template.ExcludeField()]
-        public DateTime CreatedDate { get; set; } // CreatedDate
-
-        [DataEF.Attributes.Template.ExcludeField()]
-        public DateTime? EditedDate { get; set; } // EditedDate
-
-        [DataEF.Attributes.Template.ExcludeField()]
-        public DateTime? DeletedDate { get; set; } // DeletedDate
-
-        public int UserId { get; set; } // UserId
-
-        public string Code { get; set; } // Code
-
-        public string Registration { get; set; } // Registration
-
-        public bool Sent { get; set; } // Sent
-
-        // Reverse navigation
-        public virtual ICollection<WorkCategories> WorkCategories { get; set; } // WorkCategories.FK_WorkCategories_Works;
-
-        // Foreign keys
-        public virtual Users Users { get; set; } //  UserId - FK_Works_Users
-
-        public Works()
-        {
-            Active = true;
-            CreatedDate = DateTime.Now;
-            Sent = false;
-            WorkCategories = new List<WorkCategories>();
-            InitializePartial();
-        }
-        partial void InitializePartial();
     }
 
 
@@ -1886,6 +1941,82 @@ namespace DataEF.DataAccess
         partial void InitializePartial();
     }
 
+    // JobCategories
+    internal partial class JobCategoriesConfiguration : EntityTypeConfiguration<JobCategories>
+    {
+        public JobCategoriesConfiguration()
+        {
+            ToTable("dbo.JobCategories");
+            HasKey(x => x.JobCategoryId);
+
+            Property(x => x.JobCategoryId).HasColumnName("JobCategoryId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
+            Property(x => x.JobId).HasColumnName("JobId").IsRequired();
+            Property(x => x.CategoryId).HasColumnName("CategoryId").IsRequired();
+            Property(x => x.Code).HasColumnName("Code").IsRequired().HasMaxLength(50);
+            Property(x => x.Send).HasColumnName("Send").IsRequired();
+            Property(x => x.Sent).HasColumnName("Sent").IsRequired();
+            Property(x => x.Sending).HasColumnName("Sending").IsRequired();
+            Property(x => x.SendingDate).HasColumnName("SendingDate").IsOptional();
+
+            // Foreign keys
+            HasRequired(a => a.Jobs).WithMany(b => b.JobCategories).HasForeignKey(c => c.JobId); // FK_WorkCategories_Works
+            HasRequired(a => a.Categories).WithMany(b => b.JobCategories).HasForeignKey(c => c.CategoryId); // FK_WorkCategories_Categories
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    // Jobs
+    internal partial class JobsConfiguration : EntityTypeConfiguration<Jobs>
+    {
+        public JobsConfiguration()
+        {
+            ToTable("dbo.Jobs");
+            HasKey(x => x.JobId);
+
+            Property(x => x.JobId).HasColumnName("JobId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
+            Property(x => x.UserId).HasColumnName("UserId").IsRequired();
+            Property(x => x.Code).HasColumnName("Code").IsRequired().HasMaxLength(50);
+            Property(x => x.Registration).HasColumnName("Registration").IsRequired().HasMaxLength(255);
+            Property(x => x.Sent).HasColumnName("Sent").IsRequired();
+
+            // Foreign keys
+            HasRequired(a => a.Users).WithMany(b => b.Jobs).HasForeignKey(c => c.UserId); // FK_Works_Users
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    // JobStatus
+    internal partial class JobStatusConfiguration : EntityTypeConfiguration<JobStatus>
+    {
+        public JobStatusConfiguration()
+        {
+            ToTable("dbo.JobStatus");
+            HasKey(x => x.JobStatusId);
+
+            Property(x => x.JobStatusId).HasColumnName("JobStatusId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+            Property(x => x.JobId).HasColumnName("JobId").IsRequired();
+            Property(x => x.Status).HasColumnName("Status").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsRequired();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsRequired();
+
+            // Foreign keys
+            HasRequired(a => a.Jobs).WithMany(b => b.JobStatus).HasForeignKey(c => c.JobId); // FK__JobStatus__JobId__7A3223E8
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
     // RegisterEvents
     internal partial class RegisterEventsConfiguration : EntityTypeConfiguration<RegisterEvents>
     {
@@ -2064,60 +2195,6 @@ namespace DataEF.DataAccess
             // Foreign keys
             HasRequired(a => a.Users).WithMany(b => b.UserUnits).HasForeignKey(c => c.UserId); // FK_UserUnits_Users
             HasRequired(a => a.Units).WithMany(b => b.UserUnits).HasForeignKey(c => c.UnityId); // FK_UserUnits_Units
-            InitializePartial();
-        }
-        partial void InitializePartial();
-    }
-
-    // WorkCategories
-    internal partial class WorkCategoriesConfiguration : EntityTypeConfiguration<WorkCategories>
-    {
-        public WorkCategoriesConfiguration()
-        {
-            ToTable("dbo.WorkCategories");
-            HasKey(x => x.WorkCategoryId);
-
-            Property(x => x.WorkCategoryId).HasColumnName("WorkCategoryId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            Property(x => x.Active).HasColumnName("Active").IsRequired();
-            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
-            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
-            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
-            Property(x => x.WorkId).HasColumnName("WorkId").IsRequired();
-            Property(x => x.CategoryId).HasColumnName("CategoryId").IsRequired();
-            Property(x => x.Code).HasColumnName("Code").IsRequired().HasMaxLength(50);
-            Property(x => x.Send).HasColumnName("Send").IsRequired();
-            Property(x => x.Sent).HasColumnName("Sent").IsRequired();
-            Property(x => x.Sending).HasColumnName("Sending").IsRequired();
-            Property(x => x.SendingDate).HasColumnName("SendingDate").IsOptional();
-
-            // Foreign keys
-            HasRequired(a => a.Works).WithMany(b => b.WorkCategories).HasForeignKey(c => c.WorkId); // FK_WorkCategories_Works
-            HasRequired(a => a.Categories).WithMany(b => b.WorkCategories).HasForeignKey(c => c.CategoryId); // FK_WorkCategories_Categories
-            InitializePartial();
-        }
-        partial void InitializePartial();
-    }
-
-    // Works
-    internal partial class WorksConfiguration : EntityTypeConfiguration<Works>
-    {
-        public WorksConfiguration()
-        {
-            ToTable("dbo.Works");
-            HasKey(x => x.WorkId);
-
-            Property(x => x.WorkId).HasColumnName("WorkId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            Property(x => x.Active).HasColumnName("Active").IsRequired();
-            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
-            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
-            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
-            Property(x => x.UserId).HasColumnName("UserId").IsRequired();
-            Property(x => x.Code).HasColumnName("Code").IsRequired().HasMaxLength(50);
-            Property(x => x.Registration).HasColumnName("Registration").IsRequired().HasMaxLength(255);
-            Property(x => x.Sent).HasColumnName("Sent").IsRequired();
-
-            // Foreign keys
-            HasRequired(a => a.Users).WithMany(b => b.Works).HasForeignKey(c => c.UserId); // FK_Works_Users
             InitializePartial();
         }
         partial void InitializePartial();
