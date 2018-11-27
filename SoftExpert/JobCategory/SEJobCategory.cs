@@ -28,17 +28,17 @@ namespace SoftExpert
                 }
 
                 //Checks whether the document exists
-                documentReturn documentReturn = SEDocument.GetSEDocumentByRegistrationAndCategory(ecmJobCategorySaveIn.registration, ecmJobCategorySaveIn.categoryId);
+                documentDataReturn documentDataReturn = SEDocument.GetDocumentData(ecmJobCategorySaveIn.code);
 
                 //If the document already exists in the specified category, it uploads the document and properties
-                if (documentReturn != null)
+                if (documentDataReturn.IDDOCUMENT != null)
                 {
-                    var ds = seClient.deleteDocument(ecmJobCategorySaveIn.categoryId, documentReturn.IDDOCUMENT, "", WebConfigurationManager.AppSettings["SoftExpert.MessageDeleteDocument"]);
+                    var ds = seClient.deleteDocument(ecmJobCategorySaveIn.categoryId, ecmJobCategorySaveIn.code, "", WebConfigurationManager.AppSettings["SoftExpert.MessageDeleteDocument"]);
                 }
 
                 //If you do not insert a new document
 
-                documentDataReturn documentDataReturn = SEDocument.GetDocumentData(documentReturnOwner.IDDOCUMENT);
+                documentDataReturn = SEDocument.GetDocumentData(documentReturnOwner.IDDOCUMENT);
 
                 if (documentDataReturn.ATTRIBUTTES.Count() > 0)
                 {
