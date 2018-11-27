@@ -583,7 +583,7 @@ namespace DataEF.DataAccess
         // Reverse navigation
         public virtual ICollection<Categories> Categories2 { get; set; } // Categories.FK_Categories_Parent;
         public virtual ICollection<CategoryAdditionalFields> CategoryAdditionalFields { get; set; } // CategoryAdditionalFields.FK_CategoryAdditionalFields_Categories;
-        public virtual ICollection<JobCategories> JobCategories { get; set; } // JobCategories.FK_WorkCategories_Categories;
+        public virtual ICollection<JobCategories> JobCategories { get; set; } // JobCategories.FK_JobCategories_Categories;
         public virtual ICollection<Slices> Slices { get; set; } // Slices.FK_Slices_Categories;
 
         // Foreign keys
@@ -936,11 +936,11 @@ namespace DataEF.DataAccess
 		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
 		public string Code { get; set; } // Code
 
+		[Display(Name = "Received", ResourceType = typeof(i18n.Resource))]
+		public bool Received { get; set; } // Received
+
 		[Display(Name = "Send", ResourceType = typeof(i18n.Resource))]
 		public bool Send { get; set; } // Send
-
-		[Display(Name = "Sent", ResourceType = typeof(i18n.Resource))]
-		public bool Sent { get; set; } // Sent
 
 		[Display(Name = "Sending", ResourceType = typeof(i18n.Resource))]
 		public bool Sending { get; set; } // Sending
@@ -976,24 +976,24 @@ namespace DataEF.DataAccess
 
         public string Code { get; set; } // Code
 
-        public bool Send { get; set; } // Send
+        public bool Received { get; set; } // Received
 
-        public bool Sent { get; set; } // Sent
+        public bool Send { get; set; } // Send
 
         public bool Sending { get; set; } // Sending
 
         public DateTime? SendingDate { get; set; } // SendingDate
 
         // Foreign keys
-        public virtual Jobs Jobs { get; set; } //  JobId - FK_WorkCategories_Works
-        public virtual Categories Categories { get; set; } //  CategoryId - FK_WorkCategories_Categories
+        public virtual Jobs Jobs { get; set; } //  JobId - FK_JobCategories_Jobs
+        public virtual Categories Categories { get; set; } //  CategoryId - FK_JobCategories_Categories
 
         public JobCategories()
         {
             Active = true;
             CreatedDate = DateTime.Now;
+            Received = false;
             Send = false;
-            Sent = false;
             Sending = false;
             InitializePartial();
         }
@@ -1023,13 +1023,16 @@ namespace DataEF.DataAccess
 		[Display(Name = "User", ResourceType = typeof(i18n.Resource))]
 		public int UserId { get; set; } // UserId
 
-		[StringLength(50, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
-		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
-		public string Code { get; set; } // Code
+		[Display(Name = "JobStatus", ResourceType = typeof(i18n.Resource))]
+		public int JobStatusId { get; set; } // JobStatusId
 
 		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
 		[Display(Name = "Registration", ResourceType = typeof(i18n.Resource))]
 		public string Registration { get; set; } // Registration
+
+		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
+		public string Name { get; set; } // Name
 
 		[Display(Name = "Sent", ResourceType = typeof(i18n.Resource))]
 		public bool Sent { get; set; } // Sent
@@ -1058,26 +1061,26 @@ namespace DataEF.DataAccess
 
         public int UserId { get; set; } // UserId
 
-        public string Code { get; set; } // Code
+        public int JobStatusId { get; set; } // JobStatusId
 
         public string Registration { get; set; } // Registration
+
+        public string Name { get; set; } // Name
 
         public bool Sent { get; set; } // Sent
 
         // Reverse navigation
-        public virtual ICollection<JobCategories> JobCategories { get; set; } // JobCategories.FK_WorkCategories_Works;
-        public virtual ICollection<JobStatus> JobStatus { get; set; } // JobStatus.FK__JobStatus__JobId__7A3223E8;
+        public virtual ICollection<JobCategories> JobCategories { get; set; } // JobCategories.FK_JobCategories_Jobs;
 
         // Foreign keys
-        public virtual Users Users { get; set; } //  UserId - FK_Works_Users
+        public virtual Users Users { get; set; } //  UserId - FK_Jobs_Users
+        public virtual JobStatus JobStatus { get; set; } //  JobStatusId - FK_Jobs_JobStatus
 
         public Jobs()
         {
             Active = true;
             CreatedDate = DateTime.Now;
-            Sent = false;
             JobCategories = new List<JobCategories>();
-            JobStatus = new List<JobStatus>();
             InitializePartial();
         }
         partial void InitializePartial();
@@ -1088,23 +1091,24 @@ namespace DataEF.DataAccess
 		/* 
 		///Copy this class to an external file
 
-		[Display(Name = "JobStatusId", ResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
 		public int JobStatusId { get; set; } // JobStatusId (Primary key)
 
-		[Display(Name = "Job", ResourceType = typeof(i18n.Resource))]
-		public int JobId { get; set; } // JobId
-
-		[Display(Name = "Status", ResourceType = typeof(i18n.Resource))]
-		public bool Status { get; set; } // Status
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
 
 		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
 		public DateTime CreatedDate { get; set; } // CreatedDate
 
 		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
-		public DateTime EditedDate { get; set; } // EditedDate
+		public DateTime? EditedDate { get; set; } // EditedDate
 
 		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
-		public DateTime DeletedDate { get; set; } // DeletedDate
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
+		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Name", ResourceType = typeof(i18n.Resource))]
+		public string Name { get; set; } // Name
 
 		*/
 	}
@@ -1114,23 +1118,33 @@ namespace DataEF.DataAccess
     public partial class JobStatus
     {
 
+        [DataEF.Attributes.Template.IdentityField()]
         public int JobStatusId { get; set; } // JobStatusId (Primary key)
 
-        public int JobId { get; set; } // JobId
-
-        public bool Status { get; set; } // Status
+        public bool Active { get; set; } // Active
 
         [DataEF.Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
         [DataEF.Attributes.Template.ExcludeField()]
-        public DateTime EditedDate { get; set; } // EditedDate
+        public DateTime? EditedDate { get; set; } // EditedDate
 
         [DataEF.Attributes.Template.ExcludeField()]
-        public DateTime DeletedDate { get; set; } // DeletedDate
+        public DateTime? DeletedDate { get; set; } // DeletedDate
 
-        // Foreign keys
-        public virtual Jobs Jobs { get; set; } //  JobId - FK__JobStatus__JobId__7A3223E8
+        public string Name { get; set; } // Name
+
+        // Reverse navigation
+        public virtual ICollection<Jobs> Jobs { get; set; } // Jobs.FK_Jobs_JobStatus;
+
+        public JobStatus()
+        {
+            Active = true;
+            CreatedDate = DateTime.Now;
+            Jobs = new List<Jobs>();
+            InitializePartial();
+        }
+        partial void InitializePartial();
     }
 
 	public partial class RegisterEventsMetadataType
@@ -1624,7 +1638,7 @@ namespace DataEF.DataAccess
         public string Registration { get; set; } // Registration
 
         // Reverse navigation
-        public virtual ICollection<Jobs> Jobs { get; set; } // Jobs.FK_Works_Users;
+        public virtual ICollection<Jobs> Jobs { get; set; } // Jobs.FK_Jobs_Users;
         public virtual ICollection<UserUnits> UserUnits { get; set; } // UserUnits.FK_UserUnits_Users;
 
         // Foreign keys
@@ -1957,14 +1971,14 @@ namespace DataEF.DataAccess
             Property(x => x.JobId).HasColumnName("JobId").IsRequired();
             Property(x => x.CategoryId).HasColumnName("CategoryId").IsRequired();
             Property(x => x.Code).HasColumnName("Code").IsRequired().HasMaxLength(50);
+            Property(x => x.Received).HasColumnName("Received").IsRequired();
             Property(x => x.Send).HasColumnName("Send").IsRequired();
-            Property(x => x.Sent).HasColumnName("Sent").IsRequired();
             Property(x => x.Sending).HasColumnName("Sending").IsRequired();
             Property(x => x.SendingDate).HasColumnName("SendingDate").IsOptional();
 
             // Foreign keys
-            HasRequired(a => a.Jobs).WithMany(b => b.JobCategories).HasForeignKey(c => c.JobId); // FK_WorkCategories_Works
-            HasRequired(a => a.Categories).WithMany(b => b.JobCategories).HasForeignKey(c => c.CategoryId); // FK_WorkCategories_Categories
+            HasRequired(a => a.Jobs).WithMany(b => b.JobCategories).HasForeignKey(c => c.JobId); // FK_JobCategories_Jobs
+            HasRequired(a => a.Categories).WithMany(b => b.JobCategories).HasForeignKey(c => c.CategoryId); // FK_JobCategories_Categories
             InitializePartial();
         }
         partial void InitializePartial();
@@ -1984,12 +1998,14 @@ namespace DataEF.DataAccess
             Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
             Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
             Property(x => x.UserId).HasColumnName("UserId").IsRequired();
-            Property(x => x.Code).HasColumnName("Code").IsRequired().HasMaxLength(50);
+            Property(x => x.JobStatusId).HasColumnName("JobStatusId").IsRequired();
             Property(x => x.Registration).HasColumnName("Registration").IsRequired().HasMaxLength(255);
+            Property(x => x.Name).HasColumnName("Name").IsRequired().HasMaxLength(255);
             Property(x => x.Sent).HasColumnName("Sent").IsRequired();
 
             // Foreign keys
-            HasRequired(a => a.Users).WithMany(b => b.Jobs).HasForeignKey(c => c.UserId); // FK_Works_Users
+            HasRequired(a => a.Users).WithMany(b => b.Jobs).HasForeignKey(c => c.UserId); // FK_Jobs_Users
+            HasRequired(a => a.JobStatus).WithMany(b => b.Jobs).HasForeignKey(c => c.JobStatusId); // FK_Jobs_JobStatus
             InitializePartial();
         }
         partial void InitializePartial();
@@ -2003,15 +2019,12 @@ namespace DataEF.DataAccess
             ToTable("dbo.JobStatus");
             HasKey(x => x.JobStatusId);
 
-            Property(x => x.JobStatusId).HasColumnName("JobStatusId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
-            Property(x => x.JobId).HasColumnName("JobId").IsRequired();
-            Property(x => x.Status).HasColumnName("Status").IsRequired();
+            Property(x => x.JobStatusId).HasColumnName("JobStatusId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
             Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
-            Property(x => x.EditedDate).HasColumnName("EditedDate").IsRequired();
-            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsRequired();
-
-            // Foreign keys
-            HasRequired(a => a.Jobs).WithMany(b => b.JobStatus).HasForeignKey(c => c.JobId); // FK__JobStatus__JobId__7A3223E8
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
+            Property(x => x.Name).HasColumnName("Name").IsRequired().HasMaxLength(255);
             InitializePartial();
         }
         partial void InitializePartial();

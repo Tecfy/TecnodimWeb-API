@@ -156,8 +156,26 @@
   <data name="Identifier" xml:space="preserve">
     <value>Identificador</value>
   </data>
+  <data name="Job" xml:space="preserve">
+    <value>Trabalho</value>
+  </data>
+  <data name="JobCategories" xml:space="preserve">
+    <value>Categorias de trabalho</value>
+  </data>
+  <data name="JobCategory" xml:space="preserve">
+    <value>Categoria de trabalho</value>
+  </data>
+  <data name="Jobs" xml:space="preserve">
+    <value>Trabalhos</value>
+  </data>
+  <data name="JobStatus" xml:space="preserve">
+    <value>Status de trabalho</value>
+  </data>
   <data name="LastLogin" xml:space="preserve">
     <value>Último Login</value>
+  </data>
+  <data name="Received" xml:space="preserve">
+    <value>Recebido</value>
   </data>
   <data name="RegisterNotFound" xml:space="preserve">
     <value>Registro não encontrado.</value>
@@ -170,6 +188,15 @@
   </data>
   <data name="RequiredFieldInt" xml:space="preserve">
     <value>O valor para {0} deve estar entre {1} e {2}.</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Madar</value>
+  </data>
+  <data name="Sending" xml:space="preserve">
+    <value>Enviado</value>
+  </data>
+  <data name="SendingDate" xml:space="preserve">
+    <value>Data do envido</value>
   </data>
   <data name="Source" xml:space="preserve">
     <value>Fonte</value>

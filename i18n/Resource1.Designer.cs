@@ -178,11 +178,65 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Trabalho.
+        /// </summary>
+        public static string Job {
+            get {
+                return ResourceManager.GetString("Job", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Categorias de trabalho.
+        /// </summary>
+        public static string JobCategories {
+            get {
+                return ResourceManager.GetString("JobCategories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Categoria de trabalho.
+        /// </summary>
+        public static string JobCategory {
+            get {
+                return ResourceManager.GetString("JobCategory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trabalhos.
+        /// </summary>
+        public static string Jobs {
+            get {
+                return ResourceManager.GetString("Jobs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status de trabalho.
+        /// </summary>
+        public static string JobStatus {
+            get {
+                return ResourceManager.GetString("JobStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Último Login.
         /// </summary>
         public static string LastLogin {
             get {
                 return ResourceManager.GetString("LastLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Recebido.
+        /// </summary>
+        public static string Received {
+            get {
+                return ResourceManager.GetString("Received", resourceCulture);
             }
         }
         
@@ -219,6 +273,33 @@ namespace i18n {
         public static string RequiredFieldInt {
             get {
                 return ResourceManager.GetString("RequiredFieldInt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Madar.
+        /// </summary>
+        public static string Send {
+            get {
+                return ResourceManager.GetString("Send", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enviado.
+        /// </summary>
+        public static string Sending {
+            get {
+                return ResourceManager.GetString("Sending", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data do envido.
+        /// </summary>
+        public static string SendingDate {
+            get {
+                return ResourceManager.GetString("SendingDate", resourceCulture);
             }
         }
         
