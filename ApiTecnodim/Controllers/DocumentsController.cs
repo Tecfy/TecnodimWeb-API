@@ -1,9 +1,7 @@
 ﻿using Model.In;
 using Model.Out;
-using Model.VM;
 using Repository;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.Configuration;
 using System.Web.Http;
@@ -24,7 +22,7 @@ namespace ApiTecnodim.Controllers
 
             try
             {
-                ECMDocumentIn ecmDocumentIn = new ECMDocumentIn() { externalId = id, categoryId = WebConfigurationManager.AppSettings["DocumentRepository.GetECMDocument.SearchAttributePendingCategory"], userId = User.Identity.Name, key = Key.ToString() };
+                ECMDocumentIn ecmDocumentIn = new ECMDocumentIn() { externalId = id, categoryId = WebConfigurationManager.AppSettings["DocumentRepository.SearchAttributePendingCategory"], userId = User.Identity.Name, key = Key.ToString() };
 
                 ecmDocumentOut = documentRepository.GetECMDocument(ecmDocumentIn);
             }

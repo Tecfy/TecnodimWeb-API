@@ -64,7 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RegisterEvent\RegisterEventRepository.cs" />
     <Compile Include="DocumentDetail\DocumentDetailRepository.cs" />
-    <Compile Include="WorkCategory\WorkCategoryRepository.cs" />
+    <Compile Include="JobCategory\JobCategoryRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataEF\DataEF.csproj">

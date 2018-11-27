@@ -34,5 +34,14 @@ namespace Helper.Enum
         SER_SituacaoDoc = 14,
         [Description("SER_cad_cod_unidade")]
         SER_cad_cod_unidade = 15,
+
+        [Description("MFP_Data_Job")]
+        MFP_Data_Job = 16,
+        [Description("MFP_Status")]
+        MFP_Status = 17,
+        [Description("MFP_Categoria")]
+        MFP_Categoria = 18,
+        [Description("MFP_Usuario")]
+        MFP_Usuario = 19,
     }
 }

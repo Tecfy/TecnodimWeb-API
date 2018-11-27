@@ -1,9 +1,7 @@
-﻿using DataEF.DataAccess;
-using Model.In;
+﻿using Model.In;
 using Model.Out;
 using Model.VM;
 using SoftExpert;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Configuration;
@@ -43,7 +41,7 @@ namespace Repository
             ECMCategoriesVM ecmCategoriesVM = new ECMCategoriesVM();
             ecmCategoriesVM = ecmCategoriesVMs.Where(x => x.categoryId == item.parentId).FirstOrDefault();
 
-            if ((ecmCategoriesVM != null && ecmCategoriesVM.code == WebConfigurationManager.AppSettings["Repository.CategoryRepository.ParentCategory"]) || (item.code == WebConfigurationManager.AppSettings["Repository.CategoryRepository.ParentCategory"]))
+            if ((ecmCategoriesVM != null && ecmCategoriesVM.code == WebConfigurationManager.AppSettings["Repository.ParentCategory"]) || (item.code == WebConfigurationManager.AppSettings["Repository.CategoryRepository.ParentCategory"]))
             {
                 response = true;
             }

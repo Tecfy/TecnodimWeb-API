@@ -25,7 +25,7 @@ namespace SoftExpert
 
             SEClient seClient = SEConnection.GetConnection();
 
-            eletronicFile[] eletronicFiles = seClient.downloadEletronicFile(ecmDocumentIn.externalId, "", "", "", ecmDocumentIn.categoryId, "");
+            eletronicFile[] eletronicFiles = seClient.downloadEletronicFile(ecmDocumentIn.externalId, "", "", "", ecmDocumentIn.categoryId, "", "", "");
             if (eletronicFiles.Count() > 0)
             {
                 ecmDocumentOut.result = new ECMDocumentVM()
@@ -50,12 +50,12 @@ namespace SoftExpert
             attributeDatas[0] = new attributeData
             {
                 //search enrollment
-                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.Document.SearchAttributePendingName"],
-                VLATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.Document.SearchAttributePendingValue"]
+                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingName"],
+                VLATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingValue"]
             };
 
             searchDocumentFilter searchDocumentFilter = new searchDocumentFilter();
-            searchDocumentFilter.IDCATEGORY = WebConfigurationManager.AppSettings["SoftExpert.Document.SearchAttributePendingCategory"];
+            searchDocumentFilter.IDCATEGORY = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingCategory"];
             searchDocumentReturn searchDocumentReturn = seClient.searchDocument(searchDocumentFilter, "", attributeDatas);
             if (searchDocumentReturn.RESULTS.Count() > 0)
             {
@@ -91,10 +91,10 @@ namespace SoftExpert
             {
                 SEClient seClient = SEConnection.GetConnection();
 
-                string prefix = WebConfigurationManager.AppSettings["SoftExpert.Document.SearchAttributePrefixReplicate"];
+                string prefix = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePrefixReplicate"];
 
                 //Check if there is a registered owner document
-                documentReturn documentReturnOwner = GetSEDocumentByRegistrationAndCategory(seDocumentSaveIn.registration, WebConfigurationManager.AppSettings["SoftExpert.Document.SearchAttributeOwnerCategory"]);
+                documentReturn documentReturnOwner = GetSEDocumentByRegistrationAndCategory(seDocumentSaveIn.registration, WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"]);
 
                 if (documentReturnOwner == null)
                 {
@@ -253,7 +253,7 @@ namespace SoftExpert
             attributeData[] attributeDatas = new attributeData[1];
             attributeDatas[0] = new attributeData
             {
-                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.Document.SearchAttributeOwnerRegistration"],
+                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerRegistration"],
                 VLATTRIBUTE = registration
             };
 

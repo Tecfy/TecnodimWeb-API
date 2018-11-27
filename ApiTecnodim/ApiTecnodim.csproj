@@ -135,7 +135,7 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AttributesController.cs" />
-    <Compile Include="Controllers\WorkCategoriesController.cs" />
+    <Compile Include="Controllers\JobCategoriesController.cs" />
     <Compile Include="Controllers\DocumentsController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\DocumentDetailsController.cs" />

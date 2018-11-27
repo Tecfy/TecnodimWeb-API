@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
 
 namespace Model.In
 {
-    public class ECMWorkCategorySaveIn : BaseIn
+    public class ECMJobCategorySaveIn : BaseIn
     {
         public string registration { get; set; }
 
@@ -10,10 +10,12 @@ namespace Model.In
 
         public string categoryId { get; set; }
 
-        public string category { get; set; }
-
         public string archive { get; set; }
 
         public string title { get; set; }
+
+        public DateTime dataJob { get; set; }
+
+        public string user { get; set; }
     }
 }

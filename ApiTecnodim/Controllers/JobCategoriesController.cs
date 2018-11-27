@@ -1,25 +1,22 @@
 ﻿using Model.In;
 using Model.Out;
-using Model.VM;
 using Repository;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web.Configuration;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
 namespace ApiTecnodim.Controllers
 {
-    public class WorkCategoriesController : ApiController
+    public class JobCategoriesController : ApiController
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
-        WorkCategoryRepository workCategoryRepository = new WorkCategoryRepository();
+        JobCategoryRepository jobCategoryRepository = new JobCategoryRepository();
 
         [Authorize, HttpPost]
-        public ECMWorkCategorySaveOut PostECMWorkCategorySave(ECMWorkCategorySaveIn ecmWorkCategorySaveIn)
+        public ECMJobCategorySaveOut SetECMJobCategorySave(ECMJobCategorySaveIn ecmWorkCategorySaveIn)
         {
-            ECMWorkCategorySaveOut ecmWorkCategorySaveOut = new ECMWorkCategorySaveOut();
+            ECMJobCategorySaveOut ecmWorkCategorySaveOut = new ECMJobCategorySaveOut();
             Guid Key = Guid.NewGuid();
 
             try
@@ -29,7 +26,7 @@ namespace ApiTecnodim.Controllers
                     ecmWorkCategorySaveIn.userId = User.Identity.Name;
                     ecmWorkCategorySaveIn.key = Key.ToString();
 
-                    ecmWorkCategorySaveOut = workCategoryRepository.PostECMWorkCategorySave(ecmWorkCategorySaveIn);
+                    //ecmWorkCategorySaveOut = jobCategoryRepository.SetECMJobCategorySave(ecmWorkCategorySaveIn);
                 }
                 else
                 {

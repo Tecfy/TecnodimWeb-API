@@ -19,18 +19,18 @@ namespace SoftExpert
             attributeDatas[0] = new attributeData
             {
                 //search enrollment
-                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.DocumentDetail.SearchAttributeOwnerUnity"],
+                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerUnity"],
                 VLATTRIBUTE = ecmDocumentsDetailIn.unity
             };
             attributeDatas[1] = new attributeData
             {
                 //search enrollment
-                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.DocumentDetail.SearchAttributeOwnerRegistration"],
+                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerRegistration"],
                 VLATTRIBUTE = ecmDocumentsDetailIn.registration
             };
 
             searchDocumentFilter searchDocumentFilter = new searchDocumentFilter();
-            searchDocumentFilter.IDCATEGORY = WebConfigurationManager.AppSettings["SoftExpert.DocumentDetail.SearchAttributeOwnerCategory"];
+            searchDocumentFilter.IDCATEGORY = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
             searchDocumentReturn searchDocumentReturn = seClient.searchDocument(searchDocumentFilter, "", attributeDatas);
             documentReturn retorno = new documentReturn();
             if (searchDocumentReturn.RESULTS.Count() > 0)
@@ -66,12 +66,12 @@ namespace SoftExpert
             attributeDatas[0] = new attributeData
             {
                 //search enrollment
-                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.DocumentDetail.SearchAttributeOwnerRegistration"],
+                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerRegistration"],
                 VLATTRIBUTE = ecmDocumentDetailIn.registration
             };
 
             searchDocumentFilter searchDocumentFilter = new searchDocumentFilter();
-            searchDocumentFilter.IDCATEGORY = WebConfigurationManager.AppSettings["SoftExpert.DocumentDetail.SearchAttributeOwnerCategory"];
+            searchDocumentFilter.IDCATEGORY = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
             searchDocumentReturn searchDocumentReturn = seClient.searchDocument(searchDocumentFilter, "", attributeDatas);
             documentReturn retorno = new documentReturn();
             if (searchDocumentReturn.RESULTS.Count() > 0)
