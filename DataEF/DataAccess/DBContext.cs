@@ -49,6 +49,7 @@ namespace DataEF.DataAccess
         IDbSet<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields
         IDbSet<SlicePages> SlicePages { get; set; } // SlicePages
         IDbSet<Slices> Slices { get; set; } // Slices
+        IDbSet<SyncRuntimes> SyncRuntimes { get; set; } // SyncRuntimes
         IDbSet<Sysdiagrams> Sysdiagrams { get; set; } // sysdiagrams
         IDbSet<Units> Units { get; set; } // Units
         IDbSet<Users> Users { get; set; } // Users
@@ -80,6 +81,7 @@ namespace DataEF.DataAccess
         public IDbSet<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields
         public IDbSet<SlicePages> SlicePages { get; set; } // SlicePages
         public IDbSet<Slices> Slices { get; set; } // Slices
+        public IDbSet<SyncRuntimes> SyncRuntimes { get; set; } // SyncRuntimes
         public IDbSet<Sysdiagrams> Sysdiagrams { get; set; } // sysdiagrams
         public IDbSet<Units> Units { get; set; } // Units
         public IDbSet<Users> Users { get; set; } // Users
@@ -124,6 +126,7 @@ namespace DataEF.DataAccess
             modelBuilder.Configurations.Add(new SliceCategoryAdditionalFieldsConfiguration());
             modelBuilder.Configurations.Add(new SlicePagesConfiguration());
             modelBuilder.Configurations.Add(new SlicesConfiguration());
+            modelBuilder.Configurations.Add(new SyncRuntimesConfiguration());
             modelBuilder.Configurations.Add(new SysdiagramsConfiguration());
             modelBuilder.Configurations.Add(new UnitsConfiguration());
             modelBuilder.Configurations.Add(new UsersConfiguration());
@@ -1461,6 +1464,73 @@ namespace DataEF.DataAccess
         partial void InitializePartial();
     }
 
+	public partial class SyncRuntimesMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int SyncRuntimeId { get; set; } // SyncRuntimeId (Primary key)
+
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
+		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "URL", ResourceType = typeof(i18n.Resource))]
+		public string Url { get; set; } // URL
+
+		[Display(Name = "Interval", ResourceType = typeof(i18n.Resource))]
+		public int Interval { get; set; } // Interval
+
+		[Display(Name = "LastExecution", ResourceType = typeof(i18n.Resource))]
+		public DateTime LastExecution { get; set; } // LastExecution
+
+		*/
+	}
+
+    // SyncRuntimes
+	[MetadataType(typeof(SyncRuntimesMetadataType))]
+    public partial class SyncRuntimes
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int SyncRuntimeId { get; set; } // SyncRuntimeId (Primary key)
+
+        public bool Active { get; set; } // Active
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? DeletedDate { get; set; } // DeletedDate
+
+        public string Url { get; set; } // URL
+
+        public int Interval { get; set; } // Interval
+
+        public DateTime LastExecution { get; set; } // LastExecution
+
+        public SyncRuntimes()
+        {
+            Active = true;
+            CreatedDate = DateTime.Now;
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
 	public partial class SysdiagramsMetadataType
     {
 		/* 
@@ -2125,6 +2195,27 @@ namespace DataEF.DataAccess
             // Foreign keys
             HasRequired(a => a.Documents).WithMany(b => b.Slices).HasForeignKey(c => c.DocumentId); // FK_Slices_Documents
             HasOptional(a => a.Categories).WithMany(b => b.Slices).HasForeignKey(c => c.CategoryId); // FK_Slices_Categories
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    // SyncRuntimes
+    internal partial class SyncRuntimesConfiguration : EntityTypeConfiguration<SyncRuntimes>
+    {
+        public SyncRuntimesConfiguration()
+        {
+            ToTable("dbo.SyncRuntimes");
+            HasKey(x => x.SyncRuntimeId);
+
+            Property(x => x.SyncRuntimeId).HasColumnName("SyncRuntimeId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
+            Property(x => x.Url).HasColumnName("URL").IsRequired().HasMaxLength(255);
+            Property(x => x.Interval).HasColumnName("Interval").IsRequired();
+            Property(x => x.LastExecution).HasColumnName("LastExecution").IsRequired();
             InitializePartial();
         }
         partial void InitializePartial();

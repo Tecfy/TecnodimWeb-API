@@ -67,22 +67,6 @@
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferences Include="Web References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WebReferenceUrl Include="https://tecfy.softexpert.com/se/ws/dc_ws.php%3fwsdl">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\com.softexpert.tecfy\</RelPath>
-      <UpdateFromURL>https://tecfy.softexpert.com/se/ws/dc_ws.php%3fwsdl</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>SoftExpert_com_softexpert_tecfy_Documento</CachedSettingsPropName>
-    </WebReferenceUrl>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -131,6 +115,22 @@
       <Project>{9b431499-44c3-434c-8771-1ef05f1c9f5b}</Project>
       <Name>Model</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="https://tecfy.softexpert.com/se/ws/dc_ws.php%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\com.softexpert.tecfy\</RelPath>
+      <UpdateFromURL>https://tecfy.softexpert.com/se/ws/dc_ws.php%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>SoftExpert_com_softexpert_tecfy_Documento</CachedSettingsPropName>
+    </WebReferenceUrl>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

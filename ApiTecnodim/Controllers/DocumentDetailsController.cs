@@ -14,44 +14,27 @@ namespace ApiTecnodim.Controllers
         DocumentDetailRepository documentDetailRepository = new DocumentDetailRepository();
 
         [Authorize, HttpGet]
-        public ECMDocumentsDetailOut GetECMDocumentsDetail(string registration, string unity)
+        public ECMDocumentDetailsByRegistrationOut GetECMDocumentDetailsByRegistration(string registration, string unity)
         {
-            ECMDocumentsDetailOut ecmDocumentsDetailOut = new ECMDocumentsDetailOut();
+            ECMDocumentDetailsByRegistrationOut ecmDocumentDetailsByRegistrationOut = new ECMDocumentDetailsByRegistrationOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
-                if (ModelState.IsValid)
-                {
-                    ECMDocumentsDetailIn ecmDocumentsDetailIn = new ECMDocumentsDetailIn() { registration = registration, unity = unity, userId = User.Identity.Name, key = Key.ToString() };
+                ECMDocumentDetailsByRegistrationIn ecmDocumentDetailsByRegistrationIn = new ECMDocumentDetailsByRegistrationIn() { registration = registration, unity = unity, userId = User.Identity.Name, key = Key.ToString() };
 
-                    ecmDocumentsDetailOut = documentDetailRepository.GetECMDocumentsDetail(ecmDocumentsDetailIn);
-                }
-                else
-                {
-                    foreach (ModelState modelState in ModelState.Values)
-                    {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
-                        {
-                            foreach (ModelError error in errors)
-                            {
-                                throw new Exception(error.ErrorMessage);
-                            }
-                        }
-                    }
-                }
+                ecmDocumentDetailsByRegistrationOut = documentDetailRepository.GetECMDocumentDetailsByRegistration(ecmDocumentDetailsByRegistrationIn);
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.GetECMDocumentsDetail", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.GetECMDocumentDetailsByRegistration", ex.Message);
 
-                ecmDocumentsDetailOut.result = null;
-                ecmDocumentsDetailOut.successMessage = null;
-                ecmDocumentsDetailOut.messages.Add(ex.Message);
+                ecmDocumentDetailsByRegistrationOut.result = null;
+                ecmDocumentDetailsByRegistrationOut.successMessage = null;
+                ecmDocumentDetailsByRegistrationOut.messages.Add(ex.Message);
             }
 
-            return ecmDocumentsDetailOut;
+            return ecmDocumentDetailsByRegistrationOut;
         }
 
         [Authorize, HttpGet]
@@ -62,26 +45,9 @@ namespace ApiTecnodim.Controllers
 
             try
             {
-                if (ModelState.IsValid)
-                {
-                    ECMDocumentDetailIn ecmDocumentDetailIn = new ECMDocumentDetailIn() { registration = id, userId = User.Identity.Name, key = Key.ToString() };
+                ECMDocumentDetailIn ecmDocumentDetailIn = new ECMDocumentDetailIn() { registration = id, userId = User.Identity.Name, key = Key.ToString() };
 
-                    ecmDocumentDetailOut = documentDetailRepository.GetECMDocumentDetail(ecmDocumentDetailIn);
-                }
-                else
-                {
-                    foreach (ModelState modelState in ModelState.Values)
-                    {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
-                        {
-                            foreach (ModelError error in errors)
-                            {
-                                throw new Exception(error.ErrorMessage);
-                            }
-                        }
-                    }
-                }
+                ecmDocumentDetailOut = documentDetailRepository.GetECMDocumentDetail(ecmDocumentDetailIn);
             }
             catch (Exception ex)
             {
@@ -93,6 +59,47 @@ namespace ApiTecnodim.Controllers
             }
 
             return ecmDocumentDetailOut;
+        }
+
+        [Authorize, HttpPost]
+        public ECMDocumentDetailSaveOut PostECMDocumentDetailSave(ECMDocumentDetailSaveIn eCMDocumentDetailSaveIn)
+        {
+            ECMDocumentDetailSaveOut eCMDocumentDetailSaveOut = new ECMDocumentDetailSaveOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    eCMDocumentDetailSaveIn.userId = User.Identity.Name;
+                    eCMDocumentDetailSaveIn.key = Key.ToString();
+
+                    eCMDocumentDetailSaveOut = documentDetailRepository.PostECMDocumentDetailSave(eCMDocumentDetailSaveIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.PostECMDocumentDetailSave", ex.Message);
+
+                eCMDocumentDetailSaveOut.successMessage = null;
+                eCMDocumentDetailSaveOut.messages.Add(ex.Message);
+            }
+
+            return eCMDocumentDetailSaveOut;
         }
     }
 }

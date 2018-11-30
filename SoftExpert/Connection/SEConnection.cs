@@ -1,4 +1,5 @@
-﻿using System.Web.Configuration;
+﻿using System.Net;
+using System.Web.Configuration;
 
 namespace SoftExpert
 {
@@ -10,11 +11,11 @@ namespace SoftExpert
 
         public static SEClient GetConnection()
         {
-            SEClient seClient = new SEClient
-            {
-                Url = URL
-            };
+            SEClient seClient = new SEClient { Url = URL};
             seClient.SetAuthentication(Username, Password);
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+            ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
 
             return seClient;
         }

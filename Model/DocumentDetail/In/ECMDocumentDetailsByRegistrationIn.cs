@@ -1,6 +1,6 @@
 ﻿namespace Model.In
 {
-    public class ECMDocumentsDetailIn : BaseIn
+    public class ECMDocumentDetailsByRegistrationIn : BaseIn
     {
         public string registration { get; set; }
 

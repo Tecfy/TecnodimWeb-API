@@ -58,11 +58,13 @@
     <Compile Include="Category\VM\ECMCategoriesVM.cs" />
     <Compile Include="Common\In\ResultServiceVM.cs" />
     <Compile Include="Common\VM\ResultServiceVM.cs" />
-    <Compile Include="DocumentDetail\In\ECMDocumentsDetailIn.cs" />
+    <Compile Include="DocumentDetail\In\ECMDocumentDetailSaveIn.cs" />
+    <Compile Include="DocumentDetail\In\ECMDocumentDetailsByRegistrationIn.cs" />
     <Compile Include="DocumentDetail\In\ECMDocumentDetailIn.cs" />
-    <Compile Include="DocumentDetail\Out\ECMDocumentsDetailOut.cs" />
+    <Compile Include="DocumentDetail\Out\ECMDocumentDetailSaveOut.cs" />
+    <Compile Include="DocumentDetail\Out\ECMDocumentDetailsByRegistrationOut.cs" />
     <Compile Include="DocumentDetail\Out\ECMDocumentDetailOut.cs" />
-    <Compile Include="DocumentDetail\VM\ECMDocumentsDetailVM.cs" />
+    <Compile Include="DocumentDetail\VM\ECMDocumentDetailsByRegistrationVM.cs" />
     <Compile Include="DocumentDetail\VM\ECMDocumentDetailVM.cs" />
     <Compile Include="Document\In\ECMDocumentSaveIn.cs" />
     <Compile Include="Document\In\ECMDocumentIn.cs" />
