@@ -41,7 +41,8 @@ namespace Repository
             ECMCategoriesVM ecmCategoriesVM = new ECMCategoriesVM();
             ecmCategoriesVM = ecmCategoriesVMs.Where(x => x.categoryId == item.parentId).FirstOrDefault();
 
-            if ((ecmCategoriesVM != null && ecmCategoriesVM.code == WebConfigurationManager.AppSettings["Repository.ParentCategory"]) || (item.code == WebConfigurationManager.AppSettings["Repository.CategoryRepository.ParentCategory"]))
+            if ((ecmCategoriesVM != null && ecmCategoriesVM.code == WebConfigurationManager.AppSettings["SoftExpert.ParentCategory"]) 
+                || (item.code == WebConfigurationManager.AppSettings["SoftExpert.ParentCategory"]))
             {
                 response = true;
             }

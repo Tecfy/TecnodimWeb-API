@@ -126,9 +126,16 @@ namespace SoftExpert
                         seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_cad_Unidade.ToString(), eCMDocumentDetailSaveIn.unity);
 
                         List<string> units = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.ToList();
-                        if (!units.Any(x => x == eCMDocumentDetailSaveIn.unity))
+                        if (!units.Any(x => x == eCMDocumentDetailSaveIn.unityCode))
                         {
-                            var s = seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_cad_unidades.ToString(), eCMDocumentDetailSaveIn.unity);
+                            var s = seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_cad_unidades.ToString(), eCMDocumentDetailSaveIn.unityCode);
+
+                            var n = seClient.newAccessPermission(documentReturn.IDDOCUMENT,
+                                eCMDocumentDetailSaveIn.unityCode + ";" + eCMDocumentDetailSaveIn.unityCode,
+                                int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString()),
+                                WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString(),
+                                int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString()),
+                                WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString());
                         }
                     }
                     catch (Exception ex)
@@ -155,7 +162,14 @@ namespace SoftExpert
                             seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_NomedoAluno.ToString(), eCMDocumentDetailSaveIn.name);
                             seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_SituacaoAluno.ToString(), eCMDocumentDetailSaveIn.status);
                             seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Unidade.ToString(), eCMDocumentDetailSaveIn.unity);
-                            seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_unidades.ToString(), eCMDocumentDetailSaveIn.unity);
+                            seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_unidades.ToString(), eCMDocumentDetailSaveIn.unityCode);
+
+                            var n = seClient.newAccessPermission(eCMDocumentDetailSaveIn.registration.Trim(),
+                                eCMDocumentDetailSaveIn.unityCode + ";" + eCMDocumentDetailSaveIn.unityCode,
+                                int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString()),
+                                WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString(),
+                                int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString()),
+                                WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString());
                         }
                         else
                         {

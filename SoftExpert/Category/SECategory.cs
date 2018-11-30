@@ -23,7 +23,7 @@ namespace SoftExpert
                                         code = x.IDCATEGORY,
                                         name = x.NMCATEGORY
                                     })
-                                    .OrderBy(x => x.code)
+                                    .OrderBy(x => x.categoryId)
                                     .ToList();
 
 
