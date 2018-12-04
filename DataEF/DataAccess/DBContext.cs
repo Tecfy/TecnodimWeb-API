@@ -43,6 +43,7 @@ namespace DataEF.DataAccess
         IDbSet<Documents> Documents { get; set; } // Documents
         IDbSet<DocumentStatus> DocumentStatus { get; set; } // DocumentStatus
         IDbSet<JobCategories> JobCategories { get; set; } // JobCategories
+        IDbSet<JobCategoryAdditionalFields> JobCategoryAdditionalFields { get; set; } // JobCategoryAdditionalFields
         IDbSet<Jobs> Jobs { get; set; } // Jobs
         IDbSet<JobStatus> JobStatus { get; set; } // JobStatus
         IDbSet<RegisterEvents> RegisterEvents { get; set; } // RegisterEvents
@@ -75,6 +76,7 @@ namespace DataEF.DataAccess
         public IDbSet<Documents> Documents { get; set; } // Documents
         public IDbSet<DocumentStatus> DocumentStatus { get; set; } // DocumentStatus
         public IDbSet<JobCategories> JobCategories { get; set; } // JobCategories
+        public IDbSet<JobCategoryAdditionalFields> JobCategoryAdditionalFields { get; set; } // JobCategoryAdditionalFields
         public IDbSet<Jobs> Jobs { get; set; } // Jobs
         public IDbSet<JobStatus> JobStatus { get; set; } // JobStatus
         public IDbSet<RegisterEvents> RegisterEvents { get; set; } // RegisterEvents
@@ -120,6 +122,7 @@ namespace DataEF.DataAccess
             modelBuilder.Configurations.Add(new DocumentsConfiguration());
             modelBuilder.Configurations.Add(new DocumentStatusConfiguration());
             modelBuilder.Configurations.Add(new JobCategoriesConfiguration());
+            modelBuilder.Configurations.Add(new JobCategoryAdditionalFieldsConfiguration());
             modelBuilder.Configurations.Add(new JobsConfiguration());
             modelBuilder.Configurations.Add(new JobStatusConfiguration());
             modelBuilder.Configurations.Add(new RegisterEventsConfiguration());
@@ -671,6 +674,7 @@ namespace DataEF.DataAccess
         public bool Required { get; set; } // Required
 
         // Reverse navigation
+        public virtual ICollection<JobCategoryAdditionalFields> JobCategoryAdditionalFields { get; set; } // JobCategoryAdditionalFields.FK_JobCategoryAdditionalFields_CategoryAdditionalFields;
         public virtual ICollection<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields.FK_SliceCategoryAdditionalFields_CategoryAdditionalFields;
 
         // Foreign keys
@@ -683,6 +687,7 @@ namespace DataEF.DataAccess
             CreatedDate = DateTime.Now;
             Single = false;
             Required = false;
+            JobCategoryAdditionalFields = new List<JobCategoryAdditionalFields>();
             SliceCategoryAdditionalFields = new List<SliceCategoryAdditionalFields>();
             InitializePartial();
         }
@@ -987,6 +992,9 @@ namespace DataEF.DataAccess
 
         public DateTime? SendingDate { get; set; } // SendingDate
 
+        // Reverse navigation
+        public virtual ICollection<JobCategoryAdditionalFields> JobCategoryAdditionalFields { get; set; } // JobCategoryAdditionalFields.FK_JobCategoryAdditionalFields_JobCategories;
+
         // Foreign keys
         public virtual Jobs Jobs { get; set; } //  JobId - FK_JobCategories_Jobs
         public virtual Categories Categories { get; set; } //  CategoryId - FK_JobCategories_Categories
@@ -998,6 +1006,78 @@ namespace DataEF.DataAccess
             Received = false;
             Send = false;
             Sending = false;
+            JobCategoryAdditionalFields = new List<JobCategoryAdditionalFields>();
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+	public partial class JobCategoryAdditionalFieldsMetadataType
+    {
+		/* 
+		///Copy this class to an external file
+
+		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
+		public int JobCategoryAdditionalFieldId { get; set; } // JobCategoryAdditionalFieldId (Primary key)
+
+		[Display(Name = "Active", ResourceType = typeof(i18n.Resource))]
+		public bool Active { get; set; } // Active
+
+		[Display(Name = "CreatedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime CreatedDate { get; set; } // CreatedDate
+
+		[Display(Name = "EditedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? EditedDate { get; set; } // EditedDate
+
+		[Display(Name = "DeletedDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? DeletedDate { get; set; } // DeletedDate
+
+		[Display(Name = "JobCategory", ResourceType = typeof(i18n.Resource))]
+		public int JobCategoryId { get; set; } // JobCategoryId
+
+		[Display(Name = "CategoryAdditionalField", ResourceType = typeof(i18n.Resource))]
+		public int CategoryAdditionalFieldId { get; set; } // CategoryAdditionalFieldId
+
+		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Value", ResourceType = typeof(i18n.Resource))]
+		public string Value { get; set; } // Value
+
+		*/
+	}
+
+    // JobCategoryAdditionalFields
+	[MetadataType(typeof(JobCategoryAdditionalFieldsMetadataType))]
+    public partial class JobCategoryAdditionalFields
+    {
+
+        [DataEF.Attributes.Template.IdentityField()]
+        public int JobCategoryAdditionalFieldId { get; set; } // JobCategoryAdditionalFieldId (Primary key)
+
+        public bool Active { get; set; } // Active
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime CreatedDate { get; set; } // CreatedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? EditedDate { get; set; } // EditedDate
+
+        [DataEF.Attributes.Template.ExcludeField()]
+        public DateTime? DeletedDate { get; set; } // DeletedDate
+
+        public int JobCategoryId { get; set; } // JobCategoryId
+
+        public int CategoryAdditionalFieldId { get; set; } // CategoryAdditionalFieldId
+
+        public string Value { get; set; } // Value
+
+        // Foreign keys
+        public virtual JobCategories JobCategories { get; set; } //  JobCategoryId - FK_JobCategoryAdditionalFields_JobCategories
+        public virtual CategoryAdditionalFields CategoryAdditionalFields { get; set; } //  CategoryAdditionalFieldId - FK_JobCategoryAdditionalFields_CategoryAdditionalFields
+
+        public JobCategoryAdditionalFields()
+        {
+            Active = true;
+            CreatedDate = DateTime.Now;
             InitializePartial();
         }
         partial void InitializePartial();
@@ -2049,6 +2129,31 @@ namespace DataEF.DataAccess
             // Foreign keys
             HasRequired(a => a.Jobs).WithMany(b => b.JobCategories).HasForeignKey(c => c.JobId); // FK_JobCategories_Jobs
             HasRequired(a => a.Categories).WithMany(b => b.JobCategories).HasForeignKey(c => c.CategoryId); // FK_JobCategories_Categories
+            InitializePartial();
+        }
+        partial void InitializePartial();
+    }
+
+    // JobCategoryAdditionalFields
+    internal partial class JobCategoryAdditionalFieldsConfiguration : EntityTypeConfiguration<JobCategoryAdditionalFields>
+    {
+        public JobCategoryAdditionalFieldsConfiguration()
+        {
+            ToTable("dbo.JobCategoryAdditionalFields");
+            HasKey(x => x.JobCategoryAdditionalFieldId);
+
+            Property(x => x.JobCategoryAdditionalFieldId).HasColumnName("JobCategoryAdditionalFieldId").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(x => x.Active).HasColumnName("Active").IsRequired();
+            Property(x => x.CreatedDate).HasColumnName("CreatedDate").IsRequired();
+            Property(x => x.EditedDate).HasColumnName("EditedDate").IsOptional();
+            Property(x => x.DeletedDate).HasColumnName("DeletedDate").IsOptional();
+            Property(x => x.JobCategoryId).HasColumnName("JobCategoryId").IsRequired();
+            Property(x => x.CategoryAdditionalFieldId).HasColumnName("CategoryAdditionalFieldId").IsRequired();
+            Property(x => x.Value).HasColumnName("Value").IsRequired().HasMaxLength(255);
+
+            // Foreign keys
+            HasRequired(a => a.JobCategories).WithMany(b => b.JobCategoryAdditionalFields).HasForeignKey(c => c.JobCategoryId); // FK_JobCategoryAdditionalFields_JobCategories
+            HasRequired(a => a.CategoryAdditionalFields).WithMany(b => b.JobCategoryAdditionalFields).HasForeignKey(c => c.CategoryAdditionalFieldId); // FK_JobCategoryAdditionalFields_CategoryAdditionalFields
             InitializePartial();
         }
         partial void InitializePartial();

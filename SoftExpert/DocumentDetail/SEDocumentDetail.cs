@@ -104,8 +104,7 @@ namespace SoftExpert
             try
             {
                 SEClient seClient = SEConnection.GetConnection();
-
-                string prefix = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePrefixReplicate"];
+                string registration = string.Empty;
 
                 //Check if there is a registered owner document
                 documentReturn documentReturn = SEDocument.GetSEDocumentByRegistrationAndCategory(eCMDocumentDetailSaveIn.registration, WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"]);
@@ -113,6 +112,8 @@ namespace SoftExpert
                 //If the document already exists in the specified category, it uploads the document and properties
                 if (documentReturn != null)
                 {
+                    registration = documentReturn.IDDOCUMENT;
+
                     try
                     {
                         documentDataReturn documentDataReturn = SEDocument.GetDocumentData(documentReturn.IDDOCUMENT);
@@ -129,7 +130,7 @@ namespace SoftExpert
                         if (!units.Any(x => x == eCMDocumentDetailSaveIn.unityCode))
                         {
                             var s = seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_cad_unidades.ToString(), eCMDocumentDetailSaveIn.unityCode);
-                           
+
                             var n = seClient.newAccessPermission(documentReturn.IDDOCUMENT,
                                 eCMDocumentDetailSaveIn.unityCode + ";" + eCMDocumentDetailSaveIn.unityCode,
                                 int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString()),
@@ -155,6 +156,8 @@ namespace SoftExpert
                     {
                         if (documentMatrix.Count() >= 3 && documentMatrix[2].ToUpper().Contains("SUCESSO"))
                         {
+                            registration = documentMatrix[1];
+
                             seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_cod_unidade.ToString(), eCMDocumentDetailSaveIn.unityCode);
                             seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Cpf.ToString(), eCMDocumentDetailSaveIn.cpf);
                             seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Curso.ToString(), eCMDocumentDetailSaveIn.course);
@@ -178,7 +181,7 @@ namespace SoftExpert
                     }
                 }
 
-                return eCMDocumentDetailSaveIn.registration;
+                return registration;
             }
             catch (Exception e)
             {

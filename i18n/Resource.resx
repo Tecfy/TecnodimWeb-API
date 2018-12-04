@@ -222,4 +222,283 @@
   <data name="Value" xml:space="preserve">
     <value>Valor</value>
   </data>
+  <data name="Interval" xml:space="preserve">
+    <value>Intervalo</value>
+  </data>
+  <data name="LastExecution" xml:space="preserve">
+    <value>Última execução</value>
+  </data>
+  <data name="Sent" xml:space="preserve">
+    <value>Enviei</value>
+  </data>
+  <data name="SyncRuntime" xml:space="preserve">
+    <value>Tempo de Execução de Sincronização</value>
+  </data>
+  <data name="URL" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="Actions" xml:space="preserve">
+    <value>Ações</value>
+  </data>
+  <data name="AdditionalField" xml:space="preserve">
+    <value>Campo Adicional</value>
+  </data>
+  <data name="AdditionalFields" xml:space="preserve">
+    <value>Campos Adicionais</value>
+  </data>
+  <data name="AreYouSure" xml:space="preserve">
+    <value>Tem certeza?</value>
+  </data>
+  <data name="AspNetUser" xml:space="preserve">
+    <value>Usuário</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="Categories" xml:space="preserve">
+    <value>Categorias</value>
+  </data>
+  <data name="CategoryAdditionalField" xml:space="preserve">
+    <value>Campo Adicional</value>
+  </data>
+  <data name="Claim" xml:space="preserve">
+    <value>Regra de Acesso</value>
+  </data>
+  <data name="Claims" xml:space="preserve">
+    <value>Regras de Acesso</value>
+  </data>
+  <data name="ClaimType" xml:space="preserve">
+    <value>Tipo de Reivindicação</value>
+  </data>
+  <data name="ClaimValue" xml:space="preserve">
+    <value>Valor da Reivindicação</value>
+  </data>
+  <data name="Classification" xml:space="preserve">
+    <value>Classificação</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Fechar</value>
+  </data>
+  <data name="Competence" xml:space="preserve">
+    <value>Competência</value>
+  </data>
+  <data name="Confidential" xml:space="preserve">
+    <value>Confidencial</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Confirmar Senha</value>
+  </data>
+  <data name="CreateCategory" xml:space="preserve">
+    <value>Cadastrar Categoria</value>
+  </data>
+  <data name="CreateUnity" xml:space="preserve">
+    <value>Cadastrar Unidade</value>
+  </data>
+  <data name="CreateUser" xml:space="preserve">
+    <value>Cadastrar Usuário</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Deletar</value>
+  </data>
+  <data name="DetailsCategory" xml:space="preserve">
+    <value>Detalhes da Categoria</value>
+  </data>
+  <data name="DetailsUnity" xml:space="preserve">
+    <value>Detalhes da Unidade</value>
+  </data>
+  <data name="DetailsUser" xml:space="preserve">
+    <value>Detalhes do Usuário</value>
+  </data>
+  <data name="Display" xml:space="preserve">
+    <value>Exibir</value>
+  </data>
+  <data name="DocumentView" xml:space="preserve">
+    <value>Visualização do documento</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
+  <data name="EditCategory" xml:space="preserve">
+    <value>Edição de Categoria</value>
+  </data>
+  <data name="EditUnity" xml:space="preserve">
+    <value>Edição de Unidade</value>
+  </data>
+  <data name="EditUser" xml:space="preserve">
+    <value>Edição de Usuário</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>E-mail</value>
+  </data>
+  <data name="EnterYourLogin" xml:space="preserve">
+    <value>Digite seu login</value>
+  </data>
+  <data name="FileNotFound" xml:space="preserve">
+    <value>Arquivo não encontrado!</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="HaveDependentsRegisters" xml:space="preserve">
+    <value>Um erro ocorreu. O registro que você tentou remover possui dependências com outros registro e não pode ser removido. Caso queira realmente remove-lo, por favor, remova primeiro suas dependências.</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Index" xml:space="preserve">
+    <value>Index</value>
+  </data>
+  <data name="InvalidLoginAttempt" xml:space="preserve">
+    <value>Tentativa de login inválida</value>
+  </data>
+  <data name="ItemWillBeDeleted" xml:space="preserve">
+    <value>Deseja remover o item "{0}"?</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Sobrenome</value>
+  </data>
+  <data name="List" xml:space="preserve">
+    <value>Lista</value>
+  </data>
+  <data name="LogIn" xml:space="preserve">
+    <value>Entrar</value>
+  </data>
+  <data name="Logoff" xml:space="preserve">
+    <value>Sair</value>
+  </data>
+  <data name="MaxLengthMessage" xml:space="preserve">
+    <value>O campo {0} tem um limite de {1} carecteres.</value>
+  </data>
+  <data name="MessageLengthBetween" xml:space="preserve">
+    <value>O {0} deve ter pelo menos {2} caracteres.</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>Novo</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>Nova Senha</value>
+  </data>
+  <data name="NoDataFound" xml:space="preserve">
+    <value>Nenhum registo encontrado</value>
+  </data>
+  <data name="Page" xml:space="preserve">
+    <value>Página</value>
+  </data>
+  <data name="PageNotExist" xml:space="preserve">
+    <value>O documento não possui a página solicitada.</value>
+  </data>
+  <data name="Pages" xml:space="preserve">
+    <value>Páginas</value>
+  </data>
+  <data name="PaginationInfo" xml:space="preserve">
+    <value>Exibindo {0} a {1} de {2} registros</value>
+  </data>
+  <data name="Parent" xml:space="preserve">
+    <value>Categoria Superior</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Senha</value>
+  </data>
+  <data name="PasswordNotMatch" xml:space="preserve">
+    <value>A senha e a senha de confirmação não correspondem.</value>
+  </data>
+  <data name="PB" xml:space="preserve">
+    <value>PB</value>
+  </data>
+  <data name="Permissions" xml:space="preserve">
+    <value>Permissões</value>
+  </data>
+  <data name="Records" xml:space="preserve">
+    <value>Registros</value>
+  </data>
+  <data name="Release" xml:space="preserve">
+    <value>Liberar uso na classificação?</value>
+  </data>
+  <data name="Remember" xml:space="preserve">
+    <value>Lembra-me?</value>
+  </data>
+  <data name="Required" xml:space="preserve">
+    <value>Obrigatório</value>
+  </data>
+  <data name="RequiredMessage" xml:space="preserve">
+    <value>O campo {0} é obrigatório</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Função</value>
+  </data>
+  <data name="Rotate" xml:space="preserve">
+    <value>Girar</value>
+  </data>
+  <data name="Rotation" xml:space="preserve">
+    <value>Rotação</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Salvar</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Buscar</value>
+  </data>
+  <data name="Select" xml:space="preserve">
+    <value>Selecione</value>
+  </data>
+  <data name="Sequence" xml:space="preserve">
+    <value>Seqüência</value>
+  </data>
+  <data name="Single" xml:space="preserve">
+    <value>Único</value>
+  </data>
+  <data name="Slice" xml:space="preserve">
+    <value>Recorte</value>
+  </data>
+  <data name="SliceNoProcess" xml:space="preserve">
+    <value>O recorte {0} já foi processado ou está sendo processado.</value>
+  </data>
+  <data name="SlicePage" xml:space="preserve">
+    <value>Página de recorte</value>
+  </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="Synchronize" xml:space="preserve">
+    <value>Sincronizar</value>
+  </data>
+  <data name="Tecnodim" xml:space="preserve">
+    <value>Tecnodim</value>
+  </data>
+  <data name="Unit" xml:space="preserve">
+    <value>Unidade</value>
+  </data>
+  <data name="Units" xml:space="preserve">
+    <value>Unidades</value>
+  </data>
+  <data name="Unity" xml:space="preserve">
+    <value>Unidade</value>
+  </data>
+  <data name="UnityNotFound" xml:space="preserve">
+    <value>Não existe esse código de unidade {0}.</value>
+  </data>
+  <data name="Users" xml:space="preserve">
+    <value>Usuários</value>
+  </data>
+  <data name="Validity" xml:space="preserve">
+    <value>Validade</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Visualizar</value>
+  </data>
+  <data name="Course" xml:space="preserve">
+    <value>Curso</value>
+  </data>
+  <data name="CPF" xml:space="preserve">
+    <value>CPF</value>
+  </data>
+  <data name="UnityCode" xml:space="preserve">
+    <value>Código Unidade</value>
+  </data>
+  <data name="JobCategoryAdditionalField" xml:space="preserve">
+    <value>Campo Adicional</value>
+  </data>
 </root>
