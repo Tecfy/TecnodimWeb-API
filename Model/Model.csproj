@@ -65,6 +65,7 @@
     <Compile Include="DocumentDetail\Out\ECMDocumentDetailsByRegistrationOut.cs" />
     <Compile Include="DocumentDetail\Out\ECMDocumentDetailOut.cs" />
     <Compile Include="DocumentDetail\VM\ECMDocumentDetailsByRegistrationVM.cs" />
+    <Compile Include="DocumentDetail\VM\ECMDocumentDetailSaveVM.cs" />
     <Compile Include="DocumentDetail\VM\ECMDocumentDetailVM.cs" />
     <Compile Include="Document\In\ECMDocumentSaveIn.cs" />
     <Compile Include="Document\In\ECMDocumentIn.cs" />

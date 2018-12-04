@@ -38,7 +38,7 @@ namespace Repository
 
             registerEventRepository.SaveRegisterEvent(eCMDocumentDetailSaveIn.userId, eCMDocumentDetailSaveIn.key, "Log - Start", "Repository.DocumentDetailRepository.PostECMDocumentDetailSave", "");
 
-            SEDocumentDetail.SEDocumentDetailSave(eCMDocumentDetailSaveIn);
+            eCMDocumentDetailSaveOut.result.registration = SEDocumentDetail.SEDocumentDetailSave(eCMDocumentDetailSaveIn);
 
             registerEventRepository.SaveRegisterEvent(eCMDocumentDetailSaveIn.userId, eCMDocumentDetailSaveIn.key, "Log - End", "Repository.DocumentDetailRepository.PostECMDocumentDetailSave", "");
             return eCMDocumentDetailSaveOut;

@@ -99,7 +99,7 @@ namespace SoftExpert
             return ecmDocumentDetailOut;
         }
 
-        public static bool SEDocumentDetailSave(ECMDocumentDetailSaveIn eCMDocumentDetailSaveIn)
+        public static string SEDocumentDetailSave(ECMDocumentDetailSaveIn eCMDocumentDetailSaveIn)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace SoftExpert
                         if (!units.Any(x => x == eCMDocumentDetailSaveIn.unityCode))
                         {
                             var s = seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_cad_unidades.ToString(), eCMDocumentDetailSaveIn.unityCode);
-
+                           
                             var n = seClient.newAccessPermission(documentReturn.IDDOCUMENT,
                                 eCMDocumentDetailSaveIn.unityCode + ";" + eCMDocumentDetailSaveIn.unityCode,
                                 int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString()),
@@ -178,7 +178,7 @@ namespace SoftExpert
                     }
                 }
 
-                return true;
+                return eCMDocumentDetailSaveIn.registration;
             }
             catch (Exception e)
             {
