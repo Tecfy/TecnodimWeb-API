@@ -682,6 +682,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to O Usuário possui uma digitalização pendente, favor finaliza-la antes de iniciar uma nova!.
+        /// </summary>
+        public static string MessagePendingSscan {
+            get {
+                return ResourceManager.GetString("MessagePendingSscan", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nome.
         /// </summary>
         public static string Name {

@@ -501,4 +501,7 @@
   <data name="JobCategoryAdditionalField" xml:space="preserve">
     <value>Campo Adicional</value>
   </data>
+  <data name="MessagePendingSscan" xml:space="preserve">
+    <value>O Usuário possui uma digitalização pendente, favor finaliza-la antes de iniciar uma nova!</value>
+  </data>
 </root>
