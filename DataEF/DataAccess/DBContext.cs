@@ -1120,6 +1120,9 @@ namespace DataEF.DataAccess
 		[Display(Name = "Sent", ResourceType = typeof(i18n.Resource))]
 		public bool Sent { get; set; } // Sent
 
+		[Display(Name = "Unity", ResourceType = typeof(i18n.Resource))]
+		public int UnityId { get; set; } // UnityId
+
 		*/
 	}
 
@@ -1152,12 +1155,15 @@ namespace DataEF.DataAccess
 
         public bool Sent { get; set; } // Sent
 
+        public int UnityId { get; set; } // UnityId
+
         // Reverse navigation
         public virtual ICollection<JobCategories> JobCategories { get; set; } // JobCategories.FK_JobCategories_Jobs;
 
         // Foreign keys
         public virtual Users Users { get; set; } //  UserId - FK_Jobs_Users
         public virtual JobStatus JobStatus { get; set; } //  JobStatusId - FK_Jobs_JobStatus
+        public virtual Units Units { get; set; } //  UnityId - FK_Jobs_Units
 
         public Jobs()
         {
@@ -1708,6 +1714,7 @@ namespace DataEF.DataAccess
 
         // Reverse navigation
         public virtual ICollection<Documents> Documents { get; set; } // Documents.FK_Documents_Units;
+        public virtual ICollection<Jobs> Jobs { get; set; } // Jobs.FK_Jobs_Units;
         public virtual ICollection<UserUnits> UserUnits { get; set; } // UserUnits.FK_UserUnits_Units;
 
         public Units()
@@ -1715,6 +1722,7 @@ namespace DataEF.DataAccess
             Active = true;
             CreatedDate = DateTime.Now;
             Documents = new List<Documents>();
+            Jobs = new List<Jobs>();
             UserUnits = new List<UserUnits>();
             InitializePartial();
         }
@@ -2177,10 +2185,12 @@ namespace DataEF.DataAccess
             Property(x => x.Registration).HasColumnName("Registration").IsRequired().HasMaxLength(255);
             Property(x => x.Name).HasColumnName("Name").IsRequired().HasMaxLength(255);
             Property(x => x.Sent).HasColumnName("Sent").IsRequired();
+            Property(x => x.UnityId).HasColumnName("UnityId").IsRequired();
 
             // Foreign keys
             HasRequired(a => a.Users).WithMany(b => b.Jobs).HasForeignKey(c => c.UserId); // FK_Jobs_Users
             HasRequired(a => a.JobStatus).WithMany(b => b.Jobs).HasForeignKey(c => c.JobStatusId); // FK_Jobs_JobStatus
+            HasRequired(a => a.Units).WithMany(b => b.Jobs).HasForeignKey(c => c.UnityId); // FK_Jobs_Units
             InitializePartial();
         }
         partial void InitializePartial();

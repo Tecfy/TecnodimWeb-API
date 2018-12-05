@@ -36,5 +36,8 @@ namespace DataEF.DataAccess.Model
 
 		[Display(Name = "Sent", ResourceType = typeof(i18n.Resource))]
 		public bool Sent { get; set; } // Sent
+
+        [Display(Name = "Unity", ResourceType = typeof(i18n.Resource))]
+        public int UnityId { get; set; } // UnityId
     }
 }
