@@ -1,5 +1,7 @@
 ﻿using Helper.Enum;
 using Model.In;
+using Model.Out;
+using Model.VM;
 using SoftExpert.com.softexpert.tecfy;
 using System;
 using System.Linq;
@@ -10,6 +12,28 @@ namespace SoftExpert
     public static class SEJobCategory
     {
         #region .: Public Methods :.
+
+        public static ECMJobCategoryOut GetSEJobCategory(ECMJobCategoryIn eCMJobCategoryIn)
+        {
+            ECMJobCategoryOut eCMJobCategoryOut = new ECMJobCategoryOut();
+
+            SEClient seClient = SEConnection.GetConnection();
+
+            eletronicFile[] eletronicFiles = seClient.downloadEletronicFile(eCMJobCategoryIn.externalId, "", "", "", eCMJobCategoryIn.categoryId, "", "", "");
+            if (eletronicFiles.Count() > 0)
+            {
+                eCMJobCategoryOut.result = new ECMJobCategoryVM()
+                {
+                    archive = System.Convert.ToBase64String(eletronicFiles.FirstOrDefault().BINFILE),
+                };
+            }
+            else
+            {
+                eCMJobCategoryOut.result = null;
+            }
+
+            return eCMJobCategoryOut;
+        }
 
         public static bool SEJobCategorySave(ECMJobCategorySaveIn ecmJobCategorySaveIn)
         {

@@ -13,6 +13,10 @@ namespace Model.In
         public string cpf { get; set; }
 
         [Required]
+        [Display(Name = "RG", ResourceType = typeof(i18n.Resource))]
+        public string rg { get; set; }
+
+        [Required]
         [Display(Name = "Course", ResourceType = typeof(i18n.Resource))]
         public string course { get; set; }
 

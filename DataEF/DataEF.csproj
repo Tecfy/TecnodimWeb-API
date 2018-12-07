@@ -188,6 +188,7 @@
     <Compile Include="DataAccess\Model\CategoriesMetadataType.cs" />
     <Compile Include="DataAccess\Model\CategoryAdditionalFieldsMetadataType.cs" />
     <Compile Include="DataAccess\Model\DeletedPagesMetadataType.cs" />
+    <Compile Include="DataAccess\Model\JobCategoryPagesMetadataType.cs" />
     <Compile Include="DataAccess\Model\SyncRuntimesMetadataType.cs" />
     <Compile Include="DataAccess\Model\JobStatusMetadataType.cs" />
     <Compile Include="DataAccess\Model\JobsMetadataType.cs" />

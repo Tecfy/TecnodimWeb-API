@@ -504,4 +504,7 @@
   <data name="MessagePendingSscan" xml:space="preserve">
     <value>O Usuário possui uma digitalização pendente, favor finaliza-la antes de iniciar uma nova!</value>
   </data>
+  <data name="RG" xml:space="preserve">
+    <value>RG</value>
+  </data>
 </root>

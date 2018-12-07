@@ -77,6 +77,9 @@
     <Compile Include="Document\Out\ECMDocumentsOut.cs" />
     <Compile Include="Document\VM\ECMDocumentVM.cs" />
     <Compile Include="Document\VM\ECMDocumentsVM.cs" />
+    <Compile Include="JobCategory\In\ECMJobCategoryIn.cs" />
+    <Compile Include="JobCategory\Out\ECMJobCategoryOut.cs" />
+    <Compile Include="JobCategory\VM\ECMJobCategoryVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="JobCategory\In\ECMJobCategorySaveIn.cs" />
     <Compile Include="JobCategory\Out\ECMJobCategorySaveOut.cs" />
@@ -86,7 +89,6 @@
     <Folder Include="AdditionalField\VM\" />
     <Folder Include="Attribute\VM\" />
     <Folder Include="Common\Out\" />
-    <Folder Include="JobCategory\VM\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

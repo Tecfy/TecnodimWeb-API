@@ -898,6 +898,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to RG.
+        /// </summary>
+        public static string RG {
+            get {
+                return ResourceManager.GetString("RG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Função.
         /// </summary>
         public static string Role {

@@ -3,6 +3,7 @@ using Model.Out;
 using Repository;
 using System;
 using System.Linq;
+using System.Web.Configuration;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 
@@ -52,6 +53,29 @@ namespace ApiTecnodim.Controllers
             }
 
             return ecmWorkCategorySaveOut;
+        }
+
+        [Authorize, HttpGet]
+        public ECMJobCategoryOut GetECMJobCategory(string id)
+        {
+            ECMJobCategoryOut eCMJobCategoryOut = new ECMJobCategoryOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                ECMJobCategoryIn eCMJobCategoryIn = new ECMJobCategoryIn() { externalId = id, categoryId = WebConfigurationManager.AppSettings["SoftExpert.JobCategory"], userId = User.Identity.Name, key = Key.ToString() };
+
+                eCMJobCategoryOut = jobCategoryRepository.GetECMJobCategory(eCMJobCategoryIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.JobCategoriesController.GetECMJobCategory", ex.Message);
+
+                eCMJobCategoryOut.successMessage = null;
+                eCMJobCategoryOut.messages.Add(ex.Message);
+            }
+
+            return eCMJobCategoryOut;
         }
     }
 }

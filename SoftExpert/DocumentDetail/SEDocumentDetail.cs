@@ -49,6 +49,7 @@ namespace SoftExpert
                         course = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Curso.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Curso.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
                         registration = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Matricula.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Matricula.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
                         cpf = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Cpf.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Cpf.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                        rg = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_RG.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_RG.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
                         name = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_NomedoAluno.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_NomedoAluno.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
                     });
                 }
@@ -88,6 +89,7 @@ namespace SoftExpert
                     course = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Curso.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Curso.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
                     registration = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Matricula.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Matricula.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
                     cpf = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Cpf.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Cpf.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                    rg = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_RG.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_RG.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
                     name = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_NomedoAluno.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_NomedoAluno.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
                 };
             }
@@ -118,13 +120,14 @@ namespace SoftExpert
                     {
                         documentDataReturn documentDataReturn = SEDocument.GetDocumentData(documentReturn.IDDOCUMENT);
 
-                        seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_cad_cod_unidade.ToString(), eCMDocumentDetailSaveIn.unityCode);
-                        seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_cad_Cpf.ToString(), eCMDocumentDetailSaveIn.cpf);
-                        seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_cad_Curso.ToString(), eCMDocumentDetailSaveIn.course);
-                        seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_cad_Matricula.ToString(), eCMDocumentDetailSaveIn.registration);
-                        seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_cad_NomedoAluno.ToString(), eCMDocumentDetailSaveIn.name);
-                        seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_cad_SituacaoAluno.ToString(), eCMDocumentDetailSaveIn.status);
-                        seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_cad_Unidade.ToString(), eCMDocumentDetailSaveIn.unity);
+                        var returnUnityCodes = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_cod_unidade.ToString(), eCMDocumentDetailSaveIn.unityCode);
+                        var returnCPF = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Cpf.ToString(), eCMDocumentDetailSaveIn.cpf);
+                        var returnRG = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_RG.ToString(), eCMDocumentDetailSaveIn.rg);
+                        var returnCourse = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Curso.ToString(), eCMDocumentDetailSaveIn.course);
+                        var returnRegistration = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Matricula.ToString(), eCMDocumentDetailSaveIn.registration);
+                        var returnName = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_NomedoAluno.ToString(), eCMDocumentDetailSaveIn.name);
+                        var returnStatus = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_SituacaoAluno.ToString(), eCMDocumentDetailSaveIn.status);
+                        var returnUnity = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Unidade.ToString(), eCMDocumentDetailSaveIn.unity);
 
                         List<string> units = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.ToList();
                         if (!units.Any(x => x == eCMDocumentDetailSaveIn.unityCode))
@@ -158,14 +161,15 @@ namespace SoftExpert
                         {
                             registration = documentMatrix[1];
 
-                            seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_cod_unidade.ToString(), eCMDocumentDetailSaveIn.unityCode);
-                            seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Cpf.ToString(), eCMDocumentDetailSaveIn.cpf);
-                            seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Curso.ToString(), eCMDocumentDetailSaveIn.course);
-                            seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Matricula.ToString(), eCMDocumentDetailSaveIn.registration);
-                            seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_NomedoAluno.ToString(), eCMDocumentDetailSaveIn.name);
-                            seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_SituacaoAluno.ToString(), eCMDocumentDetailSaveIn.status);
-                            seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Unidade.ToString(), eCMDocumentDetailSaveIn.unity);
-                            seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_unidades.ToString(), eCMDocumentDetailSaveIn.unityCode);
+                            var returnUnityCodes = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_cod_unidade.ToString(), eCMDocumentDetailSaveIn.unityCode);
+                            var returnCPF = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Cpf.ToString(), eCMDocumentDetailSaveIn.cpf);
+                            var returnRG = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_RG.ToString(), eCMDocumentDetailSaveIn.rg);
+                            var returnCourse = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Curso.ToString(), eCMDocumentDetailSaveIn.course);
+                            var returnRegistration = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Matricula.ToString(), eCMDocumentDetailSaveIn.registration);
+                            var returnName = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_NomedoAluno.ToString(), eCMDocumentDetailSaveIn.name);
+                            var returnStatus = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_SituacaoAluno.ToString(), eCMDocumentDetailSaveIn.status);
+                            var returnUnity = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Unidade.ToString(), eCMDocumentDetailSaveIn.unity);
+                            var returnUnityCode = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_unidades.ToString(), eCMDocumentDetailSaveIn.unityCode);
 
                             var n = seClient.newAccessPermission(eCMDocumentDetailSaveIn.registration.Trim(),
                                 eCMDocumentDetailSaveIn.unityCode + ";" + eCMDocumentDetailSaveIn.unityCode,

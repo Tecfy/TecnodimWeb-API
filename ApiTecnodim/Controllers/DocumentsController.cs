@@ -35,7 +35,7 @@ namespace ApiTecnodim.Controllers
             }
 
             return ecmDocumentOut;
-        }
+        }      
 
         [Authorize, HttpGet]
         public ECMDocumentsOut GetECMDocuments()
