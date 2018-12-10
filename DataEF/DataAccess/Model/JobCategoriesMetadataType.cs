@@ -41,5 +41,11 @@ namespace DataEF.DataAccess.Model
 
 		[Display(Name = "SendingDate", ResourceType = typeof(i18n.Resource))]
 		public DateTime? SendingDate { get; set; } // SendingDate
+
+        [Display(Name = "Hash", ResourceType = typeof(i18n.Resource))]
+        public Guid Hash { get; set; } // Hash
+
+        [Display(Name = "Sent", ResourceType = typeof(i18n.Resource))]
+        public bool Sent { get; set; } // Sent
     }
 }

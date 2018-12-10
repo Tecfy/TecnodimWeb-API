@@ -448,6 +448,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Já exite um registro!.
+        /// </summary>
+        public static string ExistingRegistry {
+            get {
+                return ResourceManager.GetString("ExistingRegistry", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Externo.
         /// </summary>
         public static string External {
@@ -588,6 +597,15 @@ namespace i18n {
         public static string JobCategoryAdditionalField {
             get {
                 return ResourceManager.GetString("JobCategoryAdditionalField", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A categoria {0} do trabalho já foi processado ou está sendo processado..
+        /// </summary>
+        public static string JobCategoryNoProcess {
+            get {
+                return ResourceManager.GetString("JobCategoryNoProcess", resourceCulture);
             }
         }
         

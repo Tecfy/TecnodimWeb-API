@@ -962,6 +962,9 @@ namespace DataEF.DataAccess
 		[Display(Name = "Hash", ResourceType = typeof(i18n.Resource))]
 		public Guid Hash { get; set; } // Hash
 
+		[Display(Name = "Sent", ResourceType = typeof(i18n.Resource))]
+		public bool Sent { get; set; } // Sent
+
 		*/
 	}
 
@@ -1000,6 +1003,8 @@ namespace DataEF.DataAccess
 
         public Guid Hash { get; set; } // Hash
 
+        public bool Sent { get; set; } // Sent
+
         // Reverse navigation
         public virtual ICollection<JobCategoryAdditionalFields> JobCategoryAdditionalFields { get; set; } // JobCategoryAdditionalFields.FK_JobCategoryAdditionalFields_JobCategories;
         public virtual ICollection<JobCategoryPages> JobCategoryPages { get; set; } // JobCategoryPages.FK_JobCategoryPages_JobCategories;
@@ -1014,8 +1019,8 @@ namespace DataEF.DataAccess
             CreatedDate = DateTime.Now;
             Received = false;
             Send = false;
-            Sending = false;
             Hash = Guid.NewGuid();
+            Sent = false;
             JobCategoryAdditionalFields = new List<JobCategoryAdditionalFields>();
             JobCategoryPages = new List<JobCategoryPages>();
             InitializePartial();
@@ -2209,6 +2214,7 @@ namespace DataEF.DataAccess
             Property(x => x.Sending).HasColumnName("Sending").IsRequired();
             Property(x => x.SendingDate).HasColumnName("SendingDate").IsOptional();
             Property(x => x.Hash).HasColumnName("Hash").IsRequired();
+            Property(x => x.Sent).HasColumnName("Sent").IsRequired();
 
             // Foreign keys
             HasRequired(a => a.Jobs).WithMany(b => b.JobCategories).HasForeignKey(c => c.JobId); // FK_JobCategories_Jobs

@@ -77,7 +77,11 @@
     <Compile Include="Document\Out\ECMDocumentsOut.cs" />
     <Compile Include="Document\VM\ECMDocumentVM.cs" />
     <Compile Include="Document\VM\ECMDocumentsVM.cs" />
+    <Compile Include="JobCategory\In\ECMJobDeletedIn.cs" />
+    <Compile Include="JobCategory\In\ECMJobSaveIn.cs" />
     <Compile Include="JobCategory\In\ECMJobCategoryIn.cs" />
+    <Compile Include="JobCategory\Out\ECMJobDeletedOut.cs" />
+    <Compile Include="JobCategory\Out\ECMJobSaveOut.cs" />
     <Compile Include="JobCategory\Out\ECMJobCategoryOut.cs" />
     <Compile Include="JobCategory\VM\ECMJobCategoryVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

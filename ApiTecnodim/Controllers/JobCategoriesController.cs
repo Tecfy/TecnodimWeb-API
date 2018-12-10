@@ -14,6 +14,29 @@ namespace ApiTecnodim.Controllers
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
         JobCategoryRepository jobCategoryRepository = new JobCategoryRepository();
 
+        [Authorize, HttpGet]
+        public ECMJobCategoryOut GetECMJobCategory(string id)
+        {
+            ECMJobCategoryOut eCMJobCategoryOut = new ECMJobCategoryOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                ECMJobCategoryIn eCMJobCategoryIn = new ECMJobCategoryIn() { externalId = id, categoryId = WebConfigurationManager.AppSettings["SoftExpert.JobCategory"], userId = User.Identity.Name, key = Key.ToString() };
+
+                eCMJobCategoryOut = jobCategoryRepository.GetECMJobCategory(eCMJobCategoryIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.JobCategoriesController.GetECMJobCategory", ex.Message);
+
+                eCMJobCategoryOut.successMessage = null;
+                eCMJobCategoryOut.messages.Add(ex.Message);
+            }
+
+            return eCMJobCategoryOut;
+        }
+
         [Authorize, HttpPost]
         public ECMJobCategorySaveOut SetECMJobCategorySave(ECMJobCategorySaveIn ecmWorkCategorySaveIn)
         {
@@ -55,27 +78,66 @@ namespace ApiTecnodim.Controllers
             return ecmWorkCategorySaveOut;
         }
 
-        [Authorize, HttpGet]
-        public ECMJobCategoryOut GetECMJobCategory(string id)
+        [Authorize, HttpPost]
+        public ECMJobSaveOut PostECMJobSave(ECMJobSaveIn eCMJobSaveIn)
         {
-            ECMJobCategoryOut eCMJobCategoryOut = new ECMJobCategoryOut();
+            ECMJobSaveOut eCMJobSaveOut = new ECMJobSaveOut();
             Guid Key = Guid.NewGuid();
 
             try
             {
-                ECMJobCategoryIn eCMJobCategoryIn = new ECMJobCategoryIn() { externalId = id, categoryId = WebConfigurationManager.AppSettings["SoftExpert.JobCategory"], userId = User.Identity.Name, key = Key.ToString() };
+                if (ModelState.IsValid)
+                {
+                    eCMJobSaveIn.userId = User.Identity.Name;
+                    eCMJobSaveIn.key = Key.ToString();
 
-                eCMJobCategoryOut = jobCategoryRepository.GetECMJobCategory(eCMJobCategoryIn);
+                    eCMJobSaveOut = jobCategoryRepository.PostECMJobSave(eCMJobSaveIn);
+                }
+                else
+                {
+                    foreach (ModelState modelState in ModelState.Values)
+                    {
+                        var errors = modelState.Errors;
+                        if (errors.Any())
+                        {
+                            foreach (ModelError error in errors)
+                            {
+                                throw new Exception(error.ErrorMessage);
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.JobCategoriesController.GetECMJobCategory", ex.Message);
+                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.JobCategoriesController.PostECMJobSave", ex.Message);
 
-                eCMJobCategoryOut.successMessage = null;
-                eCMJobCategoryOut.messages.Add(ex.Message);
+                eCMJobSaveOut.successMessage = null;
+                eCMJobSaveOut.messages.Add(ex.Message);
             }
 
-            return eCMJobCategoryOut;
+            return eCMJobSaveOut;
+        }
+
+        [Authorize, HttpPost]
+        public ECMJobDeletedOut DeleteECMJobArchive(ECMJobDeletedIn eCMJobDeletedIn)
+        {
+            ECMJobDeletedOut eCMJobDeletedOut = new ECMJobDeletedOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                jobCategoryRepository.DeleteECMJobArchive(eCMJobDeletedIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.JobCategoriesController.DeleteECMJobArchive", ex.Message);
+
+                eCMJobDeletedOut.successMessage = null;
+                eCMJobDeletedOut.messages.Add(ex.Message);
+            }
+
+            return eCMJobDeletedOut;
         }
     }
 }

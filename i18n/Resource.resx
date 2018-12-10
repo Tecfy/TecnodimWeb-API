@@ -507,4 +507,10 @@
   <data name="RG" xml:space="preserve">
     <value>RG</value>
   </data>
+  <data name="ExistingRegistry" xml:space="preserve">
+    <value>Já exite um registro!</value>
+  </data>
+  <data name="JobCategoryNoProcess" xml:space="preserve">
+    <value>A categoria {0} do trabalho já foi processado ou está sendo processado.</value>
+  </data>
 </root>
