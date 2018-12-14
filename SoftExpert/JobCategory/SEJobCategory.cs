@@ -66,34 +66,7 @@ namespace SoftExpert
 
                 if (documentDataReturn.ATTRIBUTTES.Count() > 0)
                 {
-                    string atributos = "";
-                    foreach (var item in documentDataReturn.ATTRIBUTTES)
-                    {
-                        if (item.ATTRIBUTTENAME.Contains(prefix))
-                        {
-                            string valor = "";
-
-                            if (item.ATTRIBUTTEVALUE.Count() > 0)
-                            {
-                                valor = item.ATTRIBUTTEVALUE[0];
-                            }
-
-                            atributos += item.ATTRIBUTTENAME + "=" + valor + ";";
-                        }
-                    }
-
-                    try
-                    {
-                        atributos += EAttribute.MFP_Data_Job.ToString() + "=" + ecmJobCategorySaveIn.dataJob.ToString("yyyy-MM-dd") + ";";
-                        atributos += EAttribute.MFP_Status.ToString() + "=" + WebConfigurationManager.AppSettings["SoftExpert.JobStatusInitial"] + ";";
-                        atributos += EAttribute.MFP_Categoria.ToString() + "=" + ecmJobCategorySaveIn.categoryId + ";";
-                        atributos += EAttribute.MFP_Usuario.ToString() + "=" + ecmJobCategorySaveIn.user + ";";
-                    }
-                    catch
-                    {
-                    }
-
-                    var document = seClient.newDocument(WebConfigurationManager.AppSettings["SoftExpert.JobCategory"], ecmJobCategorySaveIn.code.Trim(), ecmJobCategorySaveIn.title, "", "", atributos, "", null, 0);
+                    var document = seClient.newDocument(WebConfigurationManager.AppSettings["SoftExpert.JobCategory"], ecmJobCategorySaveIn.code.Trim(), ecmJobCategorySaveIn.title, "", "", "", "", null, 0);
 
                     var documentMatrix = document.Split(':');
 
@@ -107,6 +80,52 @@ namespace SoftExpert
                         {
                             throw new Exception(document);
                         }
+                    }
+
+                    foreach (var item in documentDataReturn.ATTRIBUTTES)
+                    {
+                        if (item.ATTRIBUTTENAME.Contains(prefix))
+                        {
+                            string value = "";
+
+                            if (item.ATTRIBUTTEVALUE.Count() > 0)
+                            {
+                                value = item.ATTRIBUTTEVALUE[0];
+                            }
+
+                            try
+                            {
+                                var s = seClient.setAttributeValue(ecmJobCategorySaveIn.code.Trim(), "", item.ATTRIBUTTENAME, value);
+                            }
+                            catch (Exception)
+                            {
+                                throw new Exception(string.Format(i18n.Resource.FieldWithError, item.ATTRIBUTTENAME));
+                            }
+                        }
+                    }
+
+                    try
+                    {
+                        var retornoDataJob = seClient.setAttributeValue(ecmJobCategorySaveIn.code.Trim(), "", EAttribute.MFP_Data_Job.ToString(), ecmJobCategorySaveIn.dataJob.ToString("yyyy-MM-dd"));
+                        var retornoStatus = seClient.setAttributeValue(ecmJobCategorySaveIn.code.Trim(), "", EAttribute.MFP_Status.ToString(), WebConfigurationManager.AppSettings["SoftExpert.JobStatusInitial"]);
+                        var retornoCategoria = seClient.setAttributeValue(ecmJobCategorySaveIn.code.Trim(), "", EAttribute.MFP_Categoria.ToString(), ecmJobCategorySaveIn.categoryId);
+                        var retornoUsuario = seClient.setAttributeValue(ecmJobCategorySaveIn.code.Trim(), "", EAttribute.MFP_Usuario.ToString(), ecmJobCategorySaveIn.user);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(ex.Message);
+                    }
+
+                    if (documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()))
+                    {
+                        string unityCode = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault();
+
+                        var n = seClient.newAccessPermission(ecmJobCategorySaveIn.code.Trim(),
+                                unityCode + ";" + unityCode,
+                                int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString()),
+                                WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString(),
+                                int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString()),
+                                WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString());
                     }
                 }
 
@@ -198,6 +217,18 @@ namespace SoftExpert
                         }
 
                         var ds = SEDocumentUpload(eCMJobSaveIn, documentReturn.IDDOCUMENT);
+
+                        if (documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()))
+                        {
+                            string unityCode = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault();
+
+                            var n = seClient.newAccessPermission(documentReturn.IDDOCUMENT,
+                                    unityCode + ";" + unityCode,
+                                    int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString()),
+                                    WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString(),
+                                    int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString()),
+                                    WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString());
+                        }
                     }
                 }
 
@@ -207,54 +238,7 @@ namespace SoftExpert
                     documentDataReturn documentDataReturn = SEDocument.GetDocumentData(documentReturnOwner.IDDOCUMENT);
                     if (documentDataReturn.ATTRIBUTTES.Count() > 0)
                     {
-                        string atributos = "";
-                        foreach (var item in documentDataReturn.ATTRIBUTTES)
-                        {
-                            if (item.ATTRIBUTTENAME.Contains(prefix))
-                            {
-                                string valor = "";
-
-                                if (item.ATTRIBUTTEVALUE.Count() > 0)
-                                {
-                                    valor = item.ATTRIBUTTEVALUE[0];
-                                }
-
-                                atributos += item.ATTRIBUTTENAME + "=" + valor + ";";
-                            }
-                        }
-
-                        foreach (var item in eCMJobSaveIn.additionalFields)
-                        {
-                            try
-                            {
-                                if (item.additionalFieldId == (int)EAdditionalField.Identifier)
-                                {
-                                    atributos += EAttribute.SER_Input_NumDoc.ToString() + "=" + item.value + ";";
-                                }
-                                else if (item.additionalFieldId == (int)EAdditionalField.Competence)
-                                {
-                                    DateTime competence = DateTime.MinValue;
-                                    DateTime.TryParse(item.value, out competence);
-
-                                    atributos += EAttribute.SER_Input_DataRef.ToString() + "=" + competence.ToString("yyyy-MM-dd") + ";";
-                                }
-                                else if (item.additionalFieldId == (int)EAdditionalField.Validity)
-                                {
-                                    DateTime validity = DateTime.MinValue;
-                                    DateTime.TryParse(item.value, out validity);
-
-                                    atributos += EAttribute.SER_Input_Data_Vencto.ToString() + "=" + validity.ToString("yyyy-MM-dd") + ";";
-                                }
-                                else if (item.additionalFieldId == (int)EAdditionalField.DocumentView)
-                                {
-                                    atributos += EAttribute.SER_Input_Compl.ToString() + "=" + item.value + ";";
-                                }
-                            }
-                            catch
-                            {
-                            }
-                        }
-                        var document = seClient.newDocument(eCMJobSaveIn.categoryId, eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), eCMJobSaveIn.title, "", "", atributos, "", null, 0);
+                        var document = seClient.newDocument(eCMJobSaveIn.categoryId, eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), eCMJobSaveIn.title, "", "", "", "", null, 0);
 
                         var documentMatrix = document.Split(':');
 
@@ -268,6 +252,73 @@ namespace SoftExpert
                             {
                                 throw new Exception(document);
                             }
+                        }
+
+                        foreach (var item in documentDataReturn.ATTRIBUTTES)
+                        {
+                            if (item.ATTRIBUTTENAME.Contains(prefix))
+                            {
+                                string value = "";
+
+                                if (item.ATTRIBUTTEVALUE.Count() > 0)
+                                {
+                                    value = item.ATTRIBUTTEVALUE[0];
+                                }
+
+                                try
+                                {
+                                    var s = seClient.setAttributeValue(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), "", item.ATTRIBUTTENAME, value);
+                                }
+                                catch (Exception)
+                                {
+                                    throw new Exception(string.Format(i18n.Resource.FieldWithError, item.ATTRIBUTTENAME));
+                                }
+                            }
+                        }
+
+                        foreach (var item in eCMJobSaveIn.additionalFields)
+                        {
+                            try
+                            {
+                                if (item.additionalFieldId == (int)EAdditionalField.Identifier)
+                                {
+                                    var retorno = seClient.setAttributeValue(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), "", EAttribute.SER_Input_NumDoc.ToString(), item.value);
+                                }
+                                else if (item.additionalFieldId == (int)EAdditionalField.Competence)
+                                {
+                                    DateTime competence = DateTime.MinValue;
+                                    DateTime.TryParse(item.value, out competence);
+
+                                    var retorno = seClient.setAttributeValue(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), "", EAttribute.SER_Input_DataRef.ToString(), competence.ToString("yyyy-MM-dd"));
+                                }
+                                else if (item.additionalFieldId == (int)EAdditionalField.Validity)
+                                {
+                                    DateTime validity = DateTime.MinValue;
+                                    DateTime.TryParse(item.value, out validity);
+
+                                    var retorno = seClient.setAttributeValue(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), "", EAttribute.SER_Input_Data_Vencto.ToString(), validity.ToString("yyyy-MM-dd"));
+                                }
+                                else if (item.additionalFieldId == (int)EAdditionalField.DocumentView)
+                                {
+                                    var retorno = seClient.setAttributeValue(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), "", EAttribute.SER_Input_Compl.ToString(), item.value);
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                throw new Exception(string.Format(i18n.Resource.FieldWithError, item.additionalFieldId));
+                            }
+                        }
+
+                        if (documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()))
+                        {
+                            string unityCode = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault();
+
+                            var n = seClient.newAccessPermission(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(),
+                                    unityCode + ";" + unityCode,
+                                    int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString()),
+                                    WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString(),
+                                    int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString()),
+                                    WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString());
                         }
                     }
                 }

@@ -165,6 +165,18 @@ namespace SoftExpert
                         }
 
                         var ds = SEDocumentUpload(seDocumentSaveIn, documentReturn.IDDOCUMENT);
+
+                        if (documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()))
+                        {
+                            string unityCode = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault();
+
+                            var n = seClient.newAccessPermission(seDocumentSaveIn.registration.Trim() + "-" + seDocumentSaveIn.categoryId.Trim(),
+                                    unityCode + ";" + unityCode,
+                                    int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString()),
+                                    WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString(),
+                                    int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString()),
+                                    WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString());
+                        }
                     }
                 }
 
@@ -174,54 +186,7 @@ namespace SoftExpert
                     documentDataReturn documentDataReturn = GetDocumentData(documentReturnOwner.IDDOCUMENT);
                     if (documentDataReturn.ATTRIBUTTES.Count() > 0)
                     {
-                        string atributos = "";
-                        foreach (var item in documentDataReturn.ATTRIBUTTES)
-                        {
-                            if (item.ATTRIBUTTENAME.Contains(prefix))
-                            {
-                                string valor = "";
-
-                                if (item.ATTRIBUTTEVALUE.Count() > 0)
-                                {
-                                    valor = item.ATTRIBUTTEVALUE[0];
-                                }
-
-                                atributos += item.ATTRIBUTTENAME + "=" + valor + ";";
-                            }
-                        }
-
-                        foreach (var item in seDocumentSaveIn.additionalFields)
-                        {
-                            try
-                            {
-                                if (item.additionalFieldId == (int)EAdditionalField.Identifier)
-                                {
-                                    atributos += EAttribute.SER_Input_NumDoc.ToString() + "=" + item.value + ";";
-                                }
-                                else if (item.additionalFieldId == (int)EAdditionalField.Competence)
-                                {
-                                    DateTime competence = DateTime.MinValue;
-                                    DateTime.TryParse(item.value, out competence);
-
-                                    atributos += EAttribute.SER_Input_DataRef.ToString() + "=" + competence.ToString("yyyy-MM-dd") + ";";
-                                }
-                                else if (item.additionalFieldId == (int)EAdditionalField.Validity)
-                                {
-                                    DateTime validity = DateTime.MinValue;
-                                    DateTime.TryParse(item.value, out validity);
-
-                                    atributos += EAttribute.SER_Input_Data_Vencto.ToString() + "=" + validity.ToString("yyyy-MM-dd") + ";";
-                                }
-                                else if (item.additionalFieldId == (int)EAdditionalField.DocumentView)
-                                {
-                                    atributos += EAttribute.SER_Input_Compl.ToString() + "=" + item.value + ";";
-                                }
-                            }
-                            catch
-                            {
-                            }
-                        }
-                        var document = seClient.newDocument(seDocumentSaveIn.categoryId, seDocumentSaveIn.registration.Trim() + "-" + seDocumentSaveIn.categoryId.Trim(), seDocumentSaveIn.title, "", "", atributos, "", null, 0);
+                        var document = seClient.newDocument(seDocumentSaveIn.categoryId, seDocumentSaveIn.registration.Trim() + "-" + seDocumentSaveIn.categoryId.Trim(), seDocumentSaveIn.title, "", "", "", "", null, 0);
 
                         var documentMatrix = document.Split(':');
 
@@ -235,6 +200,73 @@ namespace SoftExpert
                             {
                                 throw new Exception(document);
                             }
+                        }
+
+                        foreach (var item in documentDataReturn.ATTRIBUTTES)
+                        {
+                            if (item.ATTRIBUTTENAME.Contains(prefix))
+                            {
+                                string value = "";
+
+                                if (item.ATTRIBUTTEVALUE.Count() > 0)
+                                {
+                                    value = item.ATTRIBUTTEVALUE[0];
+                                }
+
+                                try
+                                {
+                                    var s = seClient.setAttributeValue(seDocumentSaveIn.registration.Trim() + "-" + seDocumentSaveIn.categoryId.Trim(), "", item.ATTRIBUTTENAME, value);
+                                }
+                                catch (Exception)
+                                {
+                                    throw new Exception(string.Format(i18n.Resource.FieldWithError, item.ATTRIBUTTENAME));
+                                }
+                            }
+                        }
+
+                        foreach (var item in seDocumentSaveIn.additionalFields)
+                        {
+                            try
+                            {
+                                if (item.additionalFieldId == (int)EAdditionalField.Identifier)
+                                {
+                                    var retorno = seClient.setAttributeValue(seDocumentSaveIn.registration.Trim() + "-" + seDocumentSaveIn.categoryId.Trim(), "", EAttribute.SER_Input_NumDoc.ToString(), item.value);
+                                }
+                                else if (item.additionalFieldId == (int)EAdditionalField.Competence)
+                                {
+                                    DateTime competence = DateTime.MinValue;
+                                    DateTime.TryParse(item.value, out competence);
+
+                                    var retorno = seClient.setAttributeValue(seDocumentSaveIn.registration.Trim() + "-" + seDocumentSaveIn.categoryId.Trim(), "", EAttribute.SER_Input_DataRef.ToString(), competence.ToString("yyyy-MM-dd"));
+                                }
+                                else if (item.additionalFieldId == (int)EAdditionalField.Validity)
+                                {
+                                    DateTime validity = DateTime.MinValue;
+                                    DateTime.TryParse(item.value, out validity);
+
+                                    var retorno = seClient.setAttributeValue(seDocumentSaveIn.registration.Trim() + "-" + seDocumentSaveIn.categoryId.Trim(), "", EAttribute.SER_Input_Data_Vencto.ToString(), validity.ToString("yyyy-MM-dd"));
+                                }
+                                else if (item.additionalFieldId == (int)EAdditionalField.DocumentView)
+                                {
+                                    var retorno = seClient.setAttributeValue(seDocumentSaveIn.registration.Trim() + "-" + seDocumentSaveIn.categoryId.Trim(), "", EAttribute.SER_Input_Compl.ToString(), item.value);
+                                }
+                            }
+                            catch (Exception)
+                            {
+                                throw new Exception(string.Format(i18n.Resource.FieldWithError, item.additionalFieldId));
+                            }
+                        }
+
+                        if (documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()))
+                        {
+                            string unityCode = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault();
+
+                            var n = seClient.newAccessPermission(seDocumentSaveIn.registration.Trim() + "-" + seDocumentSaveIn.categoryId.Trim(),
+                                    unityCode + ";" + unityCode,
+                                    int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString()),
+                                    WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString(),
+                                    int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString()),
+                                    WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString());
                         }
                     }
                 }
