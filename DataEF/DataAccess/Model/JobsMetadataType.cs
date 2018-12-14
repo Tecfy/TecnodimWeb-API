@@ -39,5 +39,9 @@ namespace DataEF.DataAccess.Model
 
         [Display(Name = "Unity", ResourceType = typeof(i18n.Resource))]
         public int UnityId { get; set; } // UnityId
+
+        [StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+        [Display(Name = "Course", ResourceType = typeof(i18n.Resource))]
+        public string Course { get; set; } // Course
     }
 }

@@ -8,11 +8,9 @@ namespace Model.In
         [Display(Name = "UnityCode", ResourceType = typeof(i18n.Resource))]
         public string unityCode { get; set; }
 
-        [Required]
         [Display(Name = "CPF", ResourceType = typeof(i18n.Resource))]
         public string cpf { get; set; }
 
-        [Required]
         [Display(Name = "RG", ResourceType = typeof(i18n.Resource))]
         public string rg { get; set; }
 

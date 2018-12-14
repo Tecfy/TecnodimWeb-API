@@ -1203,6 +1203,10 @@ namespace DataEF.DataAccess
 		[Display(Name = "Unity", ResourceType = typeof(i18n.Resource))]
 		public int UnityId { get; set; } // UnityId
 
+		[StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Course", ResourceType = typeof(i18n.Resource))]
+		public string Course { get; set; } // Course
+
 		*/
 	}
 
@@ -1236,6 +1240,8 @@ namespace DataEF.DataAccess
         public bool Sent { get; set; } // Sent
 
         public int UnityId { get; set; } // UnityId
+
+        public string Course { get; set; } // Course
 
         // Reverse navigation
         public virtual ICollection<JobCategories> JobCategories { get; set; } // JobCategories.FK_JobCategories_Jobs;
@@ -2291,6 +2297,7 @@ namespace DataEF.DataAccess
             Property(x => x.Name).HasColumnName("Name").IsRequired().HasMaxLength(255);
             Property(x => x.Sent).HasColumnName("Sent").IsRequired();
             Property(x => x.UnityId).HasColumnName("UnityId").IsRequired();
+            Property(x => x.Course).HasColumnName("Course").IsRequired().HasMaxLength(255);
 
             // Foreign keys
             HasRequired(a => a.Users).WithMany(b => b.Jobs).HasForeignKey(c => c.UserId); // FK_Jobs_Users
