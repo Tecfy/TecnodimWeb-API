@@ -1,18 +1,18 @@
-﻿using SoftExpert.com.softexpert.tecfy;
+﻿using SoftExpert.com.softexpert.tecfy.adm;
 using System;
 using System.Net;
 using System.Text;
 
 namespace SoftExpert
 {
-    public class SEClient : Documento
+    public class SEAdministration : Administration
     {
         private string m_HeaderName;
         private string m_HeaderValue;
 
         protected override WebRequest GetWebRequest(Uri uri)
         {
-            HttpWebRequest request = (HttpWebRequest)base.GetWebRequest(uri);            
+            HttpWebRequest request = (HttpWebRequest)base.GetWebRequest(uri);
 
             if (null != this.m_HeaderName)
                 request.Headers.Add(this.m_HeaderName, this.m_HeaderValue);
@@ -29,7 +29,7 @@ namespace SoftExpert
         {
             string usernamePassword = userName + ":" + password;
 
-            this.SetRequestHeader("Authorization", "Basic " + Convert.ToBase64String(new ASCIIEncoding().GetBytes(usernamePassword)));            
+            this.SetRequestHeader("Authorization", "Basic " + Convert.ToBase64String(new ASCIIEncoding().GetBytes(usernamePassword)));
         }
     }
 }

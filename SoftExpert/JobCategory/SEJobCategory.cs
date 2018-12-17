@@ -120,6 +120,11 @@ namespace SoftExpert
                     {
                         string unityCode = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault();
 
+                        SEAdministration seAdministration = SEConnection.GetConnectionAdm();
+
+                        seAdministration.newPosition(unityCode, unityCode, out string status, out string detail, out int code, out string recordid, out string recordKey);
+                        seAdministration.newDepartment(unityCode, unityCode, unityCode, "", "", "1");
+
                         var n = seClient.newAccessPermission(ecmJobCategorySaveIn.code.Trim(),
                                 unityCode + ";" + unityCode,
                                 int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString()),
@@ -222,6 +227,11 @@ namespace SoftExpert
                         {
                             string unityCode = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault();
 
+                            SEAdministration seAdministration = SEConnection.GetConnectionAdm();
+
+                            seAdministration.newPosition(unityCode, unityCode, out string status, out string detail, out int code, out string recordid, out string recordKey);
+                            seAdministration.newDepartment(unityCode, unityCode, unityCode, "", "", "1");
+
                             var n = seClient.newAccessPermission(documentReturn.IDDOCUMENT,
                                     unityCode + ";" + unityCode,
                                     int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString()),
@@ -312,6 +322,11 @@ namespace SoftExpert
                         if (documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()))
                         {
                             string unityCode = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault();
+
+                            SEAdministration seAdministration = SEConnection.GetConnectionAdm();
+
+                            seAdministration.newPosition(unityCode, unityCode, out string status, out string detail, out int code, out string recordid, out string recordKey);
+                            seAdministration.newDepartment(unityCode, unityCode, unityCode, "", "", "1");
 
                             var n = seClient.newAccessPermission(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(),
                                     unityCode + ";" + unityCode,

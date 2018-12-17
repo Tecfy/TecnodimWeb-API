@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Attribute\SEAttribute.cs" />
     <Compile Include="Category\SECategory.cs" />
+    <Compile Include="Connection\SEAdministration.cs" />
     <Compile Include="Connection\SEConnection.cs" />
     <Compile Include="Connection\SEClient.cs" />
     <Compile Include="JobCategory\SEJobCategory.cs" />
@@ -56,6 +57,11 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\com.softexpert.tecfy.adm\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
     </Compile>
     <Compile Include="Web References\com.softexpert.tecfy\Reference.cs">
       <AutoGen>True</AutoGen>
@@ -71,6 +77,11 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\com.softexpert.tecfy.adm\adm_ws.wsdl" />
+    <None Include="Web References\com.softexpert.tecfy.adm\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <None Include="Web References\com.softexpert.tecfy\dc_ws.wsdl" />
     <None Include="Web References\com.softexpert.tecfy\documentDataReturn.datasource">
@@ -120,6 +131,17 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
+    <WebReferenceUrl Include="https://tecfy.softexpert.com/se/ws/adm_ws.php%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\com.softexpert.tecfy.adm\</RelPath>
+      <UpdateFromURL>https://tecfy.softexpert.com/se/ws/adm_ws.php%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>SoftExpert_com_softexpert_tecfy_adm_Administration</CachedSettingsPropName>
+    </WebReferenceUrl>
     <WebReferenceUrl Include="https://tecfy.softexpert.com/se/ws/dc_ws.php%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\com.softexpert.tecfy\</RelPath>

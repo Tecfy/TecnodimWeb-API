@@ -138,6 +138,11 @@ namespace SoftExpert
                         List<string> units = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.ToList();
                         if (!units.Any(x => x == eCMDocumentDetailSaveIn.unityCode))
                         {
+                            SEAdministration seAdministration = SEConnection.GetConnectionAdm();
+
+                            seAdministration.newPosition(eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, out string status, out string detail, out int code, out string recordid, out string recordKey);
+                            seAdministration.newDepartment(eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, "", "", "1");
+
                             var s = seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_cad_unidades.ToString(), eCMDocumentDetailSaveIn.unityCode);
 
                             var n = seClient.newAccessPermission(documentReturn.IDDOCUMENT,
@@ -182,6 +187,11 @@ namespace SoftExpert
                             var returnStatus = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_SituacaoAluno.ToString(), eCMDocumentDetailSaveIn.status);
                             var returnUnity = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Unidade.ToString(), eCMDocumentDetailSaveIn.unity);
                             var returnUnityCode = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_unidades.ToString(), eCMDocumentDetailSaveIn.unityCode);
+
+                            SEAdministration seAdministration = SEConnection.GetConnectionAdm();
+
+                            seAdministration.newPosition(eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, out string status, out string detail, out int code, out string recordid, out string recordKey);
+                            seAdministration.newDepartment(eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, "", "", "1");
 
                             var n = seClient.newAccessPermission(eCMDocumentDetailSaveIn.registration.Trim(),
                                 eCMDocumentDetailSaveIn.unityCode + ";" + eCMDocumentDetailSaveIn.unityCode,
