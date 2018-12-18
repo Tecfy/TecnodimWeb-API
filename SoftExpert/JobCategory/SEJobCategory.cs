@@ -20,7 +20,7 @@ namespace SoftExpert
             SEClient seClient = SEConnection.GetConnection();
 
             eletronicFile[] eletronicFiles = seClient.downloadEletronicFile(eCMJobCategoryIn.externalId, "", "", "", eCMJobCategoryIn.categoryId, "", "", "");
-            if (eletronicFiles.Count() > 0)
+            if (eletronicFiles.Any(x => string.IsNullOrEmpty(x.ERROR)))
             {
                 eCMJobCategoryOut.result = new ECMJobCategoryVM()
                 {
@@ -29,7 +29,7 @@ namespace SoftExpert
             }
             else
             {
-                eCMJobCategoryOut.result = null;
+                throw new Exception(eletronicFiles.Where(x => !string.IsNullOrEmpty(x.ERROR)).FirstOrDefault().ERROR);
             }
 
             return eCMJobCategoryOut;
