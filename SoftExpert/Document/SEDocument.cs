@@ -182,6 +182,13 @@ namespace SoftExpert
                                     int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString()),
                                     WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString());
                         }
+
+                        try
+                        {
+                            string returnAssociation = seClient.newDocumentContainerAssociation(WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"], documentReturnOwner.IDDOCUMENT, "", WebConfigurationManager.AppSettings["SoftExpert.StructID"], seDocumentSaveIn.categoryId, seDocumentSaveIn.registration.Trim() + "-" + seDocumentSaveIn.categoryId.Trim(), out long codeAssociation, out string detailAssociation);
+                        }
+                        catch
+                        { }
                     }
                 }
 
@@ -278,6 +285,13 @@ namespace SoftExpert
                                     int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString()),
                                     WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString());
                         }
+
+                        try
+                        {
+                            string returnAssociation = seClient.newDocumentContainerAssociation(WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"], documentReturnOwner.IDDOCUMENT, "", WebConfigurationManager.AppSettings["SoftExpert.StructID"], seDocumentSaveIn.categoryId, seDocumentSaveIn.registration.Trim() + "-" + seDocumentSaveIn.categoryId.Trim(), out long codeAssociation, out string detailAssociation);
+                        }
+                        catch
+                        { }
                     }
                 }
 
