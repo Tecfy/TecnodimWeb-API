@@ -513,4 +513,7 @@
   <data name="JobCategoryNoProcess" xml:space="preserve">
     <value>A categoria {0} do trabalho já foi processado ou está sendo processado.</value>
   </data>
+  <data name="ExternalUser" xml:space="preserve">
+    <value>Usuário Externo</value>
+  </data>
 </root>

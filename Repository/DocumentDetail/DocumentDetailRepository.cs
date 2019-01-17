@@ -21,6 +21,19 @@ namespace Repository
             return ecmDocumentDetailsByRegistrationOut;
         }
 
+        public ECMDocumentDetailByRegistrationOut GetECMDocumentDetailByRegistration(ECMDocumentDetailByRegistrationIn ecmDocumentDetailByRegistrationIn)
+        {
+            ECMDocumentDetailByRegistrationOut ecmDocumentDetailByRegistrationOut = new ECMDocumentDetailByRegistrationOut();
+
+            registerEventRepository.SaveRegisterEvent(ecmDocumentDetailByRegistrationIn.userId, ecmDocumentDetailByRegistrationIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetECMDocumentDetailByRegistration", "");
+
+            ecmDocumentDetailByRegistrationOut = SEDocumentDetail.GetSEDocumentDetailByRegistration(ecmDocumentDetailByRegistrationIn);
+
+            registerEventRepository.SaveRegisterEvent(ecmDocumentDetailByRegistrationIn.userId, ecmDocumentDetailByRegistrationIn.key, "Log - End", "Repository.DocumentDetailRepository.GetECMDocumentDetailByRegistration", "");
+
+            return ecmDocumentDetailByRegistrationOut;
+        }
+
         public ECMDocumentDetailOut GetECMDocumentDetail(ECMDocumentDetailIn ecmDocumentDetailIn)
         {
             ECMDocumentDetailOut ecmDocumentDetailOut = new ECMDocumentDetailOut();

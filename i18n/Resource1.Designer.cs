@@ -466,6 +466,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Usuário Externo.
+        /// </summary>
+        public static string ExternalUser {
+            get {
+                return ResourceManager.GetString("ExternalUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to O campo {0} esta com erro!.
         /// </summary>
         public static string FieldWithError {

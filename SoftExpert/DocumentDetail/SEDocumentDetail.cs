@@ -62,6 +62,51 @@ namespace SoftExpert
             return ecmDocumentDetailsByRegistrationOut;
         }
 
+        public static ECMDocumentDetailByRegistrationOut GetSEDocumentDetailByRegistration(ECMDocumentDetailByRegistrationIn ecmDocumentDetailByRegistrationIn)
+        {
+            ECMDocumentDetailByRegistrationOut ecmDocumentDetailByRegistrationOut = new ECMDocumentDetailByRegistrationOut();
+
+            SEClient seClient = SEConnection.GetConnection();
+            attributeData[] attributeDatas = new attributeData[2];
+            attributeDatas[0] = new attributeData
+            {
+                //search enrollment
+                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerUnity"],
+                VLATTRIBUTE = ecmDocumentDetailByRegistrationIn.unity
+            };
+            attributeDatas[1] = new attributeData
+            {
+                //search enrollment
+                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerRegistration"],
+                VLATTRIBUTE = ecmDocumentDetailByRegistrationIn.registration
+            };
+
+            searchDocumentFilter searchDocumentFilter = new searchDocumentFilter();
+            searchDocumentFilter.IDCATEGORY = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
+            searchDocumentReturn searchDocumentReturn = seClient.searchDocument(searchDocumentFilter, "", attributeDatas);
+            documentReturn retorno = new documentReturn();
+            if (searchDocumentReturn.RESULTS.Count() > 0)
+            {
+                documentDataReturn documentDataReturn = SEDocument.GetDocumentData(searchDocumentReturn.RESULTS.Select(x => x.IDDOCUMENT).FirstOrDefault());
+
+                ecmDocumentDetailByRegistrationOut.result = new ECMDocumentDetailByRegistrationVM()
+                {
+                    unity = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Unidade.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                    course = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Curso.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Curso.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                    registration = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Matricula.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Matricula.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                    cpf = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Cpf.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Cpf.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                    rg = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_RG.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_RG.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                    name = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_NomedoAluno.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_NomedoAluno.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                };
+            }
+            else
+            {
+                ecmDocumentDetailByRegistrationOut.result = null;
+            }
+
+            return ecmDocumentDetailByRegistrationOut;
+        }
+
         public static ECMDocumentDetailOut GetSEDocumentDetail(ECMDocumentDetailIn ecmDocumentDetailIn)
         {
             ECMDocumentDetailOut ecmDocumentDetailOut = new ECMDocumentDetailOut();

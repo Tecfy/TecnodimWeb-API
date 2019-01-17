@@ -38,6 +38,30 @@ namespace ApiTecnodim.Controllers
         }
 
         [Authorize, HttpGet]
+        public ECMDocumentDetailByRegistrationOut GetECMDocumentDetailByRegistration(string registration, string unity)
+        {
+            ECMDocumentDetailByRegistrationOut ecmDocumentDetailByRegistrationOut = new ECMDocumentDetailByRegistrationOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                ECMDocumentDetailByRegistrationIn ecmDocumentDetailByRegistrationIn = new ECMDocumentDetailByRegistrationIn() { registration = registration, unity = unity, userId = User.Identity.Name, key = Key.ToString() };
+
+                ecmDocumentDetailByRegistrationOut = documentDetailRepository.GetECMDocumentDetailByRegistration(ecmDocumentDetailByRegistrationIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.GetECMDocumentDetailByRegistration", ex.Message);
+
+                ecmDocumentDetailByRegistrationOut.result = null;
+                ecmDocumentDetailByRegistrationOut.successMessage = null;
+                ecmDocumentDetailByRegistrationOut.messages.Add(ex.Message);
+            }
+
+            return ecmDocumentDetailByRegistrationOut;
+        }
+
+        [Authorize, HttpGet]
         public ECMDocumentDetailOut GetECMDocumentDetail(string id)
         {
             ECMDocumentDetailOut ecmDocumentDetailOut = new ECMDocumentDetailOut();
