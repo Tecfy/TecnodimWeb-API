@@ -1141,6 +1141,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Token.
+        /// </summary>
+        public static string Token {
+            get {
+                return ResourceManager.GetString("Token", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tipo.
         /// </summary>
         public static string Type {

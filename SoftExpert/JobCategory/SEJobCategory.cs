@@ -57,7 +57,7 @@ namespace SoftExpert
                 //If the document already exists in the specified category, it uploads the document and properties
                 if (documentDataReturn.IDDOCUMENT != null)
                 {
-                    var ds = seClient.deleteDocument(ecmJobCategorySaveIn.categoryId, ecmJobCategorySaveIn.code, "", WebConfigurationManager.AppSettings["SoftExpert.MessageDeleteDocument"]);
+                    var ds = seClient.deleteDocument(WebConfigurationManager.AppSettings["SoftExpert.JobCategory"], ecmJobCategorySaveIn.code.Trim(), "", WebConfigurationManager.AppSettings["SoftExpert.MessageDeleteDocument"]);
                 }
 
                 //If you do not insert a new document

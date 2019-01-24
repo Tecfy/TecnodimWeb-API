@@ -1851,6 +1851,10 @@ namespace DataEF.DataAccess
 		[Display(Name = "Registration", ResourceType = typeof(i18n.Resource))]
 		public string Registration { get; set; } // Registration
 
+		[StringLength(128, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+		[Display(Name = "Token", ResourceType = typeof(i18n.Resource))]
+		public string Token { get; set; } // Token
+
 		*/
 	}
 
@@ -1880,6 +1884,8 @@ namespace DataEF.DataAccess
         public string LastName { get; set; } // LastName
 
         public string Registration { get; set; } // Registration
+
+        public string Token { get; set; } // Token
 
         // Reverse navigation
         public virtual ICollection<Jobs> Jobs { get; set; } // Jobs.FK_Jobs_Users;
@@ -2503,6 +2509,7 @@ namespace DataEF.DataAccess
             Property(x => x.FirstName).HasColumnName("FirstName").IsOptional().HasMaxLength(50);
             Property(x => x.LastName).HasColumnName("LastName").IsOptional().HasMaxLength(255);
             Property(x => x.Registration).HasColumnName("Registration").IsOptional().HasMaxLength(255);
+            Property(x => x.Token).HasColumnName("Token").IsOptional().HasMaxLength(128);
 
             // Foreign keys
             HasRequired(a => a.AspNetUsers).WithMany(b => b.Users).HasForeignKey(c => c.AspNetUserId); // FK_Users_AspNetUsers

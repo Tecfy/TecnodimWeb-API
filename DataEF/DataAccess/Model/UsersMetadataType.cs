@@ -35,5 +35,9 @@ namespace DataEF.DataAccess.Model
         [StringLength(255, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
         [Display(Name = "Registration", ResourceType = typeof(i18n.Resource))]
         public string Registration { get; set; } // Registration
+
+        [StringLength(128, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
+        [Display(Name = "Token", ResourceType = typeof(i18n.Resource))]
+        public string Token { get; set; } // Token
     }
 }
