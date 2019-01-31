@@ -1,5 +1,6 @@
 ﻿using Model.In;
 using Model.Out;
+using Newtonsoft.Json;
 using Repository;
 using System;
 using System.Linq;
@@ -84,6 +85,8 @@ namespace ApiTecnodim.Controllers
                         {
                             foreach (ModelError error in errors)
                             {
+                                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentsController.GetSEDocumentSave", JsonConvert.SerializeObject(error.ErrorMessage));
+
                                 throw new Exception(error.ErrorMessage);
                             }
                         }
