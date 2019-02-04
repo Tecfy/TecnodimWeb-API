@@ -16,6 +16,14 @@ namespace Repository
 
             registerEventRepository.SaveRegisterEvent(eCMJobCategorySaveIn.userId, eCMJobCategorySaveIn.key, "Log - Start", "Repository.JobCategoryRepository.SetECMJobCategorySave", "");
 
+            string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.JobCategoryRepository.Path"]);
+            string name = eCMJobCategorySaveIn.code + ".pdf";
+
+            if (System.IO.File.Exists(path + "\\" + name))
+            {
+                System.IO.File.Delete(path + "\\" + name);
+            }
+
             SEJobCategory.SEJobCategorySave(eCMJobCategorySaveIn);
 
             registerEventRepository.SaveRegisterEvent(eCMJobCategorySaveIn.userId, eCMJobCategorySaveIn.key, "Log - End", "Repository.JobCategoryRepository.SetECMJobCategorySave", "");
