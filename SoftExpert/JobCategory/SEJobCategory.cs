@@ -4,6 +4,8 @@ using Model.Out;
 using Model.VM;
 using SoftExpert.com.softexpert.tecfy;
 using System;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web.Configuration;
 
@@ -11,6 +13,14 @@ namespace SoftExpert
 {
     public static class SEJobCategory
     {
+        #region .: Attributes :.
+
+        readonly static bool physicalFile = Convert.ToBoolean(WebConfigurationManager.AppSettings["Physical.File.Sesuite"]);
+        readonly static string physicalPath = WebConfigurationManager.AppSettings["Physical.Path.Sesuite"];
+        readonly static string username = WebConfigurationManager.AppSettings["SoftExpert.Username"];
+
+        #endregion
+
         #region .: Public Methods :.
 
         public static ECMJobCategoryOut GetSEJobCategory(ECMJobCategoryIn eCMJobCategoryIn)
@@ -74,7 +84,14 @@ namespace SoftExpert
                     {
                         if (documentMatrix.Count() >= 3 && documentMatrix[2].ToUpper().Contains("SUCESSO"))
                         {
-                            SEDocumentUpload(ecmJobCategorySaveIn, ecmJobCategorySaveIn.code.Trim());
+                            if (physicalFile)
+                            {
+                                SEDocumentPhysicalFile(ecmJobCategorySaveIn, ecmJobCategorySaveIn.code.Trim());
+                            }
+                            else
+                            {
+                                SEDocumentUpload(ecmJobCategorySaveIn, ecmJobCategorySaveIn.code.Trim());
+                            }
                         }
                         else
                         {
@@ -136,12 +153,12 @@ namespace SoftExpert
                     try
                     {
                         string returnAssociation = seClient.newDocumentContainerAssociation(WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"],
-                                                                                            documentReturnOwner.IDDOCUMENT, 
+                                                                                            documentReturnOwner.IDDOCUMENT,
                                                                                             "",
-                                                                                            WebConfigurationManager.AppSettings["SoftExpert.StructID"], 
-                                                                                            WebConfigurationManager.AppSettings["SoftExpert.JobCategory"], 
-                                                                                            ecmJobCategorySaveIn.code.Trim(), 
-                                                                                            out long codeAssociation, 
+                                                                                            WebConfigurationManager.AppSettings["SoftExpert.StructID"],
+                                                                                            WebConfigurationManager.AppSettings["SoftExpert.JobCategory"],
+                                                                                            ecmJobCategorySaveIn.code.Trim(),
+                                                                                            out long codeAssociation,
                                                                                             out string detailAssociation);
                     }
                     catch
@@ -235,7 +252,14 @@ namespace SoftExpert
                             }
                         }
 
-                        var ds = SEDocumentUpload(eCMJobSaveIn, documentReturn.IDDOCUMENT);
+                        if (physicalFile)
+                        {
+                            SEDocumentPhysicalFile(eCMJobSaveIn, documentReturn.IDDOCUMENT);
+                        }
+                        else
+                        {
+                            SEDocumentUpload(eCMJobSaveIn, documentReturn.IDDOCUMENT);
+                        }
 
                         if (documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()))
                         {
@@ -277,7 +301,14 @@ namespace SoftExpert
                         {
                             if (documentMatrix.Count() >= 3 && documentMatrix[2].ToUpper().Contains("SUCESSO"))
                             {
-                                SEDocumentUpload(eCMJobSaveIn, eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim());
+                                if (physicalFile)
+                                {
+                                    SEDocumentPhysicalFile(eCMJobSaveIn, eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim());
+                                }
+                                else
+                                {
+                                    SEDocumentUpload(eCMJobSaveIn, eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim());
+                                }
                             }
                             else
                             {
@@ -378,7 +409,7 @@ namespace SoftExpert
 
         #region .: Private Methods :.
 
-        private static bool SEDocumentUpload(ECMJobCategorySaveIn ecmJobCategorySaveIn, string documentid)
+        private static bool SEDocumentUpload(ECMJobCategorySaveIn eCMJobCategorySaveIn, string documentid)
         {
             try
             {
@@ -387,18 +418,18 @@ namespace SoftExpert
                 eletronicFile[] eletronicFiles = new eletronicFile[2];
                 eletronicFiles[0] = new eletronicFile
                 {
-                    BINFILE = Convert.FromBase64String(ecmJobCategorySaveIn.archive),
+                    BINFILE = Convert.FromBase64String(eCMJobCategorySaveIn.archive),
                     ERROR = "",
-                    NMFILE = ecmJobCategorySaveIn.title
+                    NMFILE = eCMJobCategorySaveIn.title
                 };
 
                 var response = seClient.uploadEletronicFile(documentid, "", "", eletronicFiles);
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                throw ex;
             }
         }
 
@@ -420,9 +451,115 @@ namespace SoftExpert
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                throw ex;
+            }
+        }
+
+        public static bool SEDocumentPhysicalFile(ECMJobCategorySaveIn eCMJobCategorySaveIn, string documentid)
+        {
+            try
+            {
+                #region .: Save File :.
+
+                if (!Directory.Exists(physicalPath))
+                {
+                    Directory.CreateDirectory(physicalPath);
+                }
+
+                if (File.Exists(Path.Combine(physicalPath, Path.GetFileName(eCMJobCategorySaveIn.title))))
+                {
+                    File.Delete(Path.Combine(physicalPath, Path.GetFileName(eCMJobCategorySaveIn.title)));
+                }
+
+                File.WriteAllBytes(Path.Combine(physicalPath, Path.GetFileName(eCMJobCategorySaveIn.title)), Convert.FromBase64String(eCMJobCategorySaveIn.archive));
+
+                #endregion
+
+                #region .: Query :.
+
+                string queryStringInsert = @"INSERT INTO ADINTERFACE (CDINTERFACE, FGIMPORT, CDISOSYSTEM, FGOPTION, NMFIELD01, NMFIELD02, NMFIELD03, NMFIELD04, NMFIELD05, NMFIELD07) VALUES((SELECT COALESCE(MAX(CDINTERFACE),0)+1 FROM ADINTERFACE), 1, 73, 97, '{0}','00','{1}','{2}','{3}','{4}')";
+                string connectionString = WebConfigurationManager.ConnectionStrings["DefaultSesuite"].ConnectionString;
+
+                #endregion
+
+                #region .: Insert Sesuite :.
+
+                using (SqlConnection connectionInsert = new SqlConnection(connectionString))
+                {
+                    var queryInsert = string.Format(queryStringInsert,
+                                                   documentid, //Identificador do Documento
+                                                   Path.GetFileName(eCMJobCategorySaveIn.title), //Nome do Arquivo
+                                                   username, //Matrícula do Usuário
+                                                   physicalPath, //Caminho do Arquivo
+                                                   eCMJobCategorySaveIn.categoryId.Trim() //Identificador da categoria
+                                                   );
+                    SqlCommand commandInsert = new SqlCommand(queryInsert, connectionInsert);
+                    connectionInsert.Open();
+                    commandInsert.ExecuteNonQuery();
+                }
+
+                #endregion
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static bool SEDocumentPhysicalFile(ECMJobSaveIn eCMJobSaveIn, string documentid)
+        {
+            try
+            {
+                #region .: Save File :.
+
+                if (!Directory.Exists(physicalPath))
+                {
+                    Directory.CreateDirectory(physicalPath);
+                }
+
+                if (File.Exists(Path.Combine(physicalPath, Path.GetFileName(eCMJobSaveIn.title))))
+                {
+                    File.Delete(Path.Combine(physicalPath, Path.GetFileName(eCMJobSaveIn.title)));
+                }
+
+                File.WriteAllBytes(Path.Combine(physicalPath, Path.GetFileName(eCMJobSaveIn.title)), Convert.FromBase64String(eCMJobSaveIn.archive));
+
+                #endregion
+
+                #region .: Query :.
+
+                string queryStringInsert = @"INSERT INTO ADINTERFACE (CDINTERFACE, FGIMPORT, CDISOSYSTEM, FGOPTION, NMFIELD01, NMFIELD02, NMFIELD03, NMFIELD04, NMFIELD05, NMFIELD07) VALUES((SELECT COALESCE(MAX(CDINTERFACE),0)+1 FROM ADINTERFACE), 1, 73, 97, '{0}','00','{1}','{2}','{3}','{4}')";
+                string connectionString = WebConfigurationManager.ConnectionStrings["DefaultSesuite"].ConnectionString;
+
+                #endregion
+
+                #region .: Insert Sesuite :.
+
+                using (SqlConnection connectionInsert = new SqlConnection(connectionString))
+                {
+                    var queryInsert = string.Format(queryStringInsert,
+                                                   documentid, //Identificador do Documento
+                                                   Path.GetFileName(eCMJobSaveIn.title), //Nome do Arquivo
+                                                   username, //Matrícula do Usuário
+                                                   physicalPath, //Caminho do Arquivo
+                                                   eCMJobSaveIn.categoryId.Trim() //Identificador da categoria
+                                                   );
+                    SqlCommand commandInsert = new SqlCommand(queryInsert, connectionInsert);
+                    connectionInsert.Open();
+                    commandInsert.ExecuteNonQuery();
+                }
+
+                #endregion
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 

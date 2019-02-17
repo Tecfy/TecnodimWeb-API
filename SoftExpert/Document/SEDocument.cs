@@ -4,6 +4,8 @@ using Model.Out;
 using Model.VM;
 using SoftExpert.com.softexpert.tecfy;
 using System;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web.Configuration;
 
@@ -11,6 +13,14 @@ namespace SoftExpert
 {
     public static class SEDocument
     {
+        #region .: Attributes :.
+
+        readonly static bool physicalFile = Convert.ToBoolean(WebConfigurationManager.AppSettings["Physical.File.Sesuite"]);
+        readonly static string physicalPath = WebConfigurationManager.AppSettings["Physical.Path.Sesuite"];
+        readonly static string username = WebConfigurationManager.AppSettings["SoftExpert.Username"];
+
+        #endregion
+
         #region .: Public Methods :.
 
         public static documentDataReturn GetDocumentData(string documentid)
@@ -164,7 +174,14 @@ namespace SoftExpert
                             }
                         }
 
-                        var ds = SEDocumentUpload(seDocumentSaveIn, documentReturn.IDDOCUMENT);
+                        if (physicalFile)
+                        {
+                            SEDocumentPhysicalFile(seDocumentSaveIn, documentReturn.IDDOCUMENT);
+                        }
+                        else
+                        {
+                            SEDocumentUpload(seDocumentSaveIn, documentReturn.IDDOCUMENT);
+                        }
 
                         if (documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()))
                         {
@@ -206,7 +223,14 @@ namespace SoftExpert
                         {
                             if (documentMatrix.Count() >= 3 && documentMatrix[2].ToUpper().Contains("SUCESSO"))
                             {
-                                SEDocumentUpload(seDocumentSaveIn, seDocumentSaveIn.registration.Trim() + "-" + seDocumentSaveIn.categoryId.Trim());
+                                if (physicalFile)
+                                {
+                                    SEDocumentPhysicalFile(seDocumentSaveIn, seDocumentSaveIn.registration.Trim() + "-" + seDocumentSaveIn.categoryId.Trim());
+                                }
+                                else
+                                {
+                                    SEDocumentUpload(seDocumentSaveIn, seDocumentSaveIn.registration.Trim() + "-" + seDocumentSaveIn.categoryId.Trim());
+                                }
                             }
                             else
                             {
@@ -349,9 +373,62 @@ namespace SoftExpert
 
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                throw ex;
+            }
+        }
+
+        public static bool SEDocumentPhysicalFile(ECMDocumentSaveIn seDocumentSaveIn, string documentid)
+        {
+            try
+            {
+                #region .: Save File :.
+
+                if (!Directory.Exists(physicalPath))
+                {
+                    Directory.CreateDirectory(physicalPath);
+                }
+
+                if (File.Exists(Path.Combine(physicalPath, Path.GetFileName(seDocumentSaveIn.title))))
+                {
+                    File.Delete(Path.Combine(physicalPath, Path.GetFileName(seDocumentSaveIn.title)));
+                }
+
+                File.WriteAllBytes(Path.Combine(physicalPath, Path.GetFileName(seDocumentSaveIn.title)), Convert.FromBase64String(seDocumentSaveIn.archive));
+
+                #endregion
+
+                #region .: Query :.
+
+                string queryStringInsert = @"INSERT INTO ADINTERFACE (CDINTERFACE, FGIMPORT, CDISOSYSTEM, FGOPTION, NMFIELD01, NMFIELD02, NMFIELD03, NMFIELD04, NMFIELD05, NMFIELD07) VALUES((SELECT COALESCE(MAX(CDINTERFACE),0)+1 FROM ADINTERFACE), 1, 73, 97, '{0}','00','{1}','{2}','{3}','{4}')";
+                string connectionString = WebConfigurationManager.ConnectionStrings["DefaultSesuite"].ConnectionString;
+
+                #endregion
+
+                #region .: Insert Sesuite :.
+
+                using (SqlConnection connectionInsert = new SqlConnection(connectionString))
+                {
+                    var queryInsert = string.Format(queryStringInsert,
+                                                   documentid, //Identificador do Documento
+                                                   Path.GetFileName(seDocumentSaveIn.title), //Nome do Arquivo
+                                                   username, //Matrícula do Usuário
+                                                   physicalPath, //Caminho do Arquivo
+                                                   seDocumentSaveIn.categoryId.Trim() //Identificador da categoria
+                                                   );
+                    SqlCommand commandInsert = new SqlCommand(queryInsert, connectionInsert);
+                    connectionInsert.Open();
+                    commandInsert.ExecuteNonQuery();
+                }
+
+                #endregion
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 
