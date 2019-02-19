@@ -15,9 +15,9 @@ namespace SoftExpert
     {
         #region .: Attributes :.
 
-        readonly static bool physicalFile = Convert.ToBoolean(WebConfigurationManager.AppSettings["Physical.File.Sesuite"]);
-        readonly static string physicalPath = WebConfigurationManager.AppSettings["Physical.Path.Sesuite"];
-        readonly static string username = WebConfigurationManager.AppSettings["SoftExpert.Username"];
+        readonly static bool physicalFile = Convert.ToBoolean(WebConfigurationManager.AppSettings["Sesuite.Folder.Physical"]);
+        readonly static string physicalPath = WebConfigurationManager.AppSettings["Sesuite.Physical.Path"];
+        readonly static string username = WebConfigurationManager.AppSettings["Physical.Username"];
 
         #endregion
 
