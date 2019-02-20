@@ -84,6 +84,71 @@ namespace SoftExpert
                     {
                         if (documentMatrix.Count() >= 3 && documentMatrix[2].ToUpper().Contains("SUCESSO"))
                         {
+                            foreach (var item in documentDataReturn.ATTRIBUTTES)
+                            {
+                                if (item.ATTRIBUTTENAME.Contains(prefix))
+                                {
+                                    string value = "";
+
+                                    if (item.ATTRIBUTTEVALUE.Count() > 0)
+                                    {
+                                        value = item.ATTRIBUTTEVALUE[0];
+                                    }
+
+                                    try
+                                    {
+                                        var s = seClient.setAttributeValue(ecmJobCategorySaveIn.code.Trim(), "", item.ATTRIBUTTENAME, value);
+                                    }
+                                    catch (Exception)
+                                    {
+                                        throw new Exception(string.Format(i18n.Resource.FieldWithError, item.ATTRIBUTTENAME));
+                                    }
+                                }
+                            }
+
+                            try
+                            {
+                                var retornoDataJob = seClient.setAttributeValue(ecmJobCategorySaveIn.code.Trim(), "", EAttribute.MFP_Data_Job.ToString(), ecmJobCategorySaveIn.dataJob.ToString("yyyy-MM-dd"));
+                                var retornoStatus = seClient.setAttributeValue(ecmJobCategorySaveIn.code.Trim(), "", EAttribute.MFP_Status.ToString(), WebConfigurationManager.AppSettings["SoftExpert.JobStatusInitial"]);
+                                var retornoCategoria = seClient.setAttributeValue(ecmJobCategorySaveIn.code.Trim(), "", EAttribute.MFP_Categoria.ToString(), ecmJobCategorySaveIn.categoryId);
+                                var retornoUsuario = seClient.setAttributeValue(ecmJobCategorySaveIn.code.Trim(), "", EAttribute.MFP_Usuario.ToString(), ecmJobCategorySaveIn.user);
+                            }
+                            catch (Exception ex)
+                            {
+                                throw new Exception(ex.Message);
+                            }
+
+                            if (documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()))
+                            {
+                                string unityCode = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault();
+
+                                SEAdministration seAdministration = SEConnection.GetConnectionAdm();
+
+                                seAdministration.newPosition(unityCode, unityCode, out string status, out string detail, out int code, out string recordid, out string recordKey);
+                                seAdministration.newDepartment(unityCode, unityCode, unityCode, "", "", "1");
+
+                                var n = seClient.newAccessPermission(ecmJobCategorySaveIn.code.Trim(),
+                                        unityCode + ";" + unityCode,
+                                        int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString()),
+                                        WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString(),
+                                        int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString()),
+                                        WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString());
+                            }
+
+                            try
+                            {
+                                string returnAssociation = seClient.newDocumentContainerAssociation(WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"],
+                                                                                                    documentReturnOwner.IDDOCUMENT,
+                                                                                                    "",
+                                                                                                    WebConfigurationManager.AppSettings["SoftExpert.StructID"],
+                                                                                                    WebConfigurationManager.AppSettings["SoftExpert.JobCategory"],
+                                                                                                    ecmJobCategorySaveIn.code.Trim(),
+                                                                                                    out long codeAssociation,
+                                                                                                    out string detailAssociation);
+                            }
+                            catch
+                            { }
+
                             if (physicalFile)
                             {
                                 SEDocumentPhysicalFile(ecmJobCategorySaveIn, ecmJobCategorySaveIn.code.Trim());
@@ -98,71 +163,6 @@ namespace SoftExpert
                             throw new Exception(document);
                         }
                     }
-
-                    foreach (var item in documentDataReturn.ATTRIBUTTES)
-                    {
-                        if (item.ATTRIBUTTENAME.Contains(prefix))
-                        {
-                            string value = "";
-
-                            if (item.ATTRIBUTTEVALUE.Count() > 0)
-                            {
-                                value = item.ATTRIBUTTEVALUE[0];
-                            }
-
-                            try
-                            {
-                                var s = seClient.setAttributeValue(ecmJobCategorySaveIn.code.Trim(), "", item.ATTRIBUTTENAME, value);
-                            }
-                            catch (Exception)
-                            {
-                                throw new Exception(string.Format(i18n.Resource.FieldWithError, item.ATTRIBUTTENAME));
-                            }
-                        }
-                    }
-
-                    try
-                    {
-                        var retornoDataJob = seClient.setAttributeValue(ecmJobCategorySaveIn.code.Trim(), "", EAttribute.MFP_Data_Job.ToString(), ecmJobCategorySaveIn.dataJob.ToString("yyyy-MM-dd"));
-                        var retornoStatus = seClient.setAttributeValue(ecmJobCategorySaveIn.code.Trim(), "", EAttribute.MFP_Status.ToString(), WebConfigurationManager.AppSettings["SoftExpert.JobStatusInitial"]);
-                        var retornoCategoria = seClient.setAttributeValue(ecmJobCategorySaveIn.code.Trim(), "", EAttribute.MFP_Categoria.ToString(), ecmJobCategorySaveIn.categoryId);
-                        var retornoUsuario = seClient.setAttributeValue(ecmJobCategorySaveIn.code.Trim(), "", EAttribute.MFP_Usuario.ToString(), ecmJobCategorySaveIn.user);
-                    }
-                    catch (Exception ex)
-                    {
-                        throw new Exception(ex.Message);
-                    }
-
-                    if (documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()))
-                    {
-                        string unityCode = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault();
-
-                        SEAdministration seAdministration = SEConnection.GetConnectionAdm();
-
-                        seAdministration.newPosition(unityCode, unityCode, out string status, out string detail, out int code, out string recordid, out string recordKey);
-                        seAdministration.newDepartment(unityCode, unityCode, unityCode, "", "", "1");
-
-                        var n = seClient.newAccessPermission(ecmJobCategorySaveIn.code.Trim(),
-                                unityCode + ";" + unityCode,
-                                int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString()),
-                                WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString(),
-                                int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString()),
-                                WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString());
-                    }
-
-                    try
-                    {
-                        string returnAssociation = seClient.newDocumentContainerAssociation(WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"],
-                                                                                            documentReturnOwner.IDDOCUMENT,
-                                                                                            "",
-                                                                                            WebConfigurationManager.AppSettings["SoftExpert.StructID"],
-                                                                                            WebConfigurationManager.AppSettings["SoftExpert.JobCategory"],
-                                                                                            ecmJobCategorySaveIn.code.Trim(),
-                                                                                            out long codeAssociation,
-                                                                                            out string detailAssociation);
-                    }
-                    catch
-                    { }
                 }
 
                 return true;
@@ -252,15 +252,6 @@ namespace SoftExpert
                             }
                         }
 
-                        if (physicalFile)
-                        {
-                            SEDocumentPhysicalFile(eCMJobSaveIn, documentReturn.IDDOCUMENT);
-                        }
-                        else
-                        {
-                            SEDocumentUpload(eCMJobSaveIn, documentReturn.IDDOCUMENT);
-                        }
-
                         if (documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()))
                         {
                             string unityCode = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault();
@@ -284,6 +275,15 @@ namespace SoftExpert
                         }
                         catch
                         { }
+
+                        if (physicalFile)
+                        {
+                            SEDocumentPhysicalFile(eCMJobSaveIn, documentReturn.IDDOCUMENT);
+                        }
+                        else
+                        {
+                            SEDocumentUpload(eCMJobSaveIn, documentReturn.IDDOCUMENT);
+                        }
                     }
                 }
 
@@ -301,6 +301,86 @@ namespace SoftExpert
                         {
                             if (documentMatrix.Count() >= 3 && documentMatrix[2].ToUpper().Contains("SUCESSO"))
                             {
+
+                                foreach (var item in documentDataReturn.ATTRIBUTTES)
+                                {
+                                    if (item.ATTRIBUTTENAME.Contains(prefix))
+                                    {
+                                        string value = "";
+
+                                        if (item.ATTRIBUTTEVALUE.Count() > 0)
+                                        {
+                                            value = item.ATTRIBUTTEVALUE[0];
+                                        }
+
+                                        try
+                                        {
+                                            var s = seClient.setAttributeValue(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), "", item.ATTRIBUTTENAME, value);
+                                        }
+                                        catch (Exception)
+                                        {
+                                            throw new Exception(string.Format(i18n.Resource.FieldWithError, item.ATTRIBUTTENAME));
+                                        }
+                                    }
+                                }
+
+                                foreach (var item in eCMJobSaveIn.additionalFields)
+                                {
+                                    try
+                                    {
+                                        if (item.additionalFieldId == (int)EAdditionalField.Identifier)
+                                        {
+                                            var retorno = seClient.setAttributeValue(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), "", EAttribute.SER_Input_NumDoc.ToString(), item.value);
+                                        }
+                                        else if (item.additionalFieldId == (int)EAdditionalField.Competence)
+                                        {
+                                            DateTime competence = DateTime.MinValue;
+                                            DateTime.TryParse(item.value, out competence);
+
+                                            var retorno = seClient.setAttributeValue(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), "", EAttribute.SER_Input_DataRef.ToString(), competence.ToString("yyyy-MM-dd"));
+                                        }
+                                        else if (item.additionalFieldId == (int)EAdditionalField.Validity)
+                                        {
+                                            DateTime validity = DateTime.MinValue;
+                                            DateTime.TryParse(item.value, out validity);
+
+                                            var retorno = seClient.setAttributeValue(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), "", EAttribute.SER_Input_Data_Vencto.ToString(), validity.ToString("yyyy-MM-dd"));
+                                        }
+                                        else if (item.additionalFieldId == (int)EAdditionalField.DocumentView)
+                                        {
+                                            var retorno = seClient.setAttributeValue(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), "", EAttribute.SER_Input_Compl.ToString(), item.value);
+                                        }
+                                    }
+                                    catch (Exception)
+                                    {
+                                        throw new Exception(string.Format(i18n.Resource.FieldWithError, item.additionalFieldId));
+                                    }
+                                }
+
+                                if (documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()))
+                                {
+                                    string unityCode = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault();
+
+                                    SEAdministration seAdministration = SEConnection.GetConnectionAdm();
+
+                                    seAdministration.newPosition(unityCode, unityCode, out string status, out string detail, out int code, out string recordid, out string recordKey);
+                                    seAdministration.newDepartment(unityCode, unityCode, unityCode, "", "", "1");
+
+                                    var n = seClient.newAccessPermission(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(),
+                                            unityCode + ";" + unityCode,
+                                            int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString()),
+                                            WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString(),
+                                            int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString()),
+                                            WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString());
+                                }
+
+                                try
+                                {
+                                    string returnAssociation = seClient.newDocumentContainerAssociation(WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"], documentReturnOwner.IDDOCUMENT, "", WebConfigurationManager.AppSettings["SoftExpert.StructID"], eCMJobSaveIn.categoryId, eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), out long codeAssociation, out string detailAssociation);
+                                }
+                                catch
+                                { }
+
                                 if (physicalFile)
                                 {
                                     SEDocumentPhysicalFile(eCMJobSaveIn, eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim());
@@ -315,85 +395,6 @@ namespace SoftExpert
                                 throw new Exception(document);
                             }
                         }
-
-                        foreach (var item in documentDataReturn.ATTRIBUTTES)
-                        {
-                            if (item.ATTRIBUTTENAME.Contains(prefix))
-                            {
-                                string value = "";
-
-                                if (item.ATTRIBUTTEVALUE.Count() > 0)
-                                {
-                                    value = item.ATTRIBUTTEVALUE[0];
-                                }
-
-                                try
-                                {
-                                    var s = seClient.setAttributeValue(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), "", item.ATTRIBUTTENAME, value);
-                                }
-                                catch (Exception)
-                                {
-                                    throw new Exception(string.Format(i18n.Resource.FieldWithError, item.ATTRIBUTTENAME));
-                                }
-                            }
-                        }
-
-                        foreach (var item in eCMJobSaveIn.additionalFields)
-                        {
-                            try
-                            {
-                                if (item.additionalFieldId == (int)EAdditionalField.Identifier)
-                                {
-                                    var retorno = seClient.setAttributeValue(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), "", EAttribute.SER_Input_NumDoc.ToString(), item.value);
-                                }
-                                else if (item.additionalFieldId == (int)EAdditionalField.Competence)
-                                {
-                                    DateTime competence = DateTime.MinValue;
-                                    DateTime.TryParse(item.value, out competence);
-
-                                    var retorno = seClient.setAttributeValue(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), "", EAttribute.SER_Input_DataRef.ToString(), competence.ToString("yyyy-MM-dd"));
-                                }
-                                else if (item.additionalFieldId == (int)EAdditionalField.Validity)
-                                {
-                                    DateTime validity = DateTime.MinValue;
-                                    DateTime.TryParse(item.value, out validity);
-
-                                    var retorno = seClient.setAttributeValue(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), "", EAttribute.SER_Input_Data_Vencto.ToString(), validity.ToString("yyyy-MM-dd"));
-                                }
-                                else if (item.additionalFieldId == (int)EAdditionalField.DocumentView)
-                                {
-                                    var retorno = seClient.setAttributeValue(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), "", EAttribute.SER_Input_Compl.ToString(), item.value);
-                                }
-                            }
-                            catch (Exception)
-                            {
-                                throw new Exception(string.Format(i18n.Resource.FieldWithError, item.additionalFieldId));
-                            }
-                        }
-
-                        if (documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()))
-                        {
-                            string unityCode = documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault();
-
-                            SEAdministration seAdministration = SEConnection.GetConnectionAdm();
-
-                            seAdministration.newPosition(unityCode, unityCode, out string status, out string detail, out int code, out string recordid, out string recordKey);
-                            seAdministration.newDepartment(unityCode, unityCode, unityCode, "", "", "1");
-
-                            var n = seClient.newAccessPermission(eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(),
-                                    unityCode + ";" + unityCode,
-                                    int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString()),
-                                    WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString(),
-                                    int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString()),
-                                    WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString());
-                        }
-
-                        try
-                        {
-                            string returnAssociation = seClient.newDocumentContainerAssociation(WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"], documentReturnOwner.IDDOCUMENT, "", WebConfigurationManager.AppSettings["SoftExpert.StructID"], eCMJobSaveIn.categoryId, eCMJobSaveIn.registration.Trim() + "-" + eCMJobSaveIn.categoryId.Trim(), out long codeAssociation, out string detailAssociation);
-                        }
-                        catch
-                        { }
                     }
                 }
 
