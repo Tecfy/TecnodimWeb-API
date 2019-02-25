@@ -47,5 +47,14 @@ namespace Helper.Enum
         MFP_Categoria = 20,
         [Description("MFP_Usuario")]
         MFP_Usuario = 21,
+
+        [Description("SER_id_classificador")]
+        SER_id_classificador = 22,
+        [Description("SER_id_recortador")]
+        SER_id_recortador = 23,
+        [Description("SER_nome_classificador")]
+        SER_nome_classificador = 24,
+        [Description("SER_nome_recortador")]
+        SER_nome_recortador = 25,
     }
 }

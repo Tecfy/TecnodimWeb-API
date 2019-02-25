@@ -519,4 +519,10 @@
   <data name="Token" xml:space="preserve">
     <value>Token</value>
   </data>
+  <data name="ClassificationUser" xml:space="preserve">
+    <value>ClassificationUser</value>
+  </data>
+  <data name="SliceUser" xml:space="preserve">
+    <value>SliceUser</value>
+  </data>
 </root>

@@ -6,42 +6,57 @@ using SoftExpert.com.softexpert.tecfy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Web.Configuration;
 
 namespace SoftExpert
 {
     public static class SEDocumentDetail
     {
+        #region .: Attributes :.
+
+        readonly static string searchAttributeOwnerUnity = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerUnity"];
+        readonly static string searchAttributeOwnerRegistration = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerRegistration"];
+        readonly static string searchAttributeOwnerCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
+        readonly static int newAccessPermissionUserType = int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString());
+        readonly static string newAccessPermissionPermission = WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString();
+        readonly static int newAccessPermissionPermissionType = int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString());
+        readonly static string newAccessPermissionFgaddLowerLevel = WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString();
+        readonly static SEClient seClient = SEConnection.GetConnection();
+
+        #endregion
+
+        #region .: Public Methods :.
+
         public static ECMDocumentDetailsByRegistrationOut GetSEDocumentDetailsByRegistration(ECMDocumentDetailsByRegistrationIn ecmDocumentDetailsByRegistrationIn)
         {
             ECMDocumentDetailsByRegistrationOut ecmDocumentDetailsByRegistrationOut = new ECMDocumentDetailsByRegistrationOut();
-
-            SEClient seClient = SEConnection.GetConnection();
 
             attributeData[] attributeDatas = new attributeData[2];
             attributeDatas[0] = new attributeData
             {
                 //search enrollment
-                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerUnity"],
+                IDATTRIBUTE = searchAttributeOwnerUnity,
                 VLATTRIBUTE = ecmDocumentDetailsByRegistrationIn.unity
             };
             attributeDatas[1] = new attributeData
             {
                 //search enrollment
-                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerRegistration"],
+                IDATTRIBUTE = searchAttributeOwnerRegistration,
                 VLATTRIBUTE = ecmDocumentDetailsByRegistrationIn.registration
             };
 
-            searchDocumentFilter searchDocumentFilter = new searchDocumentFilter();
-            searchDocumentFilter.IDCATEGORY = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
+            searchDocumentFilter searchDocumentFilter = new searchDocumentFilter
+            {
+                IDCATEGORY = searchAttributeOwnerCategory
+            };
+
             searchDocumentReturn searchDocumentReturn = seClient.searchDocument(searchDocumentFilter, "", attributeDatas);
             documentReturn retorno = new documentReturn();
             if (searchDocumentReturn.RESULTS.Count() > 0)
             {
                 foreach (var item in (searchDocumentReturn.RESULTS))
                 {
-                    documentDataReturn documentDataReturn = SEDocument.GetDocumentData(item.IDDOCUMENT);
+                    documentDataReturn documentDataReturn = Common.GetDocumentProperties(item.IDDOCUMENT);
 
                     ecmDocumentDetailsByRegistrationOut.result.Add(new ECMDocumentDetailsByRegistrationVM()
                     {
@@ -71,23 +86,26 @@ namespace SoftExpert
             attributeDatas[0] = new attributeData
             {
                 //search enrollment
-                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerUnity"],
+                IDATTRIBUTE = searchAttributeOwnerUnity,
                 VLATTRIBUTE = ecmDocumentDetailByRegistrationIn.unity
             };
             attributeDatas[1] = new attributeData
             {
                 //search enrollment
-                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerRegistration"],
+                IDATTRIBUTE = searchAttributeOwnerRegistration,
                 VLATTRIBUTE = ecmDocumentDetailByRegistrationIn.registration
             };
 
-            searchDocumentFilter searchDocumentFilter = new searchDocumentFilter();
-            searchDocumentFilter.IDCATEGORY = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
+            searchDocumentFilter searchDocumentFilter = new searchDocumentFilter
+            {
+                IDCATEGORY = searchAttributeOwnerCategory
+            };
+
             searchDocumentReturn searchDocumentReturn = seClient.searchDocument(searchDocumentFilter, "", attributeDatas);
             documentReturn retorno = new documentReturn();
             if (searchDocumentReturn.RESULTS.Count() > 0)
             {
-                documentDataReturn documentDataReturn = SEDocument.GetDocumentData(searchDocumentReturn.RESULTS.Select(x => x.IDDOCUMENT).FirstOrDefault());
+                documentDataReturn documentDataReturn = Common.GetDocumentProperties(searchDocumentReturn.RESULTS.Select(x => x.IDDOCUMENT).FirstOrDefault());
 
                 ecmDocumentDetailByRegistrationOut.result = new ECMDocumentDetailByRegistrationVM()
                 {
@@ -116,17 +134,20 @@ namespace SoftExpert
             attributeDatas[0] = new attributeData
             {
                 //search enrollment
-                IDATTRIBUTE = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerRegistration"],
+                IDATTRIBUTE = searchAttributeOwnerRegistration,
                 VLATTRIBUTE = ecmDocumentDetailIn.registration
             };
 
-            searchDocumentFilter searchDocumentFilter = new searchDocumentFilter();
-            searchDocumentFilter.IDCATEGORY = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
+            searchDocumentFilter searchDocumentFilter = new searchDocumentFilter
+            {
+                IDCATEGORY = searchAttributeOwnerCategory
+            };
+
             searchDocumentReturn searchDocumentReturn = seClient.searchDocument(searchDocumentFilter, "", attributeDatas);
             documentReturn retorno = new documentReturn();
             if (searchDocumentReturn.RESULTS.Count() > 0)
             {
-                documentDataReturn documentDataReturn = SEDocument.GetDocumentData(searchDocumentReturn.RESULTS.Select(x => x.IDDOCUMENT).FirstOrDefault());
+                documentDataReturn documentDataReturn = Common.GetDocumentProperties(searchDocumentReturn.RESULTS.Select(x => x.IDDOCUMENT).FirstOrDefault());
 
                 ecmDocumentDetailOut.result = new ECMDocumentDetailVM()
                 {
@@ -154,7 +175,7 @@ namespace SoftExpert
                 string registration = string.Empty;
 
                 //Check if there is a registered owner document
-                documentReturn documentReturn = SEDocument.GetSEDocumentByRegistrationAndCategory(eCMDocumentDetailSaveIn.registration, WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"]);
+                documentReturn documentReturn = Common.CheckRegisteredDocument(eCMDocumentDetailSaveIn.registration, searchAttributeOwnerCategory);
 
                 //If the document already exists in the specified category, it uploads the document and properties
                 if (documentReturn != null)
@@ -163,7 +184,7 @@ namespace SoftExpert
 
                     try
                     {
-                        documentDataReturn documentDataReturn = SEDocument.GetDocumentData(documentReturn.IDDOCUMENT);
+                        documentDataReturn documentDataReturn = Common.GetDocumentProperties(documentReturn.IDDOCUMENT);
 
                         var returnUnityCodes = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_cod_unidade.ToString(), eCMDocumentDetailSaveIn.unityCode);
                         if (!string.IsNullOrEmpty(eCMDocumentDetailSaveIn.cpf))
@@ -192,10 +213,10 @@ namespace SoftExpert
 
                             var n = seClient.newAccessPermission(documentReturn.IDDOCUMENT,
                                 eCMDocumentDetailSaveIn.unityCode + ";" + eCMDocumentDetailSaveIn.unityCode,
-                                int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString()),
-                                WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString(),
-                                int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString()),
-                                WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString());
+                                newAccessPermissionUserType,
+                                newAccessPermissionPermission,
+                                newAccessPermissionPermissionType,
+                                newAccessPermissionFgaddLowerLevel);
                         }
                     }
                     catch (Exception ex)
@@ -207,7 +228,7 @@ namespace SoftExpert
                 //If you do not insert a new document
                 else
                 {
-                    var document = seClient.newDocument(WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"], eCMDocumentDetailSaveIn.registration.Trim(), eCMDocumentDetailSaveIn.name, "", "", "", "", null, 0);
+                    var document = seClient.newDocument(searchAttributeOwnerCategory, eCMDocumentDetailSaveIn.registration.Trim(), eCMDocumentDetailSaveIn.name, "", "", "", "", null, 0);
 
                     var documentMatrix = document.Split(':');
 
@@ -240,10 +261,10 @@ namespace SoftExpert
 
                             var n = seClient.newAccessPermission(eCMDocumentDetailSaveIn.registration.Trim(),
                                 eCMDocumentDetailSaveIn.unityCode + ";" + eCMDocumentDetailSaveIn.unityCode,
-                                int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString()),
-                                WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString(),
-                                int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString()),
-                                WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString());
+                                newAccessPermissionUserType,
+                                newAccessPermissionPermission,
+                                newAccessPermissionPermissionType,
+                                newAccessPermissionFgaddLowerLevel);
                         }
                         else
                         {
@@ -259,5 +280,7 @@ namespace SoftExpert
                 throw new Exception(e.Message);
             }
         }
+
+        #endregion
     }
 }

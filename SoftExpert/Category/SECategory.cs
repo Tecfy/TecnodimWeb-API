@@ -7,6 +7,8 @@ namespace SoftExpert
 {
     public static class SECategory
     {
+        #region .: Public Methods :.
+
         public static ECMCategoriesOut GetSECategories()
         {
             ECMCategoriesOut ecmCategoriesOut = new ECMCategoriesOut();
@@ -29,5 +31,7 @@ namespace SoftExpert
 
             return ecmCategoriesOut;
         }
+
+        #endregion
     }
 }

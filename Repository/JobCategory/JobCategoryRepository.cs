@@ -17,14 +17,14 @@ namespace Repository
             registerEventRepository.SaveRegisterEvent(eCMJobCategorySaveIn.userId, eCMJobCategorySaveIn.key, "Log - Start", "Repository.JobCategoryRepository.SetECMJobCategorySave", "");
 
             string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.JobCategoryRepository.Path"]);
-            string name = eCMJobCategorySaveIn.code + ".pdf";
+            string name = eCMJobCategorySaveIn.FileName + ".pdf";
 
             if (System.IO.File.Exists(path + "\\" + name))
             {
                 System.IO.File.Delete(path + "\\" + name);
             }
 
-            SEJobCategory.SEJobCategorySave(eCMJobCategorySaveIn);
+            SEJobCategory.SEDocumentDeleteOldSaveNew(eCMJobCategorySaveIn);
 
             registerEventRepository.SaveRegisterEvent(eCMJobCategorySaveIn.userId, eCMJobCategorySaveIn.key, "Log - End", "Repository.JobCategoryRepository.SetECMJobCategorySave", "");
             return eCMJobCategorySaveOut;
@@ -68,7 +68,7 @@ namespace Repository
 
             registerEventRepository.SaveRegisterEvent(eCMJobSaveIn.userId, eCMJobSaveIn.key, "Log - Start", "Repository.JobRepository.PostECMJobSave", "");
 
-            SEJobCategory.SEJobSave(eCMJobSaveIn);
+            SEJobCategory.SEDocumentSave(eCMJobSaveIn);
 
             registerEventRepository.SaveRegisterEvent(eCMJobSaveIn.userId, eCMJobSaveIn.key, "Log - End", "Repository.JobRepository.PostECMJobSave", "");
             return ecmJobSaveOut;

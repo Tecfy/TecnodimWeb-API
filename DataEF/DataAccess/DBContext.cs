@@ -1581,6 +1581,12 @@ namespace DataEF.DataAccess
 		[Display(Name = "SendingDate", ResourceType = typeof(i18n.Resource))]
 		public DateTime? SendingDate { get; set; } // SendingDate
 
+		[Display(Name = "SliceUser", ResourceType = typeof(i18n.Resource))]
+		public int? SliceUserId { get; set; } // SliceUserId
+
+		[Display(Name = "ClassificationUser", ResourceType = typeof(i18n.Resource))]
+		public int? ClassificationUserId { get; set; } // ClassificationUserId
+
 		*/
 	}
 
@@ -1615,6 +1621,10 @@ namespace DataEF.DataAccess
 
         public DateTime? SendingDate { get; set; } // SendingDate
 
+        public int? SliceUserId { get; set; } // SliceUserId
+
+        public int? ClassificationUserId { get; set; } // ClassificationUserId
+
         // Reverse navigation
         public virtual ICollection<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields.FK_SliceCategoryAdditionalFields_Slices;
         public virtual ICollection<SlicePages> SlicePages { get; set; } // SlicePages.FK_SlicePages_Slices;
@@ -1622,6 +1632,8 @@ namespace DataEF.DataAccess
         // Foreign keys
         public virtual Documents Documents { get; set; } //  DocumentId - FK_Slices_Documents
         public virtual Categories Categories { get; set; } //  CategoryId - FK_Slices_Categories
+        public virtual Users Users1 { get; set; } //  SliceUserId - FK_Slices_Slice_Users
+        public virtual Users Users { get; set; } //  ClassificationUserId - FK_Slices_Classificantion_Users
 
         public Slices()
         {
@@ -1889,6 +1901,8 @@ namespace DataEF.DataAccess
 
         // Reverse navigation
         public virtual ICollection<Jobs> Jobs { get; set; } // Jobs.FK_Jobs_Users;
+        public virtual ICollection<Slices> Slices { get; set; } // Slices.FK_Slices_Classificantion_Users;
+        public virtual ICollection<Slices> Slices1 { get; set; } // Slices.FK_Slices_Slice_Users;
         public virtual ICollection<UserUnits> UserUnits { get; set; } // UserUnits.FK_UserUnits_Users;
 
         // Foreign keys
@@ -1899,6 +1913,8 @@ namespace DataEF.DataAccess
             Active = true;
             CreatedDate = DateTime.Now;
             Jobs = new List<Jobs>();
+            Slices = new List<Slices>();
+            Slices1 = new List<Slices>();
             UserUnits = new List<UserUnits>();
             InitializePartial();
         }
@@ -2424,10 +2440,14 @@ namespace DataEF.DataAccess
             Property(x => x.Sent).HasColumnName("Sent").IsRequired();
             Property(x => x.Sending).HasColumnName("Sending").IsRequired();
             Property(x => x.SendingDate).HasColumnName("SendingDate").IsOptional();
+            Property(x => x.SliceUserId).HasColumnName("SliceUserId").IsOptional();
+            Property(x => x.ClassificationUserId).HasColumnName("ClassificationUserId").IsOptional();
 
             // Foreign keys
             HasRequired(a => a.Documents).WithMany(b => b.Slices).HasForeignKey(c => c.DocumentId); // FK_Slices_Documents
             HasOptional(a => a.Categories).WithMany(b => b.Slices).HasForeignKey(c => c.CategoryId); // FK_Slices_Categories
+            HasOptional(a => a.Users1).WithMany(b => b.Slices1).HasForeignKey(c => c.SliceUserId); // FK_Slices_Slice_Users
+            HasOptional(a => a.Users).WithMany(b => b.Slices).HasForeignKey(c => c.ClassificationUserId); // FK_Slices_Classificantion_Users
             InitializePartial();
         }
         partial void InitializePartial();

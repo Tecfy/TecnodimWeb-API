@@ -56,6 +56,7 @@
   <ItemGroup>
     <Compile Include="Attribute\SEAttribute.cs" />
     <Compile Include="Category\SECategory.cs" />
+    <Compile Include="Common\Common.cs" />
     <Compile Include="Connection\SEAdministration.cs" />
     <Compile Include="Connection\SEConnection.cs" />
     <Compile Include="Connection\SEClient.cs" />
@@ -164,5 +165,6 @@
       <CachedSettingsPropName>SoftExpert_com_softexpert_tecfy_Documento</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

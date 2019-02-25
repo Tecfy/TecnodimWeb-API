@@ -214,6 +214,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ClassificationUser.
+        /// </summary>
+        public static string ClassificationUser {
+            get {
+                return ResourceManager.GetString("ClassificationUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Fechar.
         /// </summary>
         public static string Close {
@@ -1065,6 +1074,15 @@ namespace i18n {
         public static string SlicePage {
             get {
                 return ResourceManager.GetString("SlicePage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SliceUser.
+        /// </summary>
+        public static string SliceUser {
+            get {
+                return ResourceManager.GetString("SliceUser", resourceCulture);
             }
         }
         
