@@ -37,7 +37,7 @@ namespace Model.In
         {
             get
             {
-                return DocumentId + "-" + user + "-" + DateTime.Now.ToString("ddMMyyyyhhmmss") + extension;
+                return DocumentId + "-" + DateTime.Now.ToString("ddMMyyyyhhmmss") + extension;
             }
         }
 

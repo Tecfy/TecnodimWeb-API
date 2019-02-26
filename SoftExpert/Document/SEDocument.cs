@@ -30,7 +30,7 @@ namespace SoftExpert
             ECMDocumentOut ecmDocumentOut = new ECMDocumentOut();
 
             eletronicFile[] eletronicFiles = seClient.downloadEletronicFile(ecmDocumentIn.externalId, "", "", "", ecmDocumentIn.categoryId, "", "", "");
-            if (eletronicFiles.Count() > 0)
+            if (!eletronicFiles.Any(x => x.ERROR != null))
             {
                 ecmDocumentOut.result = new ECMDocumentVM()
                 {

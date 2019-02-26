@@ -28,14 +28,21 @@ namespace Repository
             {
                 ecmDocumentOut = SEDocument.GetSEDocument(ecmDocumentIn);
 
-                byte[] archive = System.Convert.FromBase64String(ecmDocumentOut.result.archive);
-
-                if (!System.IO.Directory.Exists(path))
+                if (ecmDocumentOut.result != null)
                 {
-                    System.IO.Directory.CreateDirectory(path);
-                }
+                    byte[] archive = System.Convert.FromBase64String(ecmDocumentOut.result.archive);
 
-                System.IO.File.WriteAllBytes(path + "\\" + name, archive);
+                    if (!System.IO.Directory.Exists(path))
+                    {
+                        System.IO.Directory.CreateDirectory(path);
+                    }
+
+                    System.IO.File.WriteAllBytes(path + "\\" + name, archive);
+                }
+                else
+                {
+                    throw new System.Exception(i18n.Resource.FileNotFound);
+                }
             }
 
             registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Log - End", "Repository.DocumentRepository.GetECMDocument", "");

@@ -16,6 +16,11 @@ namespace Repository
 
             ecmDocumentDetailsByRegistrationOut = SEDocumentDetail.GetSEDocumentDetailsByRegistration(ecmDocumentDetailsByRegistrationIn);
 
+            if (ecmDocumentDetailsByRegistrationOut.result == null)
+            {
+                throw new System.Exception(i18n.Resource.StudentNotFound);
+            }
+
             registerEventRepository.SaveRegisterEvent(ecmDocumentDetailsByRegistrationIn.userId, ecmDocumentDetailsByRegistrationIn.key, "Log - End", "Repository.DocumentDetailRepository.GetECMDocumentDetailsByRegistration", "");
 
             return ecmDocumentDetailsByRegistrationOut;
@@ -29,6 +34,11 @@ namespace Repository
 
             ecmDocumentDetailByRegistrationOut = SEDocumentDetail.GetSEDocumentDetailByRegistration(ecmDocumentDetailByRegistrationIn);
 
+            if (ecmDocumentDetailByRegistrationOut.result == null)
+            {
+                throw new System.Exception(i18n.Resource.StudentNotFound);
+            }
+
             registerEventRepository.SaveRegisterEvent(ecmDocumentDetailByRegistrationIn.userId, ecmDocumentDetailByRegistrationIn.key, "Log - End", "Repository.DocumentDetailRepository.GetECMDocumentDetailByRegistration", "");
 
             return ecmDocumentDetailByRegistrationOut;
@@ -40,6 +50,11 @@ namespace Repository
             registerEventRepository.SaveRegisterEvent(ecmDocumentDetailIn.userId, ecmDocumentDetailIn.key, "Log - Start", "Repository.DocumentDetailRepository.GetECMDocumentDetail", "");
 
             ecmDocumentDetailOut = SEDocumentDetail.GetSEDocumentDetail(ecmDocumentDetailIn);
+
+            if (ecmDocumentDetailOut.result == null)
+            {
+                throw new System.Exception(i18n.Resource.StudentNotFound);
+            }
 
             registerEventRepository.SaveRegisterEvent(ecmDocumentDetailIn.userId, ecmDocumentDetailIn.key, "Log - End", "Repository.DocumentDetailRepository.GetECMDocumentDetail", "");
             return ecmDocumentDetailOut;
