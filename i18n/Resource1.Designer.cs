@@ -214,6 +214,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data da Classificação.
+        /// </summary>
+        public static string ClassificationDate {
+            get {
+                return ResourceManager.GetString("ClassificationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ClassificationUser.
         /// </summary>
         public static string ClassificationUser {
@@ -763,6 +772,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Observação.
+        /// </summary>
+        public static string Note {
+            get {
+                return ResourceManager.GetString("Note", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Página.
         /// </summary>
         public static string Page {
@@ -1056,6 +1074,15 @@ namespace i18n {
         public static string Slice {
             get {
                 return ResourceManager.GetString("Slice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data do Recorte.
+        /// </summary>
+        public static string SliceDate {
+            get {
+                return ResourceManager.GetString("SliceDate", resourceCulture);
             }
         }
         

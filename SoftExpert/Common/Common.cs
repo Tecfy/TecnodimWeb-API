@@ -67,7 +67,7 @@ namespace SoftExpert
             {
                 SEDocumentDataSaveAttributtes(eCMDocumentSaveIn.DocumentId, documentDataReturnOwner);
                 SEDocumentDataSaveAttributtesSpecific(eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.additionalFields);
-                SEDocumentDataSaveAttributtesSpecificSlice(eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.sliceUser, eCMDocumentSaveIn.sliceUserRegistration, eCMDocumentSaveIn.classificationUser, eCMDocumentSaveIn.classificationUserRegistration);
+                SEDocumentDataSaveAttributtesSpecificSlice(eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.sliceUser, eCMDocumentSaveIn.sliceUserRegistration, eCMDocumentSaveIn.classificationUser, eCMDocumentSaveIn.classificationUserRegistration, eCMDocumentSaveIn.classificationDate, eCMDocumentSaveIn.sliceDate);
                 SEDocumentDataSavePermission(eCMDocumentSaveIn.DocumentId, documentDataReturnOwner);
                 SEDocumentDataSaveAssociation(documentDataReturnOwner.IDDOCUMENT, searchAttributeOwnerCategory, eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.categoryId);
                 SEDocumentDataSaveUploadFile(eCMDocumentSaveIn.FileBinary, eCMDocumentSaveIn.FileName, eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.user, eCMDocumentSaveIn.categoryId);
@@ -169,6 +169,10 @@ namespace SoftExpert
                     {
                         seClient.setAttributeValue(documentId, "", EAttribute.SER_Input_Compl.ToString(), item.value);
                     }
+                    else if (item.additionalFieldId == (int)EAdditionalField.Note)
+                    {
+                        seClient.setAttributeValue(documentId, "", EAttribute.SER_Input_Obs.ToString(), item.value);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -198,7 +202,7 @@ namespace SoftExpert
             #endregion
         }
 
-        private static void SEDocumentDataSaveAttributtesSpecificSlice(string documentId, string sliceUser, string sliceUserRegistration, string classificationUser, string classificationUserRegistration)
+        private static void SEDocumentDataSaveAttributtesSpecificSlice(string documentId, string sliceUser, string sliceUserRegistration, string classificationUser, string classificationUserRegistration, DateTime classificationDate, DateTime sliceDate)
         {
             #region .: Insert Attibuttes Specific :.
 
@@ -208,6 +212,11 @@ namespace SoftExpert
                 seClient.setAttributeValue(documentId, "", EAttribute.SER_id_recortador.ToString(), sliceUserRegistration);
                 seClient.setAttributeValue(documentId, "", EAttribute.SER_nome_classificador.ToString(), classificationUser);
                 seClient.setAttributeValue(documentId, "", EAttribute.SER_nome_recortador.ToString(), sliceUser);
+
+                seClient.setAttributeValue(documentId, "", EAttribute.SER_classificacao_data.ToString(), classificationDate.ToString("yyyy-MM-dd"));
+                seClient.setAttributeValue(documentId, "", EAttribute.SER_classificacao_hora.ToString(), classificationDate.ToString("HH:mm"));
+                seClient.setAttributeValue(documentId, "", EAttribute.SER_recorte_data.ToString(), sliceDate.ToString("yyyy-MM-dd"));
+                seClient.setAttributeValue(documentId, "", EAttribute.SER_recorte_hora.ToString(), sliceDate.ToString("HH:mm"));
             }
             catch (Exception ex)
             {

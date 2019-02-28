@@ -525,4 +525,13 @@
   <data name="SliceUser" xml:space="preserve">
     <value>SliceUser</value>
   </data>
+  <data name="ClassificationDate" xml:space="preserve">
+    <value>Data da Classificação</value>
+  </data>
+  <data name="SliceDate" xml:space="preserve">
+    <value>Data do Recorte</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Observação</value>
+  </data>
 </root>

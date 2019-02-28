@@ -52,7 +52,6 @@ namespace DataEF.DataAccess
         IDbSet<SlicePages> SlicePages { get; set; } // SlicePages
         IDbSet<Slices> Slices { get; set; } // Slices
         IDbSet<SyncRuntimes> SyncRuntimes { get; set; } // SyncRuntimes
-        IDbSet<Sysdiagrams> Sysdiagrams { get; set; } // sysdiagrams
         IDbSet<Units> Units { get; set; } // Units
         IDbSet<Users> Users { get; set; } // Users
         IDbSet<UserUnits> UserUnits { get; set; } // UserUnits
@@ -86,7 +85,6 @@ namespace DataEF.DataAccess
         public IDbSet<SlicePages> SlicePages { get; set; } // SlicePages
         public IDbSet<Slices> Slices { get; set; } // Slices
         public IDbSet<SyncRuntimes> SyncRuntimes { get; set; } // SyncRuntimes
-        public IDbSet<Sysdiagrams> Sysdiagrams { get; set; } // sysdiagrams
         public IDbSet<Units> Units { get; set; } // Units
         public IDbSet<Users> Users { get; set; } // Users
         public IDbSet<UserUnits> UserUnits { get; set; } // UserUnits
@@ -133,7 +131,6 @@ namespace DataEF.DataAccess
             modelBuilder.Configurations.Add(new SlicePagesConfiguration());
             modelBuilder.Configurations.Add(new SlicesConfiguration());
             modelBuilder.Configurations.Add(new SyncRuntimesConfiguration());
-            modelBuilder.Configurations.Add(new SysdiagramsConfiguration());
             modelBuilder.Configurations.Add(new UnitsConfiguration());
             modelBuilder.Configurations.Add(new UsersConfiguration());
             modelBuilder.Configurations.Add(new UserUnitsConfiguration());
@@ -802,6 +799,12 @@ namespace DataEF.DataAccess
 		[Display(Name = "Hash", ResourceType = typeof(i18n.Resource))]
 		public Guid Hash { get; set; } // Hash
 
+		[Display(Name = "ClassificationDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? ClassificationDate { get; set; } // ClassificationDate
+
+		[Display(Name = "SliceDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? SliceDate { get; set; } // SliceDate
+
 		*/
 	}
 
@@ -835,6 +838,10 @@ namespace DataEF.DataAccess
         public string Name { get; set; } // Name
 
         public Guid Hash { get; set; } // Hash
+
+        public DateTime? ClassificationDate { get; set; } // ClassificationDate
+
+        public DateTime? SliceDate { get; set; } // SliceDate
 
         // Reverse navigation
         public virtual ICollection<DeletedPages> DeletedPages { get; set; } // DeletedPages.FK_DeletedPages_Documents;
@@ -1587,6 +1594,12 @@ namespace DataEF.DataAccess
 		[Display(Name = "ClassificationUser", ResourceType = typeof(i18n.Resource))]
 		public int? ClassificationUserId { get; set; } // ClassificationUserId
 
+		[Display(Name = "ClassificationDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? ClassificationDate { get; set; } // ClassificationDate
+
+		[Display(Name = "SliceDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? SliceDate { get; set; } // SliceDate
+
 		*/
 	}
 
@@ -1624,6 +1637,10 @@ namespace DataEF.DataAccess
         public int? SliceUserId { get; set; } // SliceUserId
 
         public int? ClassificationUserId { get; set; } // ClassificationUserId
+
+        public DateTime? ClassificationDate { get; set; } // ClassificationDate
+
+        public DateTime? SliceDate { get; set; } // SliceDate
 
         // Reverse navigation
         public virtual ICollection<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields.FK_SliceCategoryAdditionalFields_Slices;
@@ -1713,47 +1730,6 @@ namespace DataEF.DataAccess
             InitializePartial();
         }
         partial void InitializePartial();
-    }
-
-	public partial class SysdiagramsMetadataType
-    {
-		/* 
-		///Copy this class to an external file
-
-		[StringLength(128, ErrorMessageResourceName = "MaxLengthMessage", ErrorMessageResourceType = typeof(i18n.Resource))]
-		[Display(Name = "name", ResourceType = typeof(i18n.Resource))]
-		public string Name { get; set; } // name
-
-		[Display(Name = "principal_id", ResourceType = typeof(i18n.Resource))]
-		public int PrincipalId { get; set; } // principal_id
-
-		[Display(Name = "Code", ResourceType = typeof(i18n.Resource))]
-		public int DiagramId { get; set; } // diagram_id (Primary key)
-
-		[Display(Name = "version", ResourceType = typeof(i18n.Resource))]
-		public int? Version { get; set; } // version
-
-		[Display(Name = "definition", ResourceType = typeof(i18n.Resource))]
-		public byte[] Definition { get; set; } // definition
-
-		*/
-	}
-
-    // sysdiagrams
-	[MetadataType(typeof(SysdiagramsMetadataType))]
-    public partial class Sysdiagrams
-    {
-
-        public string Name { get; set; } // name
-
-        public int PrincipalId { get; set; } // principal_id
-
-        [DataEF.Attributes.Template.IdentityField()]
-        public int DiagramId { get; set; } // diagram_id (Primary key)
-
-        public int? Version { get; set; } // version
-
-        public byte[] Definition { get; set; } // definition
     }
 
 	public partial class UnitsMetadataType
@@ -2193,6 +2169,8 @@ namespace DataEF.DataAccess
             Property(x => x.Registration).HasColumnName("Registration").IsOptional().HasMaxLength(255);
             Property(x => x.Name).HasColumnName("Name").IsOptional().HasMaxLength(255);
             Property(x => x.Hash).HasColumnName("Hash").IsRequired();
+            Property(x => x.ClassificationDate).HasColumnName("ClassificationDate").IsOptional();
+            Property(x => x.SliceDate).HasColumnName("SliceDate").IsOptional();
 
             // Foreign keys
             HasRequired(a => a.DocumentStatus).WithMany(b => b.Documents).HasForeignKey(c => c.DocumentStatusId); // FK_Documents_DocumentStatus
@@ -2442,6 +2420,8 @@ namespace DataEF.DataAccess
             Property(x => x.SendingDate).HasColumnName("SendingDate").IsOptional();
             Property(x => x.SliceUserId).HasColumnName("SliceUserId").IsOptional();
             Property(x => x.ClassificationUserId).HasColumnName("ClassificationUserId").IsOptional();
+            Property(x => x.ClassificationDate).HasColumnName("ClassificationDate").IsOptional();
+            Property(x => x.SliceDate).HasColumnName("SliceDate").IsOptional();
 
             // Foreign keys
             HasRequired(a => a.Documents).WithMany(b => b.Slices).HasForeignKey(c => c.DocumentId); // FK_Slices_Documents
@@ -2469,24 +2449,6 @@ namespace DataEF.DataAccess
             Property(x => x.Url).HasColumnName("URL").IsRequired().HasMaxLength(255);
             Property(x => x.Interval).HasColumnName("Interval").IsRequired();
             Property(x => x.LastExecution).HasColumnName("LastExecution").IsRequired();
-            InitializePartial();
-        }
-        partial void InitializePartial();
-    }
-
-    // sysdiagrams
-    internal partial class SysdiagramsConfiguration : EntityTypeConfiguration<Sysdiagrams>
-    {
-        public SysdiagramsConfiguration()
-        {
-            ToTable("dbo.sysdiagrams");
-            HasKey(x => x.DiagramId);
-
-            Property(x => x.Name).HasColumnName("name").IsRequired().HasMaxLength(128);
-            Property(x => x.PrincipalId).HasColumnName("principal_id").IsRequired();
-            Property(x => x.DiagramId).HasColumnName("diagram_id").IsRequired().HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            Property(x => x.Version).HasColumnName("version").IsOptional();
-            Property(x => x.Definition).HasColumnName("definition").IsOptional();
             InitializePartial();
         }
         partial void InitializePartial();

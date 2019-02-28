@@ -44,5 +44,11 @@ namespace DataEF.DataAccess.Model
 
         [Display(Name = "ClassificationUser", ResourceType = typeof(i18n.Resource))]
         public int? ClassificationUserId { get; set; } // ClassificationUserId
+
+        [Display(Name = "ClassificationDate", ResourceType = typeof(i18n.Resource))]
+        public DateTime? ClassificationDate { get; set; } // ClassificationDate
+
+        [Display(Name = "SliceDate", ResourceType = typeof(i18n.Resource))]
+        public DateTime? SliceDate { get; set; } // SliceDate
     }
 }

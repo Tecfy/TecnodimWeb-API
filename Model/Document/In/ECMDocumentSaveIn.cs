@@ -25,6 +25,10 @@ namespace Model.In
 
         public string extension { get; set; }
 
+        public DateTime classificationDate { get; set; }
+
+        public DateTime sliceDate { get; set; }
+
         public string DocumentId
         {
             get
@@ -37,7 +41,7 @@ namespace Model.In
         {
             get
             {
-                return DocumentId + "-" + DateTime.Now.ToString("ddMMyyyyhhmmss") + extension;
+                return DocumentId + "-" + DateTime.Now.ToString("ddMMyyyy-HHmmss") + extension;
             }
         }
 

@@ -40,5 +40,11 @@ namespace DataEF.DataAccess.Model
 
         [Display(Name = "Hash", ResourceType = typeof(i18n.Resource))]
         public Guid Hash { get; set; } // Hash
+
+        [Display(Name = "ClassificationDate", ResourceType = typeof(i18n.Resource))]
+        public DateTime? ClassificationDate { get; set; } // ClassificationDate
+
+        [Display(Name = "SliceDate", ResourceType = typeof(i18n.Resource))]
+        public DateTime? SliceDate { get; set; } // SliceDate
     }
 }

@@ -30,31 +30,42 @@ namespace Helper.Enum
         SER_Input_Data_Vencto = 12,
         [Description("SER_Input_NumDoc")]
         SER_Input_NumDoc = 13,
+        [Description("SER_Input_Obs")]
+        SER_Input_Obs = 14,
         [Description("SER_Operador")]
-        SER_Operador = 14,
+        SER_Operador = 15,
         [Description("SER_Paginas")]
-        SER_Paginas = 15,
+        SER_Paginas = 16,
         [Description("SER_SituacaoDoc")]
-        SER_SituacaoDoc = 16,
+        SER_SituacaoDoc = 17,
         [Description("SER_cad_cod_unidade")]
-        SER_cad_cod_unidade = 17,
+        SER_cad_cod_unidade = 18,
 
         [Description("MFP_Data_Job")]
-        MFP_Data_Job = 18,
+        MFP_Data_Job = 19,
         [Description("MFP_Status")]
-        MFP_Status = 19,
+        MFP_Status = 20,
         [Description("MFP_Categoria")]
-        MFP_Categoria = 20,
+        MFP_Categoria = 21,
         [Description("MFP_Usuario")]
-        MFP_Usuario = 21,
+        MFP_Usuario = 22,
 
         [Description("SER_id_classificador")]
-        SER_id_classificador = 22,
+        SER_id_classificador = 23,
         [Description("SER_id_recortador")]
-        SER_id_recortador = 23,
+        SER_id_recortador = 24,
         [Description("SER_nome_classificador")]
-        SER_nome_classificador = 24,
+        SER_nome_classificador = 25,
         [Description("SER_nome_recortador")]
-        SER_nome_recortador = 25,
+        SER_nome_recortador = 26,
+
+        [Description("SER_classificacao_data")]
+        SER_classificacao_data = 27,
+        [Description("SER_classificacao_hora")]
+        SER_classificacao_hora = 28,
+        [Description("SER_recorte_data")]
+        SER_recorte_data = 29,
+        [Description("SER_recorte_hora")]
+        SER_recorte_hora = 30,
     }
 }
