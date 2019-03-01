@@ -7,16 +7,18 @@ namespace SoftExpert
         public static bool SEAttributeUpdate(ECMAttributeIn ecmAttributeIn)
         {
             SEClient seClient = SEConnection.GetConnection();
-            string attribute = seClient.setAttributeValue(ecmAttributeIn.externalId, "", ecmAttributeIn.attribute, ecmAttributeIn.value);
 
-            if (attribute.ToUpper().Contains("SUCESSO"))
+            foreach (var item in ecmAttributeIn.itens)
             {
-                return true;
+                string attribute = seClient.setAttributeValue(ecmAttributeIn.externalId, "", item.attribute, item.value);
+
+                if (!attribute.ToUpper().Contains("SUCESSO"))
+                {
+                    throw new System.Exception(attribute);
+                }
             }
-            else
-            {
-                throw new System.Exception(attribute);
-            }
+
+            return true;
         }
     }
 }

@@ -67,7 +67,7 @@ namespace SoftExpert
             {
                 SEDocumentDataSaveAttributtes(eCMDocumentSaveIn.DocumentId, documentDataReturnOwner);
                 SEDocumentDataSaveAttributtesSpecific(eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.additionalFields);
-                SEDocumentDataSaveAttributtesSpecificSlice(eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.sliceUser, eCMDocumentSaveIn.sliceUserRegistration, eCMDocumentSaveIn.classificationUser, eCMDocumentSaveIn.classificationUserRegistration, eCMDocumentSaveIn.classificationDate, eCMDocumentSaveIn.sliceDate);
+                SEDocumentDataSaveAttributtesSpecificSlice(eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.sliceUser, eCMDocumentSaveIn.sliceUserRegistration, eCMDocumentSaveIn.classificationUser, eCMDocumentSaveIn.classificationUserRegistration, Convert.ToDateTime(eCMDocumentSaveIn.classificationDate), Convert.ToDateTime(eCMDocumentSaveIn.sliceDate));
                 SEDocumentDataSavePermission(eCMDocumentSaveIn.DocumentId, documentDataReturnOwner);
                 SEDocumentDataSaveAssociation(documentDataReturnOwner.IDDOCUMENT, searchAttributeOwnerCategory, eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.categoryId);
                 SEDocumentDataSaveUploadFile(eCMDocumentSaveIn.FileBinary, eCMDocumentSaveIn.FileName, eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.user, eCMDocumentSaveIn.categoryId);
