@@ -32,7 +32,7 @@ namespace SoftExpert
 
         #endregion
 
-        #region .: Private Methods :.        
+        #region .: Public Methods :.        
 
         public static documentDataReturn GetDocumentProperties(string documentid)
         {
@@ -109,6 +109,10 @@ namespace SoftExpert
                 throw ex;
             }
         }
+
+        #endregion
+
+        #region .: Private Methods :.  
 
         private static void SEDocumentDataSaveAttributtes(string documentId, documentDataReturn documentDataReturnOwner)
         {

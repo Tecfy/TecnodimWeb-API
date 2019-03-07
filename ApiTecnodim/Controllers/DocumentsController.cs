@@ -36,7 +36,7 @@ namespace ApiTecnodim.Controllers
             }
 
             return ecmDocumentOut;
-        }      
+        }
 
         [Authorize, HttpGet]
         public ECMDocumentsOut GetECMDocuments()
@@ -73,6 +73,7 @@ namespace ApiTecnodim.Controllers
                 {
                     ecmDocumentSaveIn.userId = User.Identity.Name;
                     ecmDocumentSaveIn.key = Key.ToString();
+                    ecmDocumentSaveIn.now = DateTime.Now;
 
                     ecmDocumentSaveOut = documentRepository.PostECMDocumentSave(ecmDocumentSaveIn);
                 }

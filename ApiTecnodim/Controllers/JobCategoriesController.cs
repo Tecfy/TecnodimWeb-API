@@ -49,6 +49,7 @@ namespace ApiTecnodim.Controllers
                 {
                     ecmWorkCategorySaveIn.userId = User.Identity.Name;
                     ecmWorkCategorySaveIn.key = Key.ToString();
+                    ecmWorkCategorySaveIn.now = DateTime.Now;
 
                     ecmWorkCategorySaveOut = jobCategoryRepository.SetECMJobCategorySave(ecmWorkCategorySaveIn);
                 }
@@ -90,6 +91,7 @@ namespace ApiTecnodim.Controllers
                 {
                     eCMJobSaveIn.userId = User.Identity.Name;
                     eCMJobSaveIn.key = Key.ToString();
+                    eCMJobSaveIn.now = DateTime.Now;
 
                     eCMJobSaveOut = jobCategoryRepository.PostECMJobSave(eCMJobSaveIn);
                 }
