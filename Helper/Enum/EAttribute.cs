@@ -67,5 +67,24 @@ namespace Helper.Enum
         SER_recorte_data = 29,
         [Description("SER_recorte_hora")]
         SER_recorte_hora = 30,
+
+        [Description("tfyacess_cappservice")]
+        tfyacess_cappservice = 31,
+        [Description("tfyacess_classifica")]
+        tfyacess_classifica = 32,
+        [Description("tfyacess_grupocappservice")]
+        tfyacess_grupocappservice = 33,
+        [Description("tfyacess_nomeusuario")]
+        tfyacess_nomeusuario = 34,
+        [Description("tfyacess_recorte")]
+        tfyacess_recorte = 35,
+        [Description("tfyacess_status")]
+        tfyacess_status = 36,
+        [Description("tfyacess_userid")]
+        tfyacess_userid = 37,
+        [Description("tfyacess_dtsync")]
+        tfyacess_dtsync = 38,
+        [Description("tfyacess_horasync")]
+        tfyacess_horasync = 39,
     }
 }

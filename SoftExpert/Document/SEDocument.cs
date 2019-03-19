@@ -4,8 +4,6 @@ using Model.Out;
 using Model.VM;
 using SoftExpert.com.softexpert.tecfy;
 using System;
-using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
 using System.Web.Configuration;
 
