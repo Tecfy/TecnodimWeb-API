@@ -22,7 +22,7 @@ namespace ApiTecnodim.Controllers
 
             try
             {
-                ECMJobCategoryIn eCMJobCategoryIn = new ECMJobCategoryIn() { externalId = id, categoryId = WebConfigurationManager.AppSettings["SoftExpert.JobCategory"], userId = User.Identity.Name, key = Key.ToString() };
+                ECMJobCategoryIn eCMJobCategoryIn = new ECMJobCategoryIn() { externalId = id, categoryId = WebConfigurationManager.AppSettings["SoftExpert.Category.JobCategory"], userId = User.Identity.Name, key = Key.ToString() };
 
                 eCMJobCategoryOut = jobCategoryRepository.GetECMJobCategory(eCMJobCategoryIn);
             }

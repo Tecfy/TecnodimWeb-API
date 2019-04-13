@@ -47,7 +47,7 @@ namespace DataEF.Security
         private static Byte[] getEncodedBytes(string original)
         {
             MD5 md5 = MD5.Create();
-            Byte[] originalBytes = ASCIIEncoding.Default.GetBytes(original);
+            Byte[] originalBytes = Encoding.Default.GetBytes(original);
             Byte[] encodedBytes = md5.ComputeHash(originalBytes);
 
             return encodedBytes;

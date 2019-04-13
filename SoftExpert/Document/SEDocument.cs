@@ -32,7 +32,7 @@ namespace SoftExpert
             {
                 ecmDocumentOut.result = new ECMDocumentVM()
                 {
-                    archive = System.Convert.ToBase64String(eletronicFiles.FirstOrDefault().BINFILE),
+                    archive = Convert.ToBase64String(eletronicFiles.FirstOrDefault().BINFILE),
                 };
             }
             else

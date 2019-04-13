@@ -22,11 +22,11 @@ namespace Repository
             string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.DocumentRepository.Path"]);
             string name = ecmDocumentIn.externalId + ".pdf";
 
-            if (System.IO.File.Exists(path + "\\" + name))
+            if (File.Exists(path + "\\" + name))
             {
-                byte[] archive = System.IO.File.ReadAllBytes(path + "\\" + name);
+                byte[] archive = File.ReadAllBytes(path + "\\" + name);
 
-                ecmDocumentOut.result.archive = System.Convert.ToBase64String(archive);
+                ecmDocumentOut.result.archive = Convert.ToBase64String(archive);
             }
             else
             {
@@ -34,18 +34,18 @@ namespace Repository
 
                 if (ecmDocumentOut.result != null)
                 {
-                    byte[] archive = System.Convert.FromBase64String(ecmDocumentOut.result.archive);
+                    byte[] archive = Convert.FromBase64String(ecmDocumentOut.result.archive);
 
-                    if (!System.IO.Directory.Exists(path))
+                    if (!Directory.Exists(path))
                     {
-                        System.IO.Directory.CreateDirectory(path);
+                        Directory.CreateDirectory(path);
                     }
 
-                    System.IO.File.WriteAllBytes(path + "\\" + name, archive);
+                    File.WriteAllBytes(path + "\\" + name, archive);
                 }
                 else
                 {
-                    throw new System.Exception(i18n.Resource.FileNotFound);
+                    throw new Exception(i18n.Resource.FileNotFound);
                 }
             }
 
@@ -73,11 +73,11 @@ namespace Repository
             registerEventRepository.SaveRegisterEvent(eCMDocumentsValidateIn.userId, eCMDocumentsValidateIn.key, "Log - Start", "Repository.DocumentRepository.GetECMValidateDocuments", "");
 
             string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.DocumentRepository.Path"]);
-            int.TryParse(ConfigurationManager.AppSettings["DaysForValidation"], out int daysForValidation);
+            int.TryParse(ConfigurationManager.AppSettings["Days"], out int days);
 
             foreach (var item in Directory.GetFiles(path))
             {
-                if (File.GetCreationTime(item).AddDays(daysForValidation) < DateTime.Now)
+                if (File.GetCreationTime(item).AddDays(days) < DateTime.Now)
                 {
                     string externalId = Path.GetFileName(item).Replace(".pdf", "");
 
@@ -105,11 +105,11 @@ namespace Repository
             registerEventRepository.SaveRegisterEvent(eCMDocumentsValidateAdInterfaceIn.userId, eCMDocumentsValidateAdInterfaceIn.key, "Log - Start", "Repository.DocumentRepository.GetECMValidateAdInterfaceDocuments", "");
 
             string path = ConfigurationManager.AppSettings["Sesuite.Physical.Path"];
-            int.TryParse(ConfigurationManager.AppSettings["DaysForValidation"], out int daysForValidation);
+            int.TryParse(ConfigurationManager.AppSettings["Days"], out int days);
 
             foreach (var item in Directory.GetFiles(path))
             {
-                if (File.GetCreationTime(item).AddDays(daysForValidation) < DateTime.Now)
+                if (File.GetCreationTime(item).AddDays(days) < DateTime.Now)
                 {
                     File.Delete(item);
                 }
@@ -138,9 +138,9 @@ namespace Repository
                 string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.DocumentRepository.Path"]);
                 string name = ecmDocumentDeletedIn.externalId + ".pdf";
 
-                if (System.IO.File.Exists(path + "\\" + name))
+                if (File.Exists(path + "\\" + name))
                 {
-                    System.IO.File.Delete(path + "\\" + name);
+                    File.Delete(path + "\\" + name);
                 }
 
                 return true;

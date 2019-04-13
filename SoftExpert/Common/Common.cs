@@ -17,8 +17,7 @@ namespace SoftExpert
         readonly static bool physicalFile = Convert.ToBoolean(WebConfigurationManager.AppSettings["Sesuite.Folder.Physical"]);
         readonly static string physicalPath = WebConfigurationManager.AppSettings["Sesuite.Physical.Path"];
         readonly static string physicalPathSE = WebConfigurationManager.AppSettings["Sesuite.Physical.Path.SE"];
-        readonly static string jobStatusInitial = WebConfigurationManager.AppSettings["SoftExpert.JobStatusInitial"];
-        readonly static string jobCategory = WebConfigurationManager.AppSettings["SoftExpert.JobCategory"];
+        readonly static string jobCategory = WebConfigurationManager.AppSettings["SoftExpert.Category.JobCategory"];
         readonly static string prefix = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePrefixReplicate"];
         readonly static string searchAttributeOwnerCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
         readonly static string searchAttributeOwnerRegistration = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerRegistration"];
@@ -28,6 +27,7 @@ namespace SoftExpert
         readonly static string newAccessPermissionFgaddLowerLevel = WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString();
         readonly static string structID = WebConfigurationManager.AppSettings["SoftExpert.StructID"];
         readonly static string finished = WebConfigurationManager.AppSettings["SoftExpert.EstagioDoc.Finished"];
+        readonly static string classify = WebConfigurationManager.AppSettings["SoftExpert.EstagioDoc.Classify"];
         readonly static SEClient seClient = SEConnection.GetConnection();
         readonly static SEAdministration seAdministration = SEConnection.GetConnectionAdm();
 
@@ -216,7 +216,7 @@ namespace SoftExpert
             try
             {
                 seClient.setAttributeValue(documentId, "", EAttribute.MFP_Data_Job.ToString(), dataJob.ToString("yyyy-MM-dd"));
-                seClient.setAttributeValue(documentId, "", EAttribute.MFP_Status.ToString(), jobStatusInitial);
+                seClient.setAttributeValue(documentId, "", EAttribute.MFP_Status.ToString(), classify);
                 seClient.setAttributeValue(documentId, "", EAttribute.MFP_Categoria.ToString(), categoryId);
                 seClient.setAttributeValue(documentId, "", EAttribute.MFP_Usuario.ToString(), user);
             }

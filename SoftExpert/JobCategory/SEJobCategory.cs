@@ -13,7 +13,7 @@ namespace SoftExpert
         #region .: Attributes :.
 
         readonly static string searchAttributeOwnerCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
-        readonly static string jobCategory = WebConfigurationManager.AppSettings["SoftExpert.JobCategory"];
+        readonly static string jobCategory = WebConfigurationManager.AppSettings["SoftExpert.Category.JobCategory"];
         readonly static string messageDeleteDocument = WebConfigurationManager.AppSettings["SoftExpert.MessageDeleteDocument"];
         readonly static SEClient seClient = SEConnection.GetConnection();
 
@@ -30,7 +30,7 @@ namespace SoftExpert
             {
                 eCMJobCategoryOut.result = new ECMJobCategoryVM()
                 {
-                    archive = System.Convert.ToBase64String(eletronicFiles.FirstOrDefault().BINFILE),
+                    archive = Convert.ToBase64String(eletronicFiles.FirstOrDefault().BINFILE),
                 };
             }
             else
