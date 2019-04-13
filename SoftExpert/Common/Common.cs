@@ -27,12 +27,34 @@ namespace SoftExpert
         readonly static int newAccessPermissionPermissionType = int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString());
         readonly static string newAccessPermissionFgaddLowerLevel = WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString();
         readonly static string structID = WebConfigurationManager.AppSettings["SoftExpert.StructID"];
+        readonly static string finished = WebConfigurationManager.AppSettings["SoftExpert.EstagioDoc.Finished"];
         readonly static SEClient seClient = SEConnection.GetConnection();
         readonly static SEAdministration seAdministration = SEConnection.GetConnectionAdm();
 
         #endregion
 
         #region .: Public Methods :.        
+
+        public static bool CheckDocument(string documentid)
+        {
+            documentDataReturn documentDataReturn = seClient.viewDocumentData(documentid, "", "");
+
+            if (documentDataReturn.ERROR != null)
+            {
+                return false;
+            }
+            else
+            {
+                string status = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_EstagioDoc.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_EstagioDoc.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null;
+
+                if (status == finished)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
 
         public static documentDataReturn GetDocumentProperties(string documentid)
         {
