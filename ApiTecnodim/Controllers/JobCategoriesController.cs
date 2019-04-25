@@ -40,7 +40,7 @@ namespace ApiTecnodim.Controllers
         [Authorize, HttpPost]
         public ECMJobCategorySaveOut SetECMJobCategorySave(ECMJobCategorySaveIn ecmWorkCategorySaveIn)
         {
-            ECMJobCategorySaveOut ecmWorkCategorySaveOut = new ECMJobCategorySaveOut();
+            ECMJobCategorySaveOut eCMJobCategorySaveOut = new ECMJobCategorySaveOut();
             Guid Key = Guid.NewGuid();
 
             try
@@ -51,7 +51,7 @@ namespace ApiTecnodim.Controllers
                     ecmWorkCategorySaveIn.key = Key.ToString();
                     ecmWorkCategorySaveIn.now = DateTime.Now;
 
-                    ecmWorkCategorySaveOut = jobCategoryRepository.SetECMJobCategorySave(ecmWorkCategorySaveIn);
+                    eCMJobCategorySaveOut = jobCategoryRepository.SetECMJobCategorySave(ecmWorkCategorySaveIn);
                 }
                 else
                 {
@@ -72,11 +72,11 @@ namespace ApiTecnodim.Controllers
             {
                 registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.WorkCategorysController.GetSEWorkCategorySave", ex.Message);
 
-                ecmWorkCategorySaveOut.successMessage = null;
-                ecmWorkCategorySaveOut.messages.Add(ex.Message);
+                eCMJobCategorySaveOut.successMessage = null;
+                eCMJobCategorySaveOut.messages.Add(ex.Message);
             }
 
-            return ecmWorkCategorySaveOut;
+            return eCMJobCategorySaveOut;
         }
 
         [Authorize, HttpPost]

@@ -37,7 +37,7 @@ namespace SoftExpert
 
         public static bool CheckDocument(string documentid)
         {
-            documentDataReturn documentDataReturn = seClient.viewDocumentData(documentid, "", "");
+            documentDataReturn documentDataReturn = seClient.viewDocumentData(documentid, "", "", "");
 
             if (documentDataReturn.ERROR != null)
             {
@@ -58,7 +58,7 @@ namespace SoftExpert
 
         public static documentDataReturn GetDocumentProperties(string documentid)
         {
-            return seClient.viewDocumentData(documentid, "", "");
+            return seClient.viewDocumentData(documentid, "", "", "");
         }
 
         public static documentReturn CheckRegisteredDocument(string registration, string category)
@@ -317,6 +317,14 @@ namespace SoftExpert
         {
             try
             {
+                #region .: Save File Local :.
+
+                SaveFile(physicalPath, fileName, fileBinary);
+
+                #endregion
+
+                #region .: Upload SE :.
+
                 eletronicFile[] eletronicFiles = new eletronicFile[2];
                 eletronicFiles[0] = new eletronicFile
                 {
@@ -326,6 +334,7 @@ namespace SoftExpert
                 };
 
                 var response = seClient.uploadEletronicFile(documentId, "", user, eletronicFiles);
+                #endregion
 
                 return true;
             }
@@ -339,7 +348,7 @@ namespace SoftExpert
         {
             try
             {
-                #region .: Save File :.
+                #region .: Save File Local :.
 
                 SaveFile(physicalPath, fileName, fileBinary);
 

@@ -228,7 +228,7 @@ namespace SoftExpert
                 //If you do not insert a new document
                 else
                 {
-                    var document = seClient.newDocument(searchAttributeOwnerCategory, eCMDocumentDetailSaveIn.registration.Trim(), eCMDocumentDetailSaveIn.name, "", "", "", "", null, 0);
+                    var document = seClient.newDocument(searchAttributeOwnerCategory, eCMDocumentDetailSaveIn.registration.Trim(), eCMDocumentDetailSaveIn.name, "", "", "", "", null, 0, null);
 
                     var documentMatrix = document.Split(':');
 

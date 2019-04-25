@@ -150,26 +150,5 @@ namespace ApiTecnodim.Controllers
 
             return ecmDocumentSaveOut;
         }
-
-        [Authorize, HttpPost]
-        public ECMDocumentDeletedOut DeleteECMDocumentArchive(ECMDocumentDeletedIn ecmDocumentDeletedIn)
-        {
-            ECMDocumentDeletedOut exmDocumentDeletedOut = new ECMDocumentDeletedOut();
-            Guid Key = Guid.NewGuid();
-
-            try
-            {
-                documentRepository.DeleteECMDocumentArchive(ecmDocumentDeletedIn);
-            }
-            catch (Exception ex)
-            {
-                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentsController.DeleteECMDocumentArchive", ex.Message);
-
-                exmDocumentDeletedOut.successMessage = null;
-                exmDocumentDeletedOut.messages.Add(ex.Message);
-            }
-
-            return exmDocumentDeletedOut;
-        }
     }
 }

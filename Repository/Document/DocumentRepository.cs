@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Net;
 
 namespace Repository
 {
@@ -17,31 +18,34 @@ namespace Repository
         public ECMDocumentOut GetECMDocument(ECMDocumentIn ecmDocumentIn)
         {
             ECMDocumentOut ecmDocumentOut = new ECMDocumentOut();
+            string archive;
             registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Log - Start", "Repository.DocumentRepository.GetECMDocument", "");
 
             string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.DocumentRepository.Path"]);
             string name = ecmDocumentIn.externalId + ".pdf";
+            string pathFile = Path.Combine(path, name);
 
-            if (File.Exists(path + "\\" + name))
+            if (!File.Exists(pathFile))
             {
-                byte[] archive = File.ReadAllBytes(path + "\\" + name);
+                archive = SEDocument.GetSEDocument(ecmDocumentIn);
 
-                ecmDocumentOut.result.archive = Convert.ToBase64String(archive);
-            }
-            else
-            {
-                ecmDocumentOut = SEDocument.GetSEDocument(ecmDocumentIn);
-
-                if (ecmDocumentOut.result != null)
+                if (!string.IsNullOrEmpty(archive))
                 {
-                    byte[] archive = Convert.FromBase64String(ecmDocumentOut.result.archive);
-
-                    if (!Directory.Exists(path))
+                    try
                     {
-                        Directory.CreateDirectory(path);
-                    }
+                        WebClient wc = new WebClient();
 
-                    File.WriteAllBytes(path + "\\" + name, archive);
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+
+                        wc.DownloadFile(archive, pathFile);
+                    }
+                    catch
+                    {
+                        throw new Exception(i18n.Resource.FileNotFound);
+                    }
                 }
                 else
                 {
@@ -129,26 +133,6 @@ namespace Repository
 
             registerEventRepository.SaveRegisterEvent(ecmDocumentSaveIn.userId, ecmDocumentSaveIn.key, "Log - End", "Repository.DocumentRepository.PostECMDocumentSave", "");
             return ecmDocumentSaveOut;
-        }
-
-        public bool DeleteECMDocumentArchive(ECMDocumentDeletedIn ecmDocumentDeletedIn)
-        {
-            try
-            {
-                string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.DocumentRepository.Path"]);
-                string name = ecmDocumentDeletedIn.externalId + ".pdf";
-
-                if (File.Exists(path + "\\" + name))
-                {
-                    File.Delete(path + "\\" + name);
-                }
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
         }
     }
 }

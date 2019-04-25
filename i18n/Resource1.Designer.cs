@@ -502,7 +502,7 @@ namespace i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Arquivo não encontrado!.
+        ///   Looks up a localized string similar to Arquivo não encontrado! Favor tentar mais tarde!.
         /// </summary>
         public static string FileNotFound {
             get {

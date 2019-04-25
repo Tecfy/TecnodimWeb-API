@@ -5,6 +5,7 @@ using Model.VM;
 using SoftExpert.com.softexpert.tecfy;
 using System;
 using System.Linq;
+using System.Text;
 using System.Web.Configuration;
 
 namespace SoftExpert
@@ -23,24 +24,17 @@ namespace SoftExpert
 
         #region .: Public Methods :.
 
-        public static ECMDocumentOut GetSEDocument(ECMDocumentIn ecmDocumentIn)
+        public static string GetSEDocument(ECMDocumentIn ecmDocumentIn)
         {
-            ECMDocumentOut ecmDocumentOut = new ECMDocumentOut();
-
-            eletronicFile[] eletronicFiles = seClient.downloadEletronicFile(ecmDocumentIn.externalId, "", "", "", ecmDocumentIn.categoryId, "", "", "");
+            eletronicFile[] eletronicFiles = seClient.downloadEletronicFile(ecmDocumentIn.externalId, "", "", "", ecmDocumentIn.categoryId, "", "", "1");
             if (!eletronicFiles.Any(x => x.ERROR != null))
             {
-                ecmDocumentOut.result = new ECMDocumentVM()
-                {
-                    archive = Convert.ToBase64String(eletronicFiles.FirstOrDefault().BINFILE),
-                };
+                return Encoding.ASCII.GetString(eletronicFiles.FirstOrDefault().BINFILE);
             }
             else
             {
-                ecmDocumentOut.result = null;
+                return null;
             }
-
-            return ecmDocumentOut;
         }
 
         public static ECMDocumentsOut GetSEDocuments()
@@ -110,7 +104,7 @@ namespace SoftExpert
                     //If you do not insert a new document
                     else
                     {
-                        var document = seClient.newDocument(eCMDocumentSaveIn.categoryId, eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.title, "", "", "", eCMDocumentSaveIn.user, null, 0);
+                        var document = seClient.newDocument(eCMDocumentSaveIn.categoryId, eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.title, "", "", "", eCMDocumentSaveIn.user, null, 0, null);
 
                         var documentMatrix = document.Split(':');
 

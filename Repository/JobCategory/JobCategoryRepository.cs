@@ -2,7 +2,10 @@
 using Model.In;
 using Model.Out;
 using SoftExpert;
+using System;
 using System.Configuration;
+using System.IO;
+using System.Net;
 
 namespace Repository
 {
@@ -19,9 +22,9 @@ namespace Repository
             string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.JobCategoryRepository.Path"]);
             string name = eCMJobCategorySaveIn.FileName + ".pdf";
 
-            if (System.IO.File.Exists(path + "\\" + name))
+            if (File.Exists(path + "\\" + name))
             {
-                System.IO.File.Delete(path + "\\" + name);
+                File.Delete(path + "\\" + name);
             }
 
             SEJobCategory.SEDocumentDeleteOldSaveNew(eCMJobCategorySaveIn);
@@ -37,25 +40,44 @@ namespace Repository
 
             string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.JobCategoryRepository.Path"]);
             string name = eCMJobCategoryIn.externalId + ".pdf";
+            string pathFile = Path.Combine(path, name);
 
-            if (System.IO.File.Exists(path + "\\" + name))
+            if (File.Exists(pathFile))
             {
-                byte[] archive = System.IO.File.ReadAllBytes(path + "\\" + name);
+                byte[] archive = File.ReadAllBytes(pathFile);
 
-                eCMJobCategoryOut.result.archive = System.Convert.ToBase64String(archive);
+                eCMJobCategoryOut.result.archive = Convert.ToBase64String(archive);
             }
             else
             {
                 eCMJobCategoryOut = SEJobCategory.GetSEJobCategory(eCMJobCategoryIn);
 
-                byte[] archive = System.Convert.FromBase64String(eCMJobCategoryOut.result.archive);
-
-                if (!System.IO.Directory.Exists(path))
+                if (eCMJobCategoryOut.result != null && !string.IsNullOrEmpty(eCMJobCategoryOut.result.archive))
                 {
-                    System.IO.Directory.CreateDirectory(path);
-                }
+                    try
+                    {
+                        WebClient wc = new WebClient();
 
-                System.IO.File.WriteAllBytes(path + "\\" + name, archive);
+                        if (!Directory.Exists(path))
+                        {
+                            Directory.CreateDirectory(path);
+                        }
+
+                        wc.DownloadFile(eCMJobCategoryOut.result.archive, pathFile);
+
+                        byte[] archive = File.ReadAllBytes(pathFile);
+
+                        eCMJobCategoryOut.result.archive = Convert.ToBase64String(archive);
+                    }
+                    catch
+                    {
+                        throw new Exception(i18n.Resource.FileNotFound);
+                    }
+                }
+                else
+                {
+                    throw new Exception(i18n.Resource.FileNotFound);
+                }
             }
 
             registerEventRepository.SaveRegisterEvent(eCMJobCategoryIn.userId, eCMJobCategoryIn.key, "Log - End", "Repository.JobCategoryRepository.GetECMJobCategory", "");
@@ -81,9 +103,9 @@ namespace Repository
                 string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.JobRepository.Path"]);
                 string name = eCMJobDeletedIn.externalId + ".pdf";
 
-                if (System.IO.File.Exists(path + "\\" + name))
+                if (File.Exists(path + "\\" + name))
                 {
-                    System.IO.File.Delete(path + "\\" + name);
+                    File.Delete(path + "\\" + name);
                 }
 
                 return true;

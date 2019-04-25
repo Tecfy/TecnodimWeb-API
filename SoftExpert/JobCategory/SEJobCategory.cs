@@ -4,6 +4,7 @@ using Model.VM;
 using SoftExpert.com.softexpert.tecfy;
 using System;
 using System.Linq;
+using System.Text;
 using System.Web.Configuration;
 
 namespace SoftExpert
@@ -25,12 +26,12 @@ namespace SoftExpert
         {
             ECMJobCategoryOut eCMJobCategoryOut = new ECMJobCategoryOut();
 
-            eletronicFile[] eletronicFiles = seClient.downloadEletronicFile(eCMJobCategoryIn.externalId, "", "", "", eCMJobCategoryIn.categoryId, "", "", "");
+            eletronicFile[] eletronicFiles = seClient.downloadEletronicFile(eCMJobCategoryIn.externalId, "", "", "", eCMJobCategoryIn.categoryId, "", "", "1");
             if (eletronicFiles.Any(x => string.IsNullOrEmpty(x.ERROR)))
             {
                 eCMJobCategoryOut.result = new ECMJobCategoryVM()
                 {
-                    archive = Convert.ToBase64String(eletronicFiles.FirstOrDefault().BINFILE),
+                    archive = Encoding.ASCII.GetString(eletronicFiles.FirstOrDefault().BINFILE),
                 };
             }
             else
@@ -65,7 +66,7 @@ namespace SoftExpert
                 documentDataReturn documentDataReturnOwner = Common.GetDocumentProperties(ecmJobCategorySaveIn.registration);
                 if (documentDataReturnOwner.ATTRIBUTTES.Count() > 0)
                 {
-                    var message = seClient.newDocument(jobCategory, ecmJobCategorySaveIn.DocumentId, ecmJobCategorySaveIn.title, "", "", "", ecmJobCategorySaveIn.user, null, 0);
+                    var message = seClient.newDocument(jobCategory, ecmJobCategorySaveIn.DocumentId, ecmJobCategorySaveIn.title, "", "", "", ecmJobCategorySaveIn.user, null, 0, null);
 
                     var documentMatrix = message.Split(':');
 
@@ -115,7 +116,7 @@ namespace SoftExpert
                     //If you do not insert a new document
                     else
                     {
-                        var message = seClient.newDocument(eCMJobSaveIn.categoryId, eCMJobSaveIn.DocumentId, eCMJobSaveIn.title, "", "", "", eCMJobSaveIn.user, null, 0);
+                        var message = seClient.newDocument(eCMJobSaveIn.categoryId, eCMJobSaveIn.DocumentId, eCMJobSaveIn.title, "", "", "", eCMJobSaveIn.user, null, 0, null);
 
                         var documentMatrix = message.Split(':');
 

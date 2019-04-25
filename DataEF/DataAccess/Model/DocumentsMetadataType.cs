@@ -46,5 +46,14 @@ namespace DataEF.DataAccess.Model
 
         [Display(Name = "SliceDate", ResourceType = typeof(i18n.Resource))]
         public DateTime? SliceDate { get; set; } // SliceDate
+
+        [Display(Name = "Pages", ResourceType = typeof(i18n.Resource))]
+        public int? Pages { get; set; } // Pages
+
+        [Display(Name = "Download", ResourceType = typeof(i18n.Resource))]
+        public bool Download { get; set; } // Download
+
+        [Display(Name = "DownloadDate", ResourceType = typeof(i18n.Resource))]
+        public DateTime? DownloadDate { get; set; } // DownloadDate
     }
 }
