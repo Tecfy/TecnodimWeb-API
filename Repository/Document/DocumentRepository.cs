@@ -42,8 +42,10 @@ namespace Repository
 
                         wc.DownloadFile(archive, pathFile);
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Erro", "Repository.DocumentRepository.GetECMDocument", string.Format("Arquivo: {0}. Erro: {1}", archive, ex.Message));
+
                         throw new Exception(i18n.Resource.FileNotFound);
                     }
                 }
