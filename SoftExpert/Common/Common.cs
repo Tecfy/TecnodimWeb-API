@@ -317,12 +317,6 @@ namespace SoftExpert
         {
             try
             {
-                #region .: Save File Local :.
-
-                SaveFile(physicalPath, fileName, fileBinary);
-
-                #endregion
-
                 #region .: Upload SE :.
 
                 eletronicFile[] eletronicFiles = new eletronicFile[2];
@@ -334,6 +328,7 @@ namespace SoftExpert
                 };
 
                 var response = seClient.uploadEletronicFile(documentId, "", user, eletronicFiles);
+
                 #endregion
 
                 return true;
@@ -349,8 +344,8 @@ namespace SoftExpert
             try
             {
                 #region .: Save File Local :.
-
-                SaveFile(physicalPath, fileName, fileBinary);
+                
+                SaveFile(folder, fileName, fileBinary);
 
                 #endregion
 
@@ -401,7 +396,7 @@ namespace SoftExpert
                 File.Delete(Path.Combine(folder, fileName));
             }
 
-            File.WriteAllBytes(Path.Combine(physicalPath, fileName), fileBinary);
+            File.WriteAllBytes(Path.Combine(folder, fileName), fileBinary);
         }
 
         #endregion

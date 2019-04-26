@@ -10,6 +10,8 @@ namespace Model.In
 
         public string archive { get; set; }
 
+        public string code { get; set; }
+
         public string title { get; set; }
 
         public DateTime dataJob { get; set; }
@@ -18,13 +20,11 @@ namespace Model.In
 
         public string extension { get; set; }
 
-        public DateTime now { get; set; }
-
         public string DocumentId
         {
             get
             {
-                return registration.Trim() + "-" + categoryId.Trim();
+                return code;
             }
         }
 
@@ -32,7 +32,7 @@ namespace Model.In
         {
             get
             {
-                return DocumentId + "-" + now.ToString("ddMMyyyy-HHmmss") + extension;
+                return code + extension;
             }
         }
 

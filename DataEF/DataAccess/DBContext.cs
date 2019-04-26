@@ -180,18 +180,18 @@ namespace DataEF.DataAccess
     public partial class AdditionalFields
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int AdditionalFieldId { get; set; } // AdditionalFieldId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public string Name { get; set; } // Name
@@ -249,18 +249,18 @@ namespace DataEF.DataAccess
     public partial class ApiUsers
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int ApiUserId { get; set; } // ApiUserId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public string User { get; set; } // User
@@ -341,7 +341,7 @@ namespace DataEF.DataAccess
     public partial class AspNetUserClaims
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int Id { get; set; } // Id (Primary key)
 
         public string UserId { get; set; } // UserId
@@ -560,18 +560,18 @@ namespace DataEF.DataAccess
     public partial class Categories
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int CategoryId { get; set; } // CategoryId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public int? ParentId { get; set; } // ParentId
@@ -651,18 +651,18 @@ namespace DataEF.DataAccess
     public partial class CategoryAdditionalFields
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int CategoryAdditionalFieldId { get; set; } // CategoryAdditionalFieldId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public int CategoryId { get; set; } // CategoryId
@@ -728,18 +728,18 @@ namespace DataEF.DataAccess
     public partial class DeletedPages
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int DeletedPageId { get; set; } // DeletedPageId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public int DocumentId { get; set; } // DocumentId
@@ -822,18 +822,18 @@ namespace DataEF.DataAccess
     public partial class Documents
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int DocumentId { get; set; } // DocumentId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public int DocumentStatusId { get; set; } // DocumentStatusId
@@ -911,18 +911,18 @@ namespace DataEF.DataAccess
     public partial class DocumentStatus
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int DocumentStatusId { get; set; } // DocumentStatusId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public string Name { get; set; } // Name
@@ -996,18 +996,18 @@ namespace DataEF.DataAccess
     public partial class JobCategories
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int JobCategoryId { get; set; } // JobCategoryId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public int JobId { get; set; } // JobId
@@ -1089,18 +1089,18 @@ namespace DataEF.DataAccess
     public partial class JobCategoryAdditionalFields
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int JobCategoryAdditionalFieldId { get; set; } // JobCategoryAdditionalFieldId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public int JobCategoryId { get; set; } // JobCategoryId
@@ -1156,18 +1156,18 @@ namespace DataEF.DataAccess
     public partial class JobCategoryPages
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int JobCategoryPageId { get; set; } // JobCategoryPageId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public int JobCategoryId { get; set; } // JobCategoryId
@@ -1238,18 +1238,18 @@ namespace DataEF.DataAccess
     public partial class Jobs
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int JobId { get; set; } // JobId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public int UserId { get; set; } // UserId
@@ -1316,18 +1316,18 @@ namespace DataEF.DataAccess
     public partial class JobStatus
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int JobStatusId { get; set; } // JobStatusId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public string Name { get; set; } // Name
@@ -1391,18 +1391,18 @@ namespace DataEF.DataAccess
     public partial class RegisterEvents
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int RegisterEventId { get; set; } // RegisterEventId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public string UserId { get; set; } // UserId
@@ -1463,18 +1463,18 @@ namespace DataEF.DataAccess
     public partial class SliceCategoryAdditionalFields
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int SliceCategoryAdditionalFieldId { get; set; } // SliceCategoryAdditionalFieldId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public int SliceId { get; set; } // SliceId
@@ -1533,18 +1533,18 @@ namespace DataEF.DataAccess
     public partial class SlicePages
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int SlicePageId { get; set; } // SlicePageId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public int SliceId { get; set; } // SliceId
@@ -1624,18 +1624,18 @@ namespace DataEF.DataAccess
     public partial class Slices
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int SliceId { get; set; } // SliceId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public int DocumentId { get; set; } // DocumentId
@@ -1719,18 +1719,18 @@ namespace DataEF.DataAccess
     public partial class SyncRuntimes
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int SyncRuntimeId { get; set; } // SyncRuntimeId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public string Url { get; set; } // URL
@@ -1784,18 +1784,18 @@ namespace DataEF.DataAccess
     public partial class Units
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int UnityId { get; set; } // UnityId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public string ExternalId { get; set; } // ExternalId
@@ -1867,18 +1867,18 @@ namespace DataEF.DataAccess
     public partial class Users
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int UserId { get; set; } // UserId (Primary key)
 
         public bool Active { get; set; } // Active
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime CreatedDate { get; set; } // CreatedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? EditedDate { get; set; } // EditedDate
 
-        [DataEF.Attributes.Template.ExcludeField()]
+        [Attributes.Template.ExcludeField()]
         public DateTime? DeletedDate { get; set; } // DeletedDate
 
         public string AspNetUserId { get; set; } // AspNetUserId
@@ -1935,7 +1935,7 @@ namespace DataEF.DataAccess
     public partial class UserUnits
     {
 
-        [DataEF.Attributes.Template.IdentityField()]
+        [Attributes.Template.IdentityField()]
         public int UserUnityId { get; set; } // UserUnityId (Primary key)
 
         public int UserId { get; set; } // UserId

@@ -20,7 +20,7 @@ namespace Repository
             registerEventRepository.SaveRegisterEvent(eCMJobCategorySaveIn.userId, eCMJobCategorySaveIn.key, "Log - Start", "Repository.JobCategoryRepository.SetECMJobCategorySave", "");
 
             string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.JobCategoryRepository.Path"]);
-            string name = eCMJobCategorySaveIn.FileName + ".pdf";
+            string name = eCMJobCategorySaveIn.FileName;
 
             if (File.Exists(path + "\\" + name))
             {
