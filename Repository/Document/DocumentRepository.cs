@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Threading;
 
@@ -32,7 +33,7 @@ namespace Repository
 
                 if (!string.IsNullOrEmpty(archive))
                 {
-                    DownloadFile(path, archive, pathFile, 1, ecmDocumentIn.userId, ecmDocumentIn.key);
+                    DownloadFile(ecmDocumentIn.externalId, path, archive, pathFile, 1, ecmDocumentIn.userId, ecmDocumentIn.key);
                 }
                 else
                 {
@@ -122,7 +123,7 @@ namespace Repository
             return ecmDocumentSaveOut;
         }
 
-        private void DownloadFile(string path, string archive, string pathFile, int exec, string userId, string key)
+        private void DownloadFile(string externalId, string path, string archive, string pathFile, int exec, string userId, string key)
         {
             try
             {
@@ -137,13 +138,16 @@ namespace Repository
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(userId, key, "Erro", "Repository.DocumentRepository.GetECMDocument", string.Format("Arquivo: {0}. Erro: {1}", archive, ex.Message));
+                registerEventRepository.SaveRegisterEvent(userId, key, "Erro", "Repository.DocumentRepository.GetECMDocument", string.Format("ExternalId: {0}. Arquivo: {1}. Erro: {2}", externalId, archive, ex.Message));
 
                 if (exec < 5)
                 {
                     exec++;
-                    Thread.Sleep(5000);
-                    DownloadFile(path, archive, pathFile, exec, userId, key);
+                    int sleep = 3000;
+                    int.TryParse(ConfigurationManager.AppSettings["SLEEP"], out sleep);
+
+                    Thread.Sleep(sleep);
+                    DownloadFile(externalId, path, archive, pathFile, exec, userId, key);
                 }
                 else
                 {

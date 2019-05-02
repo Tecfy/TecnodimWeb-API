@@ -33,7 +33,7 @@ namespace SoftExpert
             }
             else
             {
-                return null;
+                throw new Exception(eletronicFiles.FirstOrDefault().ERROR);
             }
         }
 
