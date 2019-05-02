@@ -403,6 +403,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arquivo sendo processado, por favor, tente novamente mais tarde!.
+        /// </summary>
+        public static string DownloadFile {
+            get {
+                return ResourceManager.GetString("DownloadFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Editar.
         /// </summary>
         public static string Edit {
@@ -502,7 +511,7 @@ namespace i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Arquivo não encontrado! Favor tentar mais tarde!.
+        ///   Looks up a localized string similar to Arquivo não encontrado, por favor, tente novamente mais tarde!.
         /// </summary>
         public static string FileNotFound {
             get {

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Net;
+using System.Threading;
 
 namespace Repository
 {
@@ -31,23 +32,7 @@ namespace Repository
 
                 if (!string.IsNullOrEmpty(archive))
                 {
-                    try
-                    {
-                        WebClient wc = new WebClient();
-
-                        if (!Directory.Exists(path))
-                        {
-                            Directory.CreateDirectory(path);
-                        }
-
-                        wc.DownloadFile(archive, pathFile);
-                    }
-                    catch (Exception ex)
-                    {
-                        registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Erro", "Repository.DocumentRepository.GetECMDocument", string.Format("Arquivo: {0}. Erro: {1}", archive, ex.Message));
-
-                        throw new Exception(i18n.Resource.FileNotFound);
-                    }
+                    DownloadFile(path, archive, pathFile, 1, ecmDocumentIn.userId, ecmDocumentIn.key);
                 }
                 else
                 {
@@ -135,6 +120,36 @@ namespace Repository
 
             registerEventRepository.SaveRegisterEvent(ecmDocumentSaveIn.userId, ecmDocumentSaveIn.key, "Log - End", "Repository.DocumentRepository.PostECMDocumentSave", "");
             return ecmDocumentSaveOut;
+        }
+
+        private void DownloadFile(string path, string archive, string pathFile, int exec, string userId, string key)
+        {
+            try
+            {
+                WebClient wc = new WebClient();
+
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                wc.DownloadFile(archive, pathFile);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(userId, key, "Erro", "Repository.DocumentRepository.GetECMDocument", string.Format("Arquivo: {0}. Erro: {1}", archive, ex.Message));
+
+                if (exec < 5)
+                {
+                    exec++;
+                    Thread.Sleep(5000);
+                    DownloadFile(path, archive, pathFile, exec, userId, key);
+                }
+                else
+                {
+                    throw new Exception(i18n.Resource.FileNotFound);
+                }
+            }
         }
     }
 }

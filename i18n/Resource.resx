@@ -334,7 +334,7 @@
     <value>Digite seu login</value>
   </data>
   <data name="FileNotFound" xml:space="preserve">
-    <value>Arquivo não encontrado! Favor tentar mais tarde!</value>
+    <value>Arquivo não encontrado, por favor, tente novamente mais tarde!</value>
   </data>
   <data name="FirstName" xml:space="preserve">
     <value>Nome</value>
@@ -533,5 +533,8 @@
   </data>
   <data name="Note" xml:space="preserve">
     <value>Observação</value>
+  </data>
+  <data name="DownloadFile" xml:space="preserve">
+    <value>Arquivo sendo processado, por favor, tente novamente mais tarde!</value>
   </data>
 </root>
