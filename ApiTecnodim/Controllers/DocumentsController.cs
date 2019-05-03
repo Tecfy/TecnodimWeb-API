@@ -110,6 +110,8 @@ namespace ApiTecnodim.Controllers
         [Authorize, HttpPost]
         public ECMDocumentSaveOut PostECMDocumentSave(ECMDocumentSaveIn ecmDocumentSaveIn)
         {
+            registerEventRepository.SaveRegisterEvent(ecmDocumentSaveIn.userId, ecmDocumentSaveIn.key, "Log - Start", "ApiTecnodim.Controllers.DocumentsController.GetSEDocumentSave", "");
+
             ECMDocumentSaveOut ecmDocumentSaveOut = new ECMDocumentSaveOut();
             Guid Key = Guid.NewGuid();
 
@@ -147,6 +149,8 @@ namespace ApiTecnodim.Controllers
                 ecmDocumentSaveOut.successMessage = null;
                 ecmDocumentSaveOut.messages.Add(ex.Message);
             }
+
+            registerEventRepository.SaveRegisterEvent(ecmDocumentSaveIn.userId, ecmDocumentSaveIn.key, "Log - End", "ApiTecnodim.Controllers.DocumentsController.GetSEDocumentSave", "");
 
             return ecmDocumentSaveOut;
         }
