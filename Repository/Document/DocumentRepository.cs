@@ -20,7 +20,7 @@ namespace Repository
         public ECMDocumentOut GetECMDocument(ECMDocumentIn ecmDocumentIn)
         {
             ECMDocumentOut ecmDocumentOut = new ECMDocumentOut();
-            string archive;
+            string archive = "";
             registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Log - Start", "Repository.DocumentRepository.GetECMDocument", "");
 
             string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.DocumentRepository.Path"]);
@@ -29,16 +29,30 @@ namespace Repository
 
             if (!File.Exists(pathFile))
             {
-                archive = SEDocument.GetSEDocument(ecmDocumentIn);
+                try
+                {
+                    archive = SEDocument.GetSEDocument(ecmDocumentIn);
+                }
+                catch (Exception ex)
+                {
+                    registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Erro", "Repository.DocumentRepository.GetECMDocument.DownloadFile", string.Format("DownloadFile: {0}, ExternalId: {1}", ex.Message, ecmDocumentIn.externalId));
+                }
 
                 if (!string.IsNullOrEmpty(archive))
                 {
+                    registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Log - Start", "Repository.DocumentRepository.GetECMDocument.DownloadFile", string.Format("DownloadFile: {0}, ExternalId: {1}", archive, ecmDocumentIn.externalId));
+
                     DownloadFile(ecmDocumentIn.externalId, path, archive, pathFile, 1, ecmDocumentIn.userId, ecmDocumentIn.key);
+
+                    registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Log - End", "Repository.DocumentRepository.GetECMDocument.DownloadFile", string.Format("DownloadFile: {0}, ExternalId: {1}", archive, ecmDocumentIn.externalId));
                 }
                 else
                 {
+                    registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Erro", "Repository.DocumentRepository.GetECMDocument.DownloadFile", string.Format("DownloadFile: {0}, ExternalId: {1}", i18n.Resource.FileNotFound, ecmDocumentIn.externalId));
+
                     throw new Exception(i18n.Resource.FileNotFound);
                 }
+
             }
 
             registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Log - End", "Repository.DocumentRepository.GetECMDocument", "");
@@ -151,7 +165,7 @@ namespace Repository
                 }
                 else
                 {
-                    throw new Exception(i18n.Resource.FileNotFound);
+                    throw new Exception(i18n.Resource.DownloadFailed);
                 }
             }
         }

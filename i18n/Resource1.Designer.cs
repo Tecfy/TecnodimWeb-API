@@ -403,6 +403,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Falha no Download!.
+        /// </summary>
+        public static string DownloadFailed {
+            get {
+                return ResourceManager.GetString("DownloadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Arquivo sendo processado, por favor, tente novamente mais tarde!.
         /// </summary>
         public static string DownloadFile {

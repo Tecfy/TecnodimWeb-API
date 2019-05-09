@@ -116,7 +116,7 @@ namespace SoftExpert
                             }
                             else
                             {
-                                throw new Exception(document);
+                                throw new Exception(string.Format("Method: newDocument. Message: {0}", document));
                             }
                         }
                     }

@@ -157,7 +157,7 @@ namespace SoftExpert
                     }
                     catch (Exception)
                     {
-                        throw new Exception(string.Format(i18n.Resource.FieldWithError, item.ATTRIBUTTENAME));
+                        throw new Exception(string.Format(i18n.Resource.FieldWithError, item.ATTRIBUTTENAME) + " Method: setAttributeValue");
                     }
                 }
             }
