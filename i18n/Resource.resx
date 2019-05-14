@@ -540,4 +540,7 @@
   <data name="DownloadFailed" xml:space="preserve">
     <value>Falha no Download!</value>
   </data>
+  <data name="PBEmbarked" xml:space="preserve">
+    <value>PB Embarcada</value>
+  </data>
 </root>

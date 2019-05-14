@@ -95,25 +95,5 @@ namespace Repository
             registerEventRepository.SaveRegisterEvent(eCMJobSaveIn.userId, eCMJobSaveIn.key, "Log - End", "Repository.JobRepository.PostECMJobSave", "");
             return ecmJobSaveOut;
         }
-
-        public bool DeleteECMJobArchive(ECMJobDeletedIn eCMJobDeletedIn)
-        {
-            try
-            {
-                string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.JobRepository.Path"]);
-                string name = eCMJobDeletedIn.externalId + ".pdf";
-
-                if (File.Exists(path + "\\" + name))
-                {
-                    File.Delete(path + "\\" + name);
-                }
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
     }
 }

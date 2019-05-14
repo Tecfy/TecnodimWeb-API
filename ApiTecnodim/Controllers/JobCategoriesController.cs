@@ -119,26 +119,5 @@ namespace ApiTecnodim.Controllers
 
             return eCMJobSaveOut;
         }
-
-        [Authorize, HttpPost]
-        public ECMJobDeletedOut DeleteECMJobArchive(ECMJobDeletedIn eCMJobDeletedIn)
-        {
-            ECMJobDeletedOut eCMJobDeletedOut = new ECMJobDeletedOut();
-            Guid Key = Guid.NewGuid();
-
-            try
-            {
-                jobCategoryRepository.DeleteECMJobArchive(eCMJobDeletedIn);
-            }
-            catch (Exception ex)
-            {
-                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.JobCategoriesController.DeleteECMJobArchive", ex.Message);
-
-                eCMJobDeletedOut.successMessage = null;
-                eCMJobDeletedOut.messages.Add(ex.Message);
-            }
-
-            return eCMJobDeletedOut;
-        }
     }
 }

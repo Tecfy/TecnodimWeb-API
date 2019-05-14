@@ -871,6 +871,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PB Embarcada.
+        /// </summary>
+        public static string PBEmbarked {
+            get {
+                return ResourceManager.GetString("PBEmbarked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Permissões.
         /// </summary>
         public static string Permissions {
