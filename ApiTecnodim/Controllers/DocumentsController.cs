@@ -154,5 +154,28 @@ namespace ApiTecnodim.Controllers
 
             return ecmDocumentSaveOut;
         }
+
+        [Authorize, HttpDelete]
+        public ECMDocumentDeleteOut DeleteECMDocument(string id)
+        {
+            ECMDocumentDeleteOut eCMDocumentDeleteOut = new ECMDocumentDeleteOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                ECMDocumentDeleteIn eCMDocumentDeleteIn = new ECMDocumentDeleteIn() { externalId = id, userId = User.Identity.Name, key = Key.ToString() };
+
+                eCMDocumentDeleteOut = documentRepository.DeleteECMDocument(eCMDocumentDeleteIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentsController.DeleteECMDocument", ex.Message);
+
+                eCMDocumentDeleteOut.successMessage = null;
+                eCMDocumentDeleteOut.messages.Add(ex.Message);
+            }
+
+            return eCMDocumentDeleteOut;
+        }
     }
 }

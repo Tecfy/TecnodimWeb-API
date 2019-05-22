@@ -27,6 +27,8 @@ namespace Repository
                 File.Delete(path + "\\" + name);
             }
 
+            File.WriteAllBytes(path + "\\" + name, eCMJobCategorySaveIn.FileBinary);
+
             SEJobCategory.SEDocumentDeleteOldSaveNew(eCMJobCategorySaveIn);
 
             registerEventRepository.SaveRegisterEvent(eCMJobCategorySaveIn.userId, eCMJobCategorySaveIn.key, "Log - End", "Repository.JobCategoryRepository.SetECMJobCategorySave", "");

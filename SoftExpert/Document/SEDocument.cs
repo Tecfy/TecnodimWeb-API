@@ -18,6 +18,7 @@ namespace SoftExpert
         readonly static string searchAttributePendingName = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingName"];
         readonly static string searchAttributePendingCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingCategory"];
         readonly static string searchAttributeOwnerCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
+        readonly static string messageDeleteDocument = WebConfigurationManager.AppSettings["SoftExpert.MessageDeleteDocument"];
         readonly static SEClient seClient = SEConnection.GetConnection();
 
         #endregion
@@ -131,6 +132,31 @@ namespace SoftExpert
             catch (Exception e)
             {
                 throw new Exception(e.Message);
+            }
+        }
+
+        public static bool SEDocumentDelete(string documentId)
+        {
+            try
+            {
+                //Checks whether the document exists
+                documentDataReturn documentDataReturn = Common.GetDocumentProperties(documentId);
+
+                //If the document already exists in the specified category, it deletes the document
+                if (documentDataReturn.IDDOCUMENT == documentId)
+                {
+                    var deleteDocument = seClient.deleteDocument(documentDataReturn.IDCATEGORY, documentDataReturn.IDDOCUMENT, "", messageDeleteDocument);
+                }
+                else if (!string.IsNullOrEmpty(documentDataReturn.ERROR))
+                {
+                    throw new Exception(documentDataReturn.ERROR);
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 

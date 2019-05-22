@@ -137,6 +137,17 @@ namespace Repository
             return ecmDocumentSaveOut;
         }
 
+        public ECMDocumentDeleteOut DeleteECMDocument(ECMDocumentDeleteIn eCMDocumentDeleteIn)
+        {
+            ECMDocumentDeleteOut eCMDocumentDeleteOut = new ECMDocumentDeleteOut();
+            registerEventRepository.SaveRegisterEvent(eCMDocumentDeleteIn.userId, eCMDocumentDeleteIn.key, "Log - Start", "Repository.DocumentRepository.DeleteECMDocument", "");
+
+            SEDocument.SEDocumentDelete(eCMDocumentDeleteIn.externalId);
+
+            registerEventRepository.SaveRegisterEvent(eCMDocumentDeleteIn.userId, eCMDocumentDeleteIn.key, "Log - End", "Repository.DocumentRepository.DeleteECMDocument", "");
+            return eCMDocumentDeleteOut;
+        }
+
         private void DownloadFile(string externalId, string path, string archive, string pathFile, int exec, string userId, string key)
         {
             try

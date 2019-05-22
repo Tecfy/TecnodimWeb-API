@@ -63,8 +63,10 @@
     <Compile Include="Category\VM\ECMCategoriesVM.cs" />
     <Compile Include="Common\In\ResultServiceVM.cs" />
     <Compile Include="Common\VM\ResultServiceVM.cs" />
+    <Compile Include="Document\In\ECMDocumentDeleteIn.cs" />
     <Compile Include="Document\In\ECMDocumentsValidateAdInterfaceIn.cs" />
     <Compile Include="Document\In\ECMDocumentsValidateIn.cs" />
+    <Compile Include="Document\Out\ECMDocumentDeleteOut.cs" />
     <Compile Include="Document\Out\ECMDocumentsValidateAdInterfaceOut.cs" />
     <Compile Include="Document\Out\ECMDocumentsValidateOut.cs" />
     <Compile Include="Document\VM\ECMDocumentsValidateVM.cs" />
