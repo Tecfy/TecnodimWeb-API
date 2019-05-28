@@ -86,5 +86,7 @@ namespace Helper.Enum
         tfyacess_dtsync = 38,
         [Description("tfyacess_horasync")]
         tfyacess_horasync = 39,
+        [Description("tfyacess_digitalizaMPF")]
+        tfyacess_digitalizaMPF = 39,
     }
 }

@@ -10,6 +10,8 @@
 
         public bool slice { get; set; }
 
+        public bool digitalizaMPF { get; set; }
+
         public string name { get; set; }
 
         public string registration { get; set; }
