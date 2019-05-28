@@ -66,7 +66,7 @@ namespace SoftExpert
                 documentDataReturn documentDataReturnOwner = Common.GetDocumentProperties(ecmJobCategorySaveIn.registration);
                 if (documentDataReturnOwner.ATTRIBUTTES.Count() > 0)
                 {
-                    var message = seClient.newDocument(jobCategory, ecmJobCategorySaveIn.DocumentId, ecmJobCategorySaveIn.title, "", "", "", ecmJobCategorySaveIn.user, null, 0, null);
+                    var message = seClient.newDocument(jobCategory, ecmJobCategorySaveIn.DocumentId, ecmJobCategorySaveIn.title, "", "", "", "", null, 0, null);
 
                     var documentMatrix = message.Split(':');
 
