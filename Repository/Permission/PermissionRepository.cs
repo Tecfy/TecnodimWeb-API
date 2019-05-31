@@ -16,10 +16,10 @@ namespace Repository
 
             ecmPermissionsOut = SEPermission.GetSEPermissions(ecmPermissionsIn);
 
-            if (ecmPermissionsOut.result == null)
-            {
-                throw new System.Exception(i18n.Resource.StudentNotFound);
-            }
+            //if (ecmPermissionsOut.result == null)
+            //{
+            //    throw new System.Exception(i18n.Resource.StudentNotFound);
+            //}
 
             registerEventRepository.SaveRegisterEvent(ecmPermissionsIn.userId, ecmPermissionsIn.key, "Log - End", "Repository.PermissionRepository.GetECMPermissions", "");
 
