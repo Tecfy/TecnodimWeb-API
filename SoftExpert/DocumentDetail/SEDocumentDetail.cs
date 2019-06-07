@@ -130,25 +130,11 @@ namespace SoftExpert
             ECMDocumentDetailOut ecmDocumentDetailOut = new ECMDocumentDetailOut();
 
             SEClient seClient = SEConnection.GetConnection();
-            attributeData[] attributeDatas = new attributeData[1];
-            attributeDatas[0] = new attributeData
-            {
-                //search enrollment
-                IDATTRIBUTE = searchAttributeOwnerRegistration,
-                VLATTRIBUTE = ecmDocumentDetailIn.registration
-            };
 
-            searchDocumentFilter searchDocumentFilter = new searchDocumentFilter
-            {
-                IDCATEGORY = searchAttributeOwnerCategory
-            };
+            documentDataReturn documentDataReturn = Common.GetDocumentProperties(ecmDocumentDetailIn.registration);
 
-            searchDocumentReturn searchDocumentReturn = seClient.searchDocument(searchDocumentFilter, "", attributeDatas);
-            documentReturn retorno = new documentReturn();
-            if (searchDocumentReturn.RESULTS.Count() > 0)
+            if (string.IsNullOrEmpty(documentDataReturn.ERROR))
             {
-                documentDataReturn documentDataReturn = Common.GetDocumentProperties(searchDocumentReturn.RESULTS.Select(x => x.IDDOCUMENT).FirstOrDefault());
-
                 ecmDocumentDetailOut.result = new ECMDocumentDetailVM()
                 {
                     unity = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Unidade.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
@@ -161,7 +147,7 @@ namespace SoftExpert
             }
             else
             {
-                ecmDocumentDetailOut.result = null;
+                throw new Exception(documentDataReturn.ERROR);
             }
 
             return ecmDocumentDetailOut;
