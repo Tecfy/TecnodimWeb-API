@@ -21,6 +21,17 @@ namespace SoftExpert
             return seClient;
         }
 
+        public static SEClient GetConnection(string username, string password)
+        {
+            SEClient seClient = new SEClient { Url = URL };
+            seClient.SetAuthentication(username, Password);
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+            ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+
+            return seClient;
+        }
+
         public static SEAdministration GetConnectionAdm()
         {
             SEAdministration seAdministration = new SEAdministration { Url = URLAdm };

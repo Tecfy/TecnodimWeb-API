@@ -60,6 +60,7 @@
     <Compile Include="Connection\SEAdministration.cs" />
     <Compile Include="Connection\SEConnection.cs" />
     <Compile Include="Connection\SEClient.cs" />
+    <Compile Include="Student\SEStudent.cs" />
     <Compile Include="Permission\SEPermission.cs" />
     <Compile Include="JobCategory\SEJobCategory.cs" />
     <Compile Include="DocumentDetail\SEDocumentDetail.cs" />

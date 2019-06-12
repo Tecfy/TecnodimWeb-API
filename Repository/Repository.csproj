@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attribute\AttributeRepository.cs" />
+    <Compile Include="Student\StudentRepository.cs" />
     <Compile Include="Permission\PermissionRepository.cs" />
     <Compile Include="Document\DocumentRepository.cs" />
     <Compile Include="Category\CategoryRepository.cs" />
