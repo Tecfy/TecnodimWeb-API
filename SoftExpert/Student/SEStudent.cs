@@ -70,7 +70,8 @@ namespace SoftExpert
                     {
                         iddocument = documentDataReturn.IDDOCUMENT,
                         name = documentDataReturn.NMTITLE,
-                        code = documentDataReturn.IDCATEGORY
+                        code = documentDataReturn.IDCATEGORY,
+                        date = documentDataReturn.DTDOCUMENT
                     });
                 }
 
