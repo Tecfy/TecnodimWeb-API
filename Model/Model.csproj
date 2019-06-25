@@ -63,6 +63,9 @@
     <Compile Include="Category\VM\ECMCategoriesVM.cs" />
     <Compile Include="Common\In\ResultServiceVM.cs" />
     <Compile Include="Common\VM\ResultServiceVM.cs" />
+    <Compile Include="Permission\In\ECMPermissionIn.cs" />
+    <Compile Include="Permission\Out\ECMPermissionOut.cs" />
+    <Compile Include="Permission\VM\ECMPermissionVM.cs" />
     <Compile Include="Student\In\StudentDocumentsIn.cs" />
     <Compile Include="Student\In\StudentDocumentIn.cs" />
     <Compile Include="Student\Out\StudentDocumentsOut.cs" />

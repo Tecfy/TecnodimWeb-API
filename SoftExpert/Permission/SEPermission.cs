@@ -55,8 +55,8 @@ namespace SoftExpert
                         digitalizaMPF = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_digitalizaMPF.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_digitalizaMPF.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() == "sim" : false,
                         name = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_nomeusuario.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_nomeusuario.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
                         registration = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_userid.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_userid.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
-                        group = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_grupocappservice.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_grupocappservice.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,                                               
-                        status = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_status.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_status.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,                        
+                        group = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_grupocappservice.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_grupocappservice.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                        status = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_status.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_status.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
                     });
                 }
             }
@@ -68,6 +68,50 @@ namespace SoftExpert
             return ecmPermissionsOut;
         }
 
+        public static ECMPermissionOut GetSEPermission(ECMPermissionIn ecmPermissionIn)
+        {
+            ECMPermissionOut ecmPermissionsOut = new ECMPermissionOut();
+
+            attributeData[] attributeDatas = new attributeData[1];
+            attributeDatas[0] = new attributeData
+            {
+                //search enrollment
+                IDATTRIBUTE = EAttribute.tfyacess_userid.ToString(),
+                VLATTRIBUTE = ecmPermissionIn.Registration
+            };
+
+            searchDocumentFilter searchDocumentFilter = new searchDocumentFilter
+            {
+                IDCATEGORY = searchAttributePermissionCategory
+            };
+
+            searchDocumentReturn searchDocumentReturn = seClient.searchDocument(searchDocumentFilter, "", attributeDatas);
+            documentReturn retorno = new documentReturn();
+            if (searchDocumentReturn.RESULTS.Count() > 0)
+            {
+                var idDocument = searchDocumentReturn.RESULTS.FirstOrDefault().IDDOCUMENT;
+                documentDataReturn documentDataReturn = Common.GetDocumentProperties(idDocument);
+
+                ecmPermissionsOut.result.Add(new ECMPermissionVM()
+                {
+                    externalId = idDocument,
+                    cappservice = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_cappservice.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_cappservice.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() == "sim" : false,
+                    classify = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_classifica.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_classifica.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() == "sim" : false,
+                    slice = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_recorte.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_recorte.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() == "sim" : false,
+                    digitalizaMPF = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_digitalizaMPF.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_digitalizaMPF.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() == "sim" : false,
+                    name = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_nomeusuario.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_nomeusuario.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                    registration = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_userid.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_userid.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                    group = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_grupocappservice.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_grupocappservice.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                    status = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_status.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.tfyacess_status.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                });
+            }
+            else
+            {
+                ecmPermissionsOut.result = null;
+            }
+
+            return ecmPermissionsOut;
+        }
         #endregion
     }
 }
