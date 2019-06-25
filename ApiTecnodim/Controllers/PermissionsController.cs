@@ -34,5 +34,29 @@ namespace ApiTecnodim.Controllers
 
             return ecmPermissionsOut;
         }
+
+        [Authorize, HttpGet]
+        public ECMPermissionOut GetECMPermission(string id)
+        {
+            ECMPermissionOut ecmPermissionOut = new ECMPermissionOut();
+            Guid Key = Guid.NewGuid();
+
+            try
+            {
+                ECMPermissionIn ecmPermissionIn = new ECMPermissionIn() { Registration = id, userId = User.Identity.Name, key = Key.ToString() };
+
+                ecmPermissionOut = permissionRepository.GetECMPermission(ecmPermissionIn);
+            }
+            catch (Exception ex)
+            {
+                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.PermissionsController.GetECMPermissions", ex.Message);
+
+                ecmPermissionOut.result = null;
+                ecmPermissionOut.successMessage = null;
+                ecmPermissionOut.messages.Add(ex.Message);
+            }
+
+            return ecmPermissionOut;
+        }
     }
 }

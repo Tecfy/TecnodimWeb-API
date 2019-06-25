@@ -16,14 +16,22 @@ namespace Repository
 
             ecmPermissionsOut = SEPermission.GetSEPermissions(ecmPermissionsIn);
 
-            //if (ecmPermissionsOut.result == null)
-            //{
-            //    throw new System.Exception(i18n.Resource.StudentNotFound);
-            //}
-
             registerEventRepository.SaveRegisterEvent(ecmPermissionsIn.userId, ecmPermissionsIn.key, "Log - End", "Repository.PermissionRepository.GetECMPermissions", "");
 
             return ecmPermissionsOut;
+        }
+
+        public ECMPermissionOut GetECMPermission(ECMPermissionIn ecmPermissionIn)
+        {
+            ECMPermissionOut ecmPermissionOut = new ECMPermissionOut();
+
+            registerEventRepository.SaveRegisterEvent(ecmPermissionIn.userId, ecmPermissionIn.key, "Log - Start", "Repository.PermissionRepository.GetECMPermission", "");
+
+            ecmPermissionOut = SEPermission.GetSEPermission(ecmPermissionIn);
+
+            registerEventRepository.SaveRegisterEvent(ecmPermissionIn.userId, ecmPermissionIn.key, "Log - End", "Repository.PermissionRepository.GetECMPermission", "");
+
+            return ecmPermissionOut;
         }
     }
 }
