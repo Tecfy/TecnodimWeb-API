@@ -27,7 +27,10 @@ namespace DataEF.DataAccess.Model
 		[Display(Name = "Interval", ResourceType = typeof(i18n.Resource))]
 		public int Interval { get; set; } // Interval
 
-		[Display(Name = "LastExecution", ResourceType = typeof(i18n.Resource))]
-		public DateTime LastExecution { get; set; } // LastExecution
+        [Display(Name = "LastExecution", ResourceType = typeof(i18n.Resource))]
+        public DateTime LastExecution { get; set; } // LastExecution
+
+        [Display(Name = "IsExternal", ResourceType = typeof(i18n.Resource))]
+        public bool IsExternal { get; set; } // IsExternal
     }
 }
