@@ -109,6 +109,9 @@
     <Compile Include="JobCategory\VM\ECMJobCategoryVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="JobCategory\Out\ECMJobCategorySaveOut.cs" />
+    <Compile Include="Unit\In\UnitIn.cs" />
+    <Compile Include="Unit\Out\UnitOut.cs" />
+    <Compile Include="Unit\VM\UnitVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="AdditionalField\Out\" />
