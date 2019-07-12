@@ -329,7 +329,7 @@ namespace SoftExpert
 
                 if (documentDataReturnOwner.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()))
                 {
-                    attributtes unityList = documentDataReturnOwner.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()).FirstOrDefault();
+                    attributtes unityList = documentDataReturnOwner.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()).FirstOrDefault();
                     foreach (string item in unityList.ATTRIBUTTEVALUE)
                     {
                         string unityCode = item;
