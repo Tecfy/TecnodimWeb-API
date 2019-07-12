@@ -113,27 +113,32 @@ namespace SoftExpert
                                 int second = int.Parse(h[4].ToString() + h[5].ToString());
 
                                 DateTime dateTime = new DateTime(year, month, day, hour, minute, second);
-                                
+
                                 item.NMFILE = dateTime.ToString("yyyy-MM-dd-HH-mm-ss") + "\\" + filename;
                             }
                         }
                     }
-                    
+
                 }
 
                 eletronicFiles = eletronicFiles.OrderByDescending(a => a.NMFILE).ToArray();
 
                 foreach (eletronicFile item in (eletronicFiles))
                 {
-                    var arrFilename = item.NMFILE.Split('\\');
+                    string[] arrFilename = item.NMFILE.Split('\\');
                     if (arrFilename.Length == 2)
                     {
                         item.NMFILE = arrFilename[1];
                     }
                     studentDocumentOut.result.Add(new StudentDocumentVM()
                     {
-                        uri = Encoding.ASCII.GetString(item.BINFILE)
+                        uri = Encoding.ASCII.GetString(item.BINFILE),
+                        mostRecent = false
                     });
+                }
+                if (studentDocumentOut.result != null && studentDocumentOut.result.Count > 0)
+                {
+                    studentDocumentOut.result[0].mostRecent = true;
                 }
             }
             else
