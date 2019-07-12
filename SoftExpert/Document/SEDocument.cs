@@ -100,7 +100,7 @@ namespace SoftExpert
                     //If the document already exists in the specified category, it uploads the document and properties 
                     if (documentDataReturn.IDDOCUMENT == eCMDocumentSaveIn.DocumentId)
                     {
-                        Common.SEDocumentDataSave(eCMDocumentSaveIn, documentDataReturnOwner);
+                        Common.SEDocumentDataSave(eCMDocumentSaveIn, documentDataReturnOwner, documentDataReturn);
                     }
                     //If you do not insert a new document
                     else
@@ -113,7 +113,7 @@ namespace SoftExpert
                         {
                             if (documentMatrix.Count() >= 3 && documentMatrix[2].ToUpper().Contains("SUCESSO"))
                             {
-                                Common.SEDocumentDataSave(eCMDocumentSaveIn, documentDataReturnOwner);
+                                Common.SEDocumentDataSave(eCMDocumentSaveIn, documentDataReturnOwner, documentDataReturn);
                             }
                             else
                             {
