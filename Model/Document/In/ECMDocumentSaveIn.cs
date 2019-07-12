@@ -35,7 +35,7 @@ namespace Model.In
 
         public string externalId { get; set; }
 
-        public string DocumentId => registration.Trim() + " - " + unityCode.Trim() + " - " + categoryId.Trim();
+        public string DocumentId => registration.Trim() + "-" + unityCode.Trim() + "-" + categoryId.Trim();
 
         public string FileName => DocumentId + "-" + now.ToString("ddMMyyyy-HHmmss") + extension;
 

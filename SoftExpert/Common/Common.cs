@@ -87,11 +87,11 @@ namespace SoftExpert
             }
         }
 
-        public static void SEDocumentDataSave(ECMDocumentSaveIn eCMDocumentSaveIn, documentDataReturn documentDataReturnOwner, documentDataReturn documentDataReturn)
+        public static void SEDocumentDataSave(ECMDocumentSaveIn eCMDocumentSaveIn, documentDataReturn documentDataReturnOwner, documentDataReturn documentDataReturnDossier)
         {
             try
             {
-                SEDocumentDataSaveAttributtes(eCMDocumentSaveIn.DocumentId, documentDataReturnOwner, documentDataReturn);
+                SEDocumentDataSaveAttributtes(eCMDocumentSaveIn.DocumentId, documentDataReturnOwner, documentDataReturnDossier);
                 SEDocumentDataSaveAttributtesSpecific(eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.additionalFields);
                 SEDocumentDataSaveAttributtesSpecificSlice(eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.sliceUser, eCMDocumentSaveIn.sliceUserRegistration, eCMDocumentSaveIn.classificationUser, eCMDocumentSaveIn.classificationUserRegistration, Convert.ToDateTime(eCMDocumentSaveIn.classificationDate), Convert.ToDateTime(eCMDocumentSaveIn.sliceDate));
                 SEDocumentDataSavePermission(eCMDocumentSaveIn.DocumentId, documentDataReturnOwner);

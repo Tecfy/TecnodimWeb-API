@@ -14,12 +14,13 @@ namespace SoftExpert
     {
         #region .: Attributes :.
 
-        readonly static string searchAttributePendingValue = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingValue"];
-        readonly static string searchAttributePendingName = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingName"];
-        readonly static string searchAttributePendingCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingCategory"];
-        readonly static string searchAttributeOwnerCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
-        readonly static string messageDeleteDocument = WebConfigurationManager.AppSettings["SoftExpert.MessageDeleteDocument"];
-        readonly static SEClient seClient = SEConnection.GetConnection();
+        private static readonly string searchAttributePendingValue = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingValue"];
+        private static readonly string searchAttributePendingName = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingName"];
+        private static readonly string searchAttributePendingCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingCategory"];
+        private static readonly string searchAttributeOwnerCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
+        private static readonly string searchAttributeDossierCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeDossierCategory"];
+        private static readonly string messageDeleteDocument = WebConfigurationManager.AppSettings["SoftExpert.MessageDeleteDocument"];
+        private static readonly SEClient seClient = SEConnection.GetConnection();
 
         #endregion
 
@@ -56,7 +57,7 @@ namespace SoftExpert
             {
                 documentDataReturn documentDataReturn = new documentDataReturn();
 
-                foreach (var item in searchDocumentReturn.RESULTS)
+                foreach (documentReturn item in searchDocumentReturn.RESULTS)
                 {
                     documentDataReturn = new documentDataReturn();
 
@@ -84,47 +85,45 @@ namespace SoftExpert
         {
             try
             {
-                //Check if there is a registered owner document
-                documentReturn documentReturnOwner = Common.CheckRegisteredDocument(eCMDocumentSaveIn.registration, searchAttributeOwnerCategory);
-                if (documentReturnOwner == null)
-                {
-                    throw new Exception(i18n.Resource.StudentNotFound);
-                }
-
                 //Checks whether the document exists
-                documentDataReturn documentDataReturn = Common.GetDocumentProperties(eCMDocumentSaveIn.DocumentId);
                 documentDataReturn documentDataReturnOwner = Common.GetDocumentProperties(eCMDocumentSaveIn.registration);
+                documentDataReturn documentDataReturnDossier = Common.GetDocumentProperties(eCMDocumentSaveIn.externalId);
 
-                if (documentDataReturnOwner.ATTRIBUTTES.Count() > 0)
+                if (!string.IsNullOrEmpty(documentDataReturnOwner.ERROR))
                 {
-                    //If the document already exists in the specified category, it uploads the document and properties 
-                    if (documentDataReturn.IDDOCUMENT == eCMDocumentSaveIn.DocumentId)
-                    {
-                        Common.SEDocumentDataSave(eCMDocumentSaveIn, documentDataReturnOwner, documentDataReturn);
-                    }
-                    //If you do not insert a new document
-                    else
-                    {
-                        var document = seClient.newDocument(eCMDocumentSaveIn.categoryId, eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.title, "", "", "", eCMDocumentSaveIn.user, null, 0, null);
-
-                        var documentMatrix = document.Split(':');
-
-                        if (documentMatrix.Count() > 0)
-                        {
-                            if (documentMatrix.Count() >= 3 && documentMatrix[2].ToUpper().Contains("SUCESSO"))
-                            {
-                                Common.SEDocumentDataSave(eCMDocumentSaveIn, documentDataReturnOwner, documentDataReturn);
-                            }
-                            else
-                            {
-                                throw new Exception(string.Format("Method: newDocument. Message: {0}", document));
-                            }
-                        }
-                    }
+                    throw new Exception(documentDataReturnOwner.ERROR);
                 }
+
+                if (!string.IsNullOrEmpty(documentDataReturnDossier.ERROR))
+                {
+                    throw new Exception(documentDataReturnDossier.ERROR);
+                }
+
+                documentDataReturn documentDataReturnDocument = Common.GetDocumentProperties(eCMDocumentSaveIn.DocumentId);
+
+                //If the document already exists in the specified category, it uploads the document and properties 
+                if (documentDataReturnDocument.IDDOCUMENT == eCMDocumentSaveIn.DocumentId)
+                {
+                    Common.SEDocumentDataSave(eCMDocumentSaveIn, documentDataReturnOwner, documentDataReturnDossier);
+                }
+                //If you do not insert a new document
                 else
                 {
-                    throw new Exception(i18n.Resource.StudentNotFound);
+                    string document = seClient.newDocument(eCMDocumentSaveIn.categoryId, eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.title, "", "", "", eCMDocumentSaveIn.user, null, 0, null);
+
+                    string[] documentMatrix = document.Split(':');
+
+                    if (documentMatrix.Count() > 0)
+                    {
+                        if (documentMatrix.Count() >= 3 && documentMatrix[2].ToUpper().Contains("SUCESSO"))
+                        {
+                            Common.SEDocumentDataSave(eCMDocumentSaveIn, documentDataReturnOwner, documentDataReturnDossier);
+                        }
+                        else
+                        {
+                            throw new Exception(string.Format("Method: newDocument. Message: {0}", document));
+                        }
+                    }
                 }
 
                 return true;
@@ -145,7 +144,7 @@ namespace SoftExpert
                 //If the document already exists in the specified category, it deletes the document
                 if (documentDataReturn.IDDOCUMENT == documentId)
                 {
-                    var deleteDocument = seClient.deleteDocument(documentDataReturn.IDCATEGORY, documentDataReturn.IDDOCUMENT, "", messageDeleteDocument);
+                    string deleteDocument = seClient.deleteDocument(documentDataReturn.IDCATEGORY, documentDataReturn.IDDOCUMENT, "", messageDeleteDocument);
                 }
                 else if (!string.IsNullOrEmpty(documentDataReturn.ERROR))
                 {
