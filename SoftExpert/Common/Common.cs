@@ -140,20 +140,22 @@ namespace SoftExpert
 
         #region .: Private Methods :.  
 
-        private static void SEDocumentDataSaveAttributtes(string documentId, documentDataReturn documentDataReturOwner, documentDataReturn documentDataReturn)
+        private static void SEDocumentDataSaveAttributtes(string documentId, documentDataReturn documentDataReturOwner, documentDataReturn documentDataReturnDossier)
         {
             #region .: Insert Attibuttes Owner :.
 
-            if (!documentDataReturn.ATTRIBUTTES.Any(a => a.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()))
+            if (!documentDataReturnDossier.ATTRIBUTTES.Any(a => a.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()))
             {
-                var aux = documentDataReturOwner.ATTRIBUTTES.Where(a => a.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()).FirstOrDefault();
+                attributtes aux = documentDataReturOwner.ATTRIBUTTES.Where(a => a.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()).FirstOrDefault();
                 if (aux != null)
                 {
-                    documentDataReturn.ATTRIBUTTES = documentDataReturn.ATTRIBUTTES.Concat(new[] { aux }).ToArray();
+                    documentDataReturnDossier.ATTRIBUTTES = documentDataReturnDossier.ATTRIBUTTES.Concat(new[] { aux }).ToArray();
                 }
             }
-            foreach (attributtes item in documentDataReturn.ATTRIBUTTES)
+            foreach (attributtes item in documentDataReturnDossier.ATTRIBUTTES)
             {
+                bool alreadySetted = false;
+
                 if (item.ATTRIBUTTENAME.Contains(prefix))
                 {
                     string value = "";
@@ -165,7 +167,19 @@ namespace SoftExpert
                             attributtes aux = documentDataReturOwner.ATTRIBUTTES.Where(a => a.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()).FirstOrDefault();
                             if (aux != null)
                             {
+                                alreadySetted = true;
                                 value = aux.ATTRIBUTTEVALUE[0];
+                                foreach (string val in aux.ATTRIBUTTEVALUE)
+                                {
+                                    try
+                                    {
+                                        seClient.setAttributeValue(documentId, "", item.ATTRIBUTTENAME, val);
+                                    }
+                                    catch (Exception)
+                                    {
+                                        throw new Exception(string.Format(i18n.Resource.FieldWithError, item.ATTRIBUTTENAME) + " Method: setAttributeValue");
+                                    }
+                                }
                             }
                         }
                         else
@@ -176,7 +190,10 @@ namespace SoftExpert
 
                     try
                     {
-                        seClient.setAttributeValue(documentId, "", item.ATTRIBUTTENAME, value);
+                        if (!alreadySetted)
+                        {
+                            seClient.setAttributeValue(documentId, "", item.ATTRIBUTTENAME, value);
+                        }
                     }
                     catch (Exception)
                     {
