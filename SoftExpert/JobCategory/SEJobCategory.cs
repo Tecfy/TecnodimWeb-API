@@ -13,10 +13,10 @@ namespace SoftExpert
     {
         #region .: Attributes :.
 
-        readonly static string searchAttributeOwnerCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
-        readonly static string jobCategory = WebConfigurationManager.AppSettings["SoftExpert.Category.JobCategory"];
-        readonly static string messageDeleteDocument = WebConfigurationManager.AppSettings["SoftExpert.MessageDeleteDocument"];
-        readonly static SEClient seClient = SEConnection.GetConnection();
+        private static readonly string searchAttributeOwnerCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
+        private static readonly string jobCategory = WebConfigurationManager.AppSettings["SoftExpert.Category.JobCategory"];
+        private static readonly string messageDeleteDocument = WebConfigurationManager.AppSettings["SoftExpert.MessageDeleteDocument"];
+        private static readonly SEClient seClient = SEConnection.GetConnection();
 
         #endregion
 
@@ -66,9 +66,9 @@ namespace SoftExpert
                 documentDataReturn documentDataReturnOwner = Common.GetDocumentProperties(ecmJobCategorySaveIn.registration);
                 if (documentDataReturnOwner.ATTRIBUTTES.Count() > 0)
                 {
-                    var message = seClient.newDocument(jobCategory, ecmJobCategorySaveIn.DocumentId, ecmJobCategorySaveIn.title, "", "", "", "", null, 0, null);
+                    string message = seClient.newDocument(jobCategory, ecmJobCategorySaveIn.DocumentId, ecmJobCategorySaveIn.title, "", "", "", "", null, 0, null);
 
-                    var documentMatrix = message.Split(':');
+                    string[] documentMatrix = message.Split(':');
 
                     if (documentMatrix.Count() > 0)
                     {
@@ -95,47 +95,39 @@ namespace SoftExpert
         {
             try
             {
-                //Check if there is a registered owner document
-                documentReturn documentReturnOwner = Common.CheckRegisteredDocument(eCMJobSaveIn.registration, searchAttributeOwnerCategory);
-                if (documentReturnOwner == null)
-                {
-                    throw new Exception(i18n.Resource.StudentNotFound);
-                }
-
                 //Checks whether the document exists
-                documentDataReturn documentDataReturn = Common.GetDocumentProperties(eCMJobSaveIn.DocumentId);
                 documentDataReturn documentDataReturnOwner = Common.GetDocumentProperties(eCMJobSaveIn.registration);
 
-                if (documentDataReturnOwner.ATTRIBUTTES.Count() > 0)
+                if (!string.IsNullOrEmpty(documentDataReturnOwner.ERROR))
                 {
-                    //If the document already exists in the specified category, it uploads the document and properties
-                    if (documentDataReturn.IDDOCUMENT == eCMJobSaveIn.DocumentId)
-                    {
-                        Common.SEDocumentDataSave(eCMJobSaveIn, documentDataReturnOwner);
-                    }
-                    //If you do not insert a new document
-                    else
-                    {
-                        var message = seClient.newDocument(eCMJobSaveIn.categoryId, eCMJobSaveIn.DocumentId, eCMJobSaveIn.title, "", "", "", eCMJobSaveIn.user, null, 0, null);
-
-                        var documentMatrix = message.Split(':');
-
-                        if (documentMatrix.Count() > 0)
-                        {
-                            if (documentMatrix.Count() >= 3 && documentMatrix[2].ToUpper().Contains("SUCESSO"))
-                            {
-                                Common.SEDocumentDataSave(eCMJobSaveIn, documentDataReturnOwner);
-                            }
-                            else
-                            {
-                                throw new Exception(message);
-                            }
-                        }
-                    }
+                    throw new Exception(documentDataReturnOwner.ERROR);
                 }
+
+                documentDataReturn documentDataReturn = Common.GetDocumentProperties(eCMJobSaveIn.DocumentId);
+
+                //If the document already exists in the specified category, it uploads the document and properties
+                if (documentDataReturn.IDDOCUMENT == eCMJobSaveIn.DocumentId)
+                {
+                    Common.SEDocumentDataSave(eCMJobSaveIn, documentDataReturnOwner);
+                }
+                //If you do not insert a new document
                 else
                 {
-                    throw new Exception(i18n.Resource.StudentNotFound);
+                    string message = seClient.newDocument(eCMJobSaveIn.categoryId, eCMJobSaveIn.DocumentId, eCMJobSaveIn.title, "", "", "", eCMJobSaveIn.user, null, 0, null);
+
+                    string[] documentMatrix = message.Split(':');
+
+                    if (documentMatrix.Count() > 0)
+                    {
+                        if (documentMatrix.Count() >= 3 && documentMatrix[2].ToUpper().Contains("SUCESSO"))
+                        {
+                            Common.SEDocumentDataSave(eCMJobSaveIn, documentDataReturnOwner);
+                        }
+                        else
+                        {
+                            throw new Exception(message);
+                        }
+                    }
                 }
 
                 return true;

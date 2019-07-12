@@ -18,7 +18,6 @@ namespace SoftExpert
         private static readonly string searchAttributePendingName = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingName"];
         private static readonly string searchAttributePendingCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingCategory"];
         private static readonly string searchAttributeOwnerCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
-        private static readonly string searchAttributeDossierCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeDossierCategory"];
         private static readonly string messageDeleteDocument = WebConfigurationManager.AppSettings["SoftExpert.MessageDeleteDocument"];
         private static readonly SEClient seClient = SEConnection.GetConnection();
 

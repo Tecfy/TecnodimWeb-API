@@ -108,7 +108,23 @@ namespace SoftExpert
         {
             try
             {
-                SEDocumentDataSaveAttributtes(eCMJobSaveIn.DocumentId, documentDataReturnOwner);
+                SEDocumentDataSaveAttributtes(eCMJobSaveIn, documentDataReturnOwner);
+                SEDocumentDataSaveAttributtesSpecific(eCMJobSaveIn.DocumentId, eCMJobSaveIn.additionalFields);
+                SEDocumentDataSavePermission(eCMJobSaveIn.DocumentId, documentDataReturnOwner);
+                SEDocumentDataSaveAssociation(documentDataReturnOwner.IDDOCUMENT, searchAttributeOwnerCategory, eCMJobSaveIn.DocumentId, eCMJobSaveIn.categoryId);
+                SEDocumentDataSaveUploadFile(eCMJobSaveIn.FileBinary, eCMJobSaveIn.FileName, eCMJobSaveIn.DocumentId, eCMJobSaveIn.user, eCMJobSaveIn.categoryId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void SEDocumentDataSave(ECMJobSaveIn eCMJobSaveIn, documentDataReturn documentDataReturnOwner, documentDataReturn documentDataReturnDossier)
+        {
+            try
+            {
+                SEDocumentDataSaveAttributtes(eCMJobSaveIn.DocumentId, documentDataReturnOwner, documentDataReturnDossier);
                 SEDocumentDataSaveAttributtesSpecific(eCMJobSaveIn.DocumentId, eCMJobSaveIn.additionalFields);
                 SEDocumentDataSavePermission(eCMJobSaveIn.DocumentId, documentDataReturnOwner);
                 SEDocumentDataSaveAssociation(documentDataReturnOwner.IDDOCUMENT, searchAttributeOwnerCategory, eCMJobSaveIn.DocumentId, eCMJobSaveIn.categoryId);
@@ -223,6 +239,46 @@ namespace SoftExpert
                     try
                     {
                         seClient.setAttributeValue(documentId, "", item.ATTRIBUTTENAME, value);
+                    }
+                    catch (Exception)
+                    {
+                        throw new Exception(string.Format(i18n.Resource.FieldWithError, item.ATTRIBUTTENAME) + " Method: setAttributeValue");
+                    }
+                }
+            }
+
+            #endregion
+        }
+
+        private static void SEDocumentDataSaveAttributtes(ECMJobSaveIn job, documentDataReturn documentDataReturOwner)
+        {
+            #region .: Insert Attibuttes Owner :.
+
+            foreach (attributtes item in documentDataReturOwner.ATTRIBUTTES)
+            {
+                if (item.ATTRIBUTTENAME.Contains(prefix))
+                {
+                    string value = "";
+
+                    if (item.ATTRIBUTTEVALUE.Count() > 0)
+                    {
+                        if (item.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString())
+                        {
+                            value = job.unityName;
+                        }
+                        else if (item.ATTRIBUTTENAME == EAttribute.SER_cad_Unidade.ToString())
+                        {
+                            value = job.unityCode;
+                        }
+                        else
+                        {
+                            value = item.ATTRIBUTTEVALUE[0];
+                        }
+                    }
+
+                    try
+                    {
+                        seClient.setAttributeValue(job.DocumentId, "", item.ATTRIBUTTENAME, value);
                     }
                     catch (Exception)
                     {

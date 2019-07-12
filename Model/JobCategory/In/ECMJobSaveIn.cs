@@ -19,11 +19,15 @@ namespace Model.In
 
         public DateTime now { get; set; }
 
+        public string unityCode { get; set; }
+
+        public string unityName{ get; set; }
+
         public string DocumentId
         {
             get
             {
-                return registration.Trim() + "-" + categoryId.Trim();
+                return registration.Trim() + "-" + unityCode.Trim() + "-" + categoryId.Trim();
             }
         }
 
