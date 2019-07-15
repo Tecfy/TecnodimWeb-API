@@ -14,14 +14,15 @@ namespace SoftExpert
     {
         #region .: Attributes :.
 
-        readonly static string searchAttributeOwnerUnity = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerUnity"];
-        readonly static string searchAttributeOwnerRegistration = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerRegistration"];
-        readonly static string searchAttributeOwnerCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
-        readonly static int newAccessPermissionUserType = int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString());
-        readonly static string newAccessPermissionPermission = WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString();
-        readonly static int newAccessPermissionPermissionType = int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString());
-        readonly static string newAccessPermissionFgaddLowerLevel = WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString();
-        readonly static SEClient seClient = SEConnection.GetConnection();
+        private readonly static string searchAttributeOwnerUnity = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerUnity"];
+        private readonly static string searchAttributeOwnerRegistration = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerRegistration"];
+        private readonly static string searchAttributeOwnerCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
+        private static readonly string searchAttributePendingCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingCategory"];
+        private readonly static int newAccessPermissionUserType = int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString());
+        private readonly static string newAccessPermissionPermission = WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString();
+        private readonly static int newAccessPermissionPermissionType = int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString());
+        private readonly static string newAccessPermissionFgaddLowerLevel = WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString();
+        private readonly static SEClient seClient = SEConnection.GetConnection();
 
         #endregion
 
@@ -157,7 +158,6 @@ namespace SoftExpert
         {
             try
             {
-                SEClient seClient = SEConnection.GetConnection();
                 string registration = string.Empty;
 
                 //Check if there is a registered owner document
@@ -166,13 +166,11 @@ namespace SoftExpert
                 //If the document already exists in the specified category, it uploads the document and properties
                 if (documentReturn != null)
                 {
-                    registration = documentReturn.IDDOCUMENT;
-
                     try
                     {
                         documentDataReturn documentDataReturn = Common.GetDocumentProperties(documentReturn.IDDOCUMENT);
 
-                        var returnUnityCodes = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_cod_unidade.ToString(), eCMDocumentDetailSaveIn.unityCode);
+                        var returnUnityCode = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_cod_unidade.ToString(), eCMDocumentDetailSaveIn.unityCode);
                         if (!string.IsNullOrEmpty(eCMDocumentDetailSaveIn.cpf))
                         {
                             var returnCPF = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Cpf.ToString(), eCMDocumentDetailSaveIn.cpf);
@@ -192,17 +190,14 @@ namespace SoftExpert
                         {
                             SEAdministration seAdministration = SEConnection.GetConnectionAdm();
 
-                            seAdministration.newPosition(eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, out string status, out string detail, out int code, out string recordid, out string recordKey);
-                            seAdministration.newDepartment(eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, "", "", "1");
+                            var returnNewPosition = seAdministration.newPosition(eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, out string status, out string detail, out int code, out string recordid, out string recordKey);
+                            var returnNewDepartment = seAdministration.newDepartment(eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, "", "", "1");
 
-                            var s = seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_cad_unidades.ToString(), eCMDocumentDetailSaveIn.unityCode);
+                            var returnUnityCodes = seClient.setAttributeValue(documentReturn.IDDOCUMENT, "", EAttribute.SER_cad_unidades.ToString(), eCMDocumentDetailSaveIn.unityCode);
 
-                            var n = seClient.newAccessPermission(documentReturn.IDDOCUMENT,
-                                eCMDocumentDetailSaveIn.unityCode + ";" + eCMDocumentDetailSaveIn.unityCode,
-                                newAccessPermissionUserType,
-                                newAccessPermissionPermission,
-                                newAccessPermissionPermissionType,
-                                newAccessPermissionFgaddLowerLevel);
+                            var returnNewAccessPermission = seClient.newAccessPermission(documentReturn.IDDOCUMENT, eCMDocumentDetailSaveIn.unityCode + ";" + eCMDocumentDetailSaveIn.unityCode, newAccessPermissionUserType, newAccessPermissionPermission, newAccessPermissionPermissionType, newAccessPermissionFgaddLowerLevel);
+
+                            SetSEPermissionDocuments(documentReturn.IDDOCUMENT, eCMDocumentDetailSaveIn.unityCode);
                         }
                     }
                     catch (Exception ex)
@@ -210,7 +205,6 @@ namespace SoftExpert
                         throw new Exception(ex.Message);
                     }
                 }
-
                 //If you do not insert a new document
                 else
                 {
@@ -224,7 +218,7 @@ namespace SoftExpert
                         {
                             registration = documentMatrix[1];
 
-                            var returnUnityCodes = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_cod_unidade.ToString(), eCMDocumentDetailSaveIn.unityCode);
+                            var returnUnityCode = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_cod_unidade.ToString(), eCMDocumentDetailSaveIn.unityCode);
                             if (!string.IsNullOrEmpty(eCMDocumentDetailSaveIn.cpf))
                             {
                                 var returnCPF = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Cpf.ToString(), eCMDocumentDetailSaveIn.cpf);
@@ -238,19 +232,14 @@ namespace SoftExpert
                             var returnName = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_NomedoAluno.ToString(), eCMDocumentDetailSaveIn.name);
                             var returnStatus = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_SituacaoAluno.ToString(), eCMDocumentDetailSaveIn.status);
                             var returnUnity = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_Unidade.ToString(), eCMDocumentDetailSaveIn.unity);
-                            var returnUnityCode = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_unidades.ToString(), eCMDocumentDetailSaveIn.unityCode);
+                            var returnUnityCodes = seClient.setAttributeValue(eCMDocumentDetailSaveIn.registration.Trim(), "", EAttribute.SER_cad_unidades.ToString(), eCMDocumentDetailSaveIn.unityCode);
 
                             SEAdministration seAdministration = SEConnection.GetConnectionAdm();
 
-                            seAdministration.newPosition(eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, out string status, out string detail, out int code, out string recordid, out string recordKey);
-                            seAdministration.newDepartment(eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, "", "", "1");
+                            var returnNewPosition = seAdministration.newPosition(eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, out string status, out string detail, out int code, out string recordid, out string recordKey);
+                            var returnNewDepartment = seAdministration.newDepartment(eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, eCMDocumentDetailSaveIn.unityCode, "", "", "1");
 
-                            var n = seClient.newAccessPermission(eCMDocumentDetailSaveIn.registration.Trim(),
-                                eCMDocumentDetailSaveIn.unityCode + ";" + eCMDocumentDetailSaveIn.unityCode,
-                                newAccessPermissionUserType,
-                                newAccessPermissionPermission,
-                                newAccessPermissionPermissionType,
-                                newAccessPermissionFgaddLowerLevel);
+                            var returnNewAccessPermission = seClient.newAccessPermission(eCMDocumentDetailSaveIn.registration.Trim(), eCMDocumentDetailSaveIn.unityCode + ";" + eCMDocumentDetailSaveIn.unityCode, newAccessPermissionUserType, newAccessPermissionPermission, newAccessPermissionPermissionType, newAccessPermissionFgaddLowerLevel);
                         }
                         else
                         {
@@ -268,5 +257,36 @@ namespace SoftExpert
         }
 
         #endregion
+
+
+        private static void SetSEPermissionDocuments(string registration, string unityCode)
+        {
+            attributeData[] attributeDatas = new attributeData[1];
+            attributeDatas[0] = new attributeData
+            {
+                //search registration
+                IDATTRIBUTE = EAttribute.SER_cad_Matricula.ToString(),
+                VLATTRIBUTE = registration
+            };
+
+            searchDocumentFilter searchDocumentFilter = new searchDocumentFilter();
+
+            searchDocumentReturn searchDocumentReturn = seClient.searchDocument(searchDocumentFilter, "", attributeDatas);
+            documentReturn retorno = new documentReturn();
+            if (searchDocumentReturn.RESULTS.Count() > 0)
+            {
+                foreach (documentReturn item in (searchDocumentReturn.RESULTS))
+                {
+                    documentDataReturn documentDataReturn = Common.GetDocumentProperties(item.IDDOCUMENT);
+
+                    if (documentDataReturn.IDCATEGORY != searchAttributeOwnerCategory && documentDataReturn.IDCATEGORY != searchAttributePendingCategory)
+                    {
+                        var returnUnityCodes = seClient.setAttributeValue(documentDataReturn.IDDOCUMENT, "", EAttribute.SER_cad_unidades.ToString(), unityCode);
+
+                        var returnNewAccessPermission = seClient.newAccessPermission(documentDataReturn.IDDOCUMENT, unityCode + ";" + unityCode, newAccessPermissionUserType, newAccessPermissionPermission, newAccessPermissionPermissionType, newAccessPermissionFgaddLowerLevel);
+                    }
+                }
+            }
+        }
     }
 }
