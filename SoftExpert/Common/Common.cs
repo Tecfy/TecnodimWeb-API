@@ -14,22 +14,22 @@ namespace SoftExpert
     {
         #region .: Attributes :.
 
-        readonly static bool physicalFile = Convert.ToBoolean(WebConfigurationManager.AppSettings["Sesuite.Folder.Physical"]);
-        readonly static string physicalPath = WebConfigurationManager.AppSettings["Sesuite.Physical.Path"];
-        readonly static string physicalPathSE = WebConfigurationManager.AppSettings["Sesuite.Physical.Path.SE"];
-        readonly static string jobCategory = WebConfigurationManager.AppSettings["SoftExpert.Category.JobCategory"];
-        readonly static string prefix = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePrefixReplicate"];
-        readonly static string searchAttributeOwnerCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
-        readonly static string searchAttributeOwnerRegistration = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerRegistration"];
-        readonly static int newAccessPermissionUserType = int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString());
-        readonly static string newAccessPermissionPermission = WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString();
-        readonly static int newAccessPermissionPermissionType = int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString());
-        readonly static string newAccessPermissionFgaddLowerLevel = WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString();
-        readonly static string structID = WebConfigurationManager.AppSettings["SoftExpert.StructID"];
-        readonly static string finished = WebConfigurationManager.AppSettings["SoftExpert.EstagioDoc.Finished"];
-        readonly static string classify = WebConfigurationManager.AppSettings["SoftExpert.EstagioDoc.Classify"];
-        readonly static SEClient seClient = SEConnection.GetConnection();
-        readonly static SEAdministration seAdministration = SEConnection.GetConnectionAdm();
+        private static readonly bool physicalFile = Convert.ToBoolean(WebConfigurationManager.AppSettings["Sesuite.Folder.Physical"]);
+        private static readonly string physicalPath = WebConfigurationManager.AppSettings["Sesuite.Physical.Path"];
+        private static readonly string physicalPathSE = WebConfigurationManager.AppSettings["Sesuite.Physical.Path.SE"];
+        private static readonly string jobCategory = WebConfigurationManager.AppSettings["SoftExpert.Category.JobCategory"];
+        private static readonly string prefix = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePrefixReplicate"];
+        private static readonly string searchAttributeOwnerCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
+        private static readonly string searchAttributeOwnerRegistration = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerRegistration"];
+        private static readonly int newAccessPermissionUserType = int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString());
+        private static readonly string newAccessPermissionPermission = WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString();
+        private static readonly int newAccessPermissionPermissionType = int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString());
+        private static readonly string newAccessPermissionFgaddLowerLevel = WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString();
+        private static readonly string structID = WebConfigurationManager.AppSettings["SoftExpert.StructID"];
+        private static readonly string finished = WebConfigurationManager.AppSettings["SoftExpert.EstagioDoc.Finished"];
+        private static readonly string classify = WebConfigurationManager.AppSettings["SoftExpert.EstagioDoc.Classify"];
+        private static readonly SEClient seClient = SEConnection.GetConnection();
+        private static readonly SEAdministration seAdministration = SEConnection.GetConnectionAdm();
 
         #endregion
 
@@ -73,9 +73,13 @@ namespace SoftExpert
                 searchDocumentReturn searchDocumentReturn = seClient.searchDocument(searchDocumentFilter, "", attributes);
 
                 if (searchDocumentReturn.RESULTS.Count() > 0)
+                {
                     return searchDocumentReturn.RESULTS[0];
+                }
                 else
+                {
                     return null;
+                }
             }
             catch (Exception ex)
             {
@@ -83,11 +87,11 @@ namespace SoftExpert
             }
         }
 
-        public static void SEDocumentDataSave(ECMDocumentSaveIn eCMDocumentSaveIn, documentDataReturn documentDataReturnOwner)
+        public static void SEDocumentDataSave(ECMDocumentSaveIn eCMDocumentSaveIn, documentDataReturn documentDataReturnOwner, documentDataReturn documentDataReturnDossier)
         {
             try
             {
-                SEDocumentDataSaveAttributtes(eCMDocumentSaveIn.DocumentId, documentDataReturnOwner);
+                SEDocumentDataSaveAttributtes(eCMDocumentSaveIn.DocumentId, documentDataReturnOwner, documentDataReturnDossier);
                 SEDocumentDataSaveAttributtesSpecific(eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.additionalFields);
                 SEDocumentDataSaveAttributtesSpecificSlice(eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.sliceUser, eCMDocumentSaveIn.sliceUserRegistration, eCMDocumentSaveIn.classificationUser, eCMDocumentSaveIn.classificationUserRegistration, Convert.ToDateTime(eCMDocumentSaveIn.classificationDate), Convert.ToDateTime(eCMDocumentSaveIn.sliceDate));
                 SEDocumentDataSavePermission(eCMDocumentSaveIn.DocumentId, documentDataReturnOwner);
@@ -104,7 +108,23 @@ namespace SoftExpert
         {
             try
             {
-                SEDocumentDataSaveAttributtes(eCMJobSaveIn.DocumentId, documentDataReturnOwner);
+                SEDocumentDataSaveAttributtes(eCMJobSaveIn, documentDataReturnOwner);
+                SEDocumentDataSaveAttributtesSpecific(eCMJobSaveIn.DocumentId, eCMJobSaveIn.additionalFields);
+                SEDocumentDataSavePermission(eCMJobSaveIn.DocumentId, documentDataReturnOwner);
+                SEDocumentDataSaveAssociation(documentDataReturnOwner.IDDOCUMENT, searchAttributeOwnerCategory, eCMJobSaveIn.DocumentId, eCMJobSaveIn.categoryId);
+                SEDocumentDataSaveUploadFile(eCMJobSaveIn.FileBinary, eCMJobSaveIn.FileName, eCMJobSaveIn.DocumentId, eCMJobSaveIn.user, eCMJobSaveIn.categoryId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public static void SEDocumentDataSave(ECMJobSaveIn eCMJobSaveIn, documentDataReturn documentDataReturnOwner, documentDataReturn documentDataReturnDossier)
+        {
+            try
+            {
+                SEDocumentDataSaveAttributtes(eCMJobSaveIn.DocumentId, documentDataReturnOwner, documentDataReturnDossier);
                 SEDocumentDataSaveAttributtesSpecific(eCMJobSaveIn.DocumentId, eCMJobSaveIn.additionalFields);
                 SEDocumentDataSavePermission(eCMJobSaveIn.DocumentId, documentDataReturnOwner);
                 SEDocumentDataSaveAssociation(documentDataReturnOwner.IDDOCUMENT, searchAttributeOwnerCategory, eCMJobSaveIn.DocumentId, eCMJobSaveIn.categoryId);
@@ -136,11 +156,76 @@ namespace SoftExpert
 
         #region .: Private Methods :.  
 
-        private static void SEDocumentDataSaveAttributtes(string documentId, documentDataReturn documentDataReturnOwner)
+        private static void SEDocumentDataSaveAttributtes(string documentId, documentDataReturn documentDataReturOwner, documentDataReturn documentDataReturnDossier)
         {
             #region .: Insert Attibuttes Owner :.
 
-            foreach (var item in documentDataReturnOwner.ATTRIBUTTES)
+            if (!documentDataReturnDossier.ATTRIBUTTES.Any(a => a.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()))
+            {
+                attributtes aux = documentDataReturOwner.ATTRIBUTTES.Where(a => a.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()).FirstOrDefault();
+                if (aux != null)
+                {
+                    documentDataReturnDossier.ATTRIBUTTES = documentDataReturnDossier.ATTRIBUTTES.Concat(new[] { aux }).ToArray();
+                }
+            }
+            foreach (attributtes item in documentDataReturnDossier.ATTRIBUTTES)
+            {
+                bool alreadySetted = false;
+
+                if (item.ATTRIBUTTENAME.Contains(prefix))
+                {
+                    string value = "";
+
+                    if (item.ATTRIBUTTEVALUE.Count() > 0)
+                    {
+                        if (item.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString())
+                        {
+                            attributtes aux = documentDataReturOwner.ATTRIBUTTES.Where(a => a.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()).FirstOrDefault();
+                            if (aux != null)
+                            {
+                                alreadySetted = true;
+                                value = aux.ATTRIBUTTEVALUE[0];
+                                foreach (string val in aux.ATTRIBUTTEVALUE)
+                                {
+                                    try
+                                    {
+                                        seClient.setAttributeValue(documentId, "", item.ATTRIBUTTENAME, val);
+                                    }
+                                    catch (Exception)
+                                    {
+                                        throw new Exception(string.Format(i18n.Resource.FieldWithError, item.ATTRIBUTTENAME) + " Method: setAttributeValue");
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            value = item.ATTRIBUTTEVALUE[0];
+                        }
+                    }
+
+                    try
+                    {
+                        if (!alreadySetted)
+                        {
+                            seClient.setAttributeValue(documentId, "", item.ATTRIBUTTENAME, value);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        throw new Exception(string.Format(i18n.Resource.FieldWithError, item.ATTRIBUTTENAME) + " Method: setAttributeValue");
+                    }
+                }
+            }
+
+            #endregion
+        }
+
+        private static void SEDocumentDataSaveAttributtes(string documentId, documentDataReturn documentDataReturOwner)
+        {
+            #region .: Insert Attibuttes Owner :.
+
+            foreach (attributtes item in documentDataReturOwner.ATTRIBUTTES)
             {
                 if (item.ATTRIBUTTENAME.Contains(prefix))
                 {
@@ -165,11 +250,51 @@ namespace SoftExpert
             #endregion
         }
 
+        private static void SEDocumentDataSaveAttributtes(ECMJobSaveIn job, documentDataReturn documentDataReturOwner)
+        {
+            #region .: Insert Attibuttes Owner :.
+
+            foreach (attributtes item in documentDataReturOwner.ATTRIBUTTES)
+            {
+                if (item.ATTRIBUTTENAME.Contains(prefix))
+                {
+                    string value = "";
+
+                    if (item.ATTRIBUTTEVALUE.Count() > 0)
+                    {
+                        if (item.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString())
+                        {
+                            value = job.unityName;
+                        }
+                        else if (item.ATTRIBUTTENAME == EAttribute.SER_cad_Unidade.ToString())
+                        {
+                            value = job.unityCode;
+                        }
+                        else
+                        {
+                            value = item.ATTRIBUTTEVALUE[0];
+                        }
+                    }
+
+                    try
+                    {
+                        seClient.setAttributeValue(job.DocumentId, "", item.ATTRIBUTTENAME, value);
+                    }
+                    catch (Exception)
+                    {
+                        throw new Exception(string.Format(i18n.Resource.FieldWithError, item.ATTRIBUTTENAME) + " Method: setAttributeValue");
+                    }
+                }
+            }
+
+            #endregion
+        }
+
         private static void SEDocumentDataSaveAttributtesSpecific(string documentId, List<ECMAdditionalFieldSaveIn> additionalFields)
         {
             #region .: Insert Attibuttes Specific :.
 
-            foreach (var item in additionalFields)
+            foreach (ECMAdditionalFieldSaveIn item in additionalFields)
             {
                 try
                 {
@@ -258,14 +383,17 @@ namespace SoftExpert
             {
                 #region .: Insert Permission :.
 
-                if (documentDataReturnOwner.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()))
+                if (documentDataReturnOwner.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()))
                 {
-                    string unityCode = documentDataReturnOwner.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault();
+                    attributtes unityList = documentDataReturnOwner.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()).FirstOrDefault();
+                    foreach (string item in unityList.ATTRIBUTTEVALUE)
+                    {
+                        string unityCode = item;
+                        seAdministration.newPosition(unityCode, unityCode, out string status, out string detail, out int code, out string recordid, out string recordKey);
+                        seAdministration.newDepartment(unityCode, unityCode, unityCode, "", "", "1");
 
-                    seAdministration.newPosition(unityCode, unityCode, out string status, out string detail, out int code, out string recordid, out string recordKey);
-                    seAdministration.newDepartment(unityCode, unityCode, unityCode, "", "", "1");
-
-                    seClient.newAccessPermission(documentId, unityCode + ";" + unityCode, newAccessPermissionUserType, newAccessPermissionPermission, newAccessPermissionPermissionType, newAccessPermissionFgaddLowerLevel);
+                        seClient.newAccessPermission(documentId, unityCode + ";" + unityCode, newAccessPermissionUserType, newAccessPermissionPermission, newAccessPermissionPermissionType, newAccessPermissionFgaddLowerLevel);
+                    }
                 }
 
                 #endregion
@@ -327,7 +455,7 @@ namespace SoftExpert
                     NMFILE = fileName
                 };
 
-                var response = seClient.uploadEletronicFile(documentId, "", user, eletronicFiles);
+                string response = seClient.uploadEletronicFile(documentId, "", user, eletronicFiles);
 
                 #endregion
 
@@ -344,7 +472,7 @@ namespace SoftExpert
             try
             {
                 #region .: Save File Local :.
-                
+
                 SaveFile(folder, fileName, fileBinary);
 
                 #endregion
@@ -360,7 +488,7 @@ namespace SoftExpert
 
                 using (SqlConnection connectionInsert = new SqlConnection(connectionString))
                 {
-                    var queryInsert = string.Format(queryStringInsert,
+                    string queryInsert = string.Format(queryStringInsert,
                         documentId /*Identificador do Documento*/,
                         fileName /*Nome do Arquivo*/,
                         user /*Matrícula do Usuário*/,

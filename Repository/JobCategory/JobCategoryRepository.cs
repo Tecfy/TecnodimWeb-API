@@ -6,12 +6,15 @@ using System;
 using System.Configuration;
 using System.IO;
 using System.Net;
+using System.Web.Configuration;
 
 namespace Repository
 {
     public class JobCategoryRepository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private bool _proxy = WebConfigurationManager.AppSettings["Proxy"] == "true" ? true : false;
+        private string _proxyUrl = WebConfigurationManager.AppSettings["ProxyUrl"];
 
         public ECMJobCategorySaveOut SetECMJobCategorySave(ECMJobCategorySaveIn eCMJobCategorySaveIn)
         {
@@ -59,6 +62,12 @@ namespace Repository
                     try
                     {
                         WebClient wc = new WebClient();
+
+                        if (_proxy)
+                        {
+                            WebProxy wp = new WebProxy(_proxyUrl);
+                            wc.Proxy = wp;
+                        }
 
                         if (!Directory.Exists(path))
                         {
