@@ -520,10 +520,10 @@
     <value>Token</value>
   </data>
   <data name="ClassificationUser" xml:space="preserve">
-    <value>ClassificationUser</value>
+    <value>Usuário que classificou</value>
   </data>
   <data name="SliceUser" xml:space="preserve">
-    <value>SliceUser</value>
+    <value>Usuário que Recortou</value>
   </data>
   <data name="ClassificationDate" xml:space="preserve">
     <value>Data da Classificação</value>
@@ -542,5 +542,14 @@
   </data>
   <data name="PBEmbarked" xml:space="preserve">
     <value>PB Embarcada</value>
+  </data>
+  <data name="ClassificationStart" xml:space="preserve">
+    <value>Data inicio da Classificação</value>
+  </data>
+  <data name="SliceStart" xml:space="preserve">
+    <value>Data inicio do Recorte</value>
+  </data>
+  <data name="DocumentValidateMessage" xml:space="preserve">
+    <value>Este dossiê já está sendo acessado pelo usuário {0}, aguarde o tempo de segurança antes de tentar acessá-lo novamente.</value>
   </data>
 </root>
