@@ -55,5 +55,17 @@ namespace DataEF.DataAccess.Model
 
         [Display(Name = "DownloadDate", ResourceType = typeof(i18n.Resource))]
         public DateTime? DownloadDate { get; set; } // DownloadDate
+
+        [Display(Name = "ClassificationStart", ResourceType = typeof(i18n.Resource))]
+        public DateTime? ClassificationStart { get; set; } // ClassificationStart
+
+        [Display(Name = "ClassificationUser", ResourceType = typeof(i18n.Resource))]
+        public int? ClassificationUser { get; set; } // ClassificationUser
+
+        [Display(Name = "SliceStart", ResourceType = typeof(i18n.Resource))]
+        public DateTime? SliceStart { get; set; } // SliceStart
+
+        [Display(Name = "SliceUser", ResourceType = typeof(i18n.Resource))]
+        public int? SliceUser { get; set; } // SliceUser
     }
 }

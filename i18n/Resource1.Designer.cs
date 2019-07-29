@@ -223,7 +223,16 @@ namespace i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ClassificationUser.
+        ///   Looks up a localized string similar to Data inicio da Classificação.
+        /// </summary>
+        public static string ClassificationStart {
+            get {
+                return ResourceManager.GetString("ClassificationStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usuário que classificou.
         /// </summary>
         public static string ClassificationUser {
             get {
@@ -390,6 +399,15 @@ namespace i18n {
         public static string Document {
             get {
                 return ResourceManager.GetString("Document", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Este dossiê já está sendo acessado pelo usuário {0}, aguarde o tempo de segurança antes de tentar acessá-lo novamente..
+        /// </summary>
+        public static string DocumentValidateMessage {
+            get {
+                return ResourceManager.GetString("DocumentValidateMessage", resourceCulture);
             }
         }
         
@@ -1132,7 +1150,16 @@ namespace i18n {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SliceUser.
+        ///   Looks up a localized string similar to Data inicio do Recorte.
+        /// </summary>
+        public static string SliceStart {
+            get {
+                return ResourceManager.GetString("SliceStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Usuário que Recortou.
         /// </summary>
         public static string SliceUser {
             get {
