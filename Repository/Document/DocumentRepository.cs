@@ -10,12 +10,15 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
+using System.Web.Configuration;
 
 namespace Repository
 {
     public class DocumentRepository
     {
         RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        private bool _proxy = WebConfigurationManager.AppSettings["Proxy"] == "true" ? true : false;
+        private string _proxyUrl = WebConfigurationManager.AppSettings["ProxyUrl"];
 
         public ECMDocumentOut GetECMDocument(ECMDocumentIn ecmDocumentIn)
         {
@@ -153,6 +156,12 @@ namespace Repository
             try
             {
                 WebClient wc = new WebClient();
+
+                if (_proxy)
+                {
+                    WebProxy wp = new WebProxy(_proxyUrl);
+                    wc.Proxy = wp;
+                }
 
                 if (!Directory.Exists(path))
                 {

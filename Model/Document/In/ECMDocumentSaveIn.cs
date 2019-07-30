@@ -31,29 +31,15 @@ namespace Model.In
 
         public DateTime now { get; set; }
 
-        public string DocumentId
-        {
-            get
-            {
-                return registration.Trim() + "-" + categoryId.Trim();
-            }
-        }
+        public string unityCode { get; set; }
 
-        public string FileName
-        {
-            get
-            {
-                return DocumentId + "-" + now.ToString("ddMMyyyy-HHmmss") + extension;
-            }
-        }
+        public string externalId { get; set; }
 
-        public byte[] FileBinary
-        {
-            get
-            {
-                return Convert.FromBase64String(archive);
-            }
-        }
+        public string DocumentId => registration.Trim() + "-" + unityCode.Trim() + "-" + categoryId.Trim();
+
+        public string FileName => DocumentId + "-" + now.ToString("ddMMyyyy-HHmmss") + extension;
+
+        public byte[] FileBinary => Convert.FromBase64String(archive);
 
         public List<ECMAdditionalFieldSaveIn> additionalFields { get; set; }
     }

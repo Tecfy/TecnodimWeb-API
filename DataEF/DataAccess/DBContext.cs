@@ -5,9 +5,9 @@
 // 
 // The following connection settings were used to generate this file
 // 
-//     Configuration file:     "DataEF\App.config"
+//     Configuration file:     "ApiTecnodim\Web.config"
 //     Connection String Name: "Default"
-//     Connection String:      "Server=35.192.175.82;Database=TecnodimWeb;User Id=tecnodimweb; password=**zapped**;"
+//     Connection String:      "Server=192.168.15.2;Database=TecnodimWeb;User Id=TecnodimWeb; password=**zapped**;"
 
 // ReSharper disable RedundantUsingDirective
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
@@ -820,6 +820,18 @@ namespace DataEF.DataAccess
 		[Display(Name = "DownloadDate", ResourceType = typeof(i18n.Resource))]
 		public DateTime? DownloadDate { get; set; } // DownloadDate
 
+		[Display(Name = "ClassificationStart", ResourceType = typeof(i18n.Resource))]
+		public DateTime? ClassificationStart { get; set; } // ClassificationStart
+
+		[Display(Name = "ClassificationUser", ResourceType = typeof(i18n.Resource))]
+		public int? ClassificationUser { get; set; } // ClassificationUser
+
+		[Display(Name = "SliceStart", ResourceType = typeof(i18n.Resource))]
+		public DateTime? SliceStart { get; set; } // SliceStart
+
+		[Display(Name = "SliceUser", ResourceType = typeof(i18n.Resource))]
+		public int? SliceUser { get; set; } // SliceUser
+
 		*/
 	}
 
@@ -864,6 +876,14 @@ namespace DataEF.DataAccess
 
         public DateTime? DownloadDate { get; set; } // DownloadDate
 
+        public DateTime? ClassificationStart { get; set; } // ClassificationStart
+
+        public int? ClassificationUser { get; set; } // ClassificationUser
+
+        public DateTime? SliceStart { get; set; } // SliceStart
+
+        public int? SliceUser { get; set; } // SliceUser
+
         // Reverse navigation
         public virtual ICollection<DeletedPages> DeletedPages { get; set; } // DeletedPages.FK_DeletedPages_Documents;
         public virtual ICollection<Slices> Slices { get; set; } // Slices.FK_Slices_Documents;
@@ -871,6 +891,8 @@ namespace DataEF.DataAccess
         // Foreign keys
         public virtual DocumentStatus DocumentStatus { get; set; } //  DocumentStatusId - FK_Documents_DocumentStatus
         public virtual Units Units { get; set; } //  UnityId - FK_Documents_Units
+        public virtual Users Users { get; set; } //  ClassificationUser - FK_Documents_Users_Classification
+        public virtual Users Users1 { get; set; } //  SliceUser - FK_Documents_Users_Slice
 
         public Documents()
         {
@@ -1733,6 +1755,9 @@ namespace DataEF.DataAccess
 		[Display(Name = "LastExecution", ResourceType = typeof(i18n.Resource))]
 		public DateTime LastExecution { get; set; } // LastExecution
 
+		[Display(Name = "IsExternal", ResourceType = typeof(i18n.Resource))]
+		public bool IsExternal { get; set; } // IsExternal
+
 		*/
 	}
 
@@ -1761,10 +1786,13 @@ namespace DataEF.DataAccess
 
         public DateTime LastExecution { get; set; } // LastExecution
 
+        public bool IsExternal { get; set; } // IsExternal
+
         public SyncRuntimes()
         {
             Active = true;
             CreatedDate = DateTime.Now;
+            IsExternal = false;
             InitializePartial();
         }
         partial void InitializePartial();
@@ -1914,6 +1942,8 @@ namespace DataEF.DataAccess
         public string Token { get; set; } // Token
 
         // Reverse navigation
+        public virtual ICollection<Documents> Documents { get; set; } // Documents.FK_Documents_Users_Classification;
+        public virtual ICollection<Documents> Documents1 { get; set; } // Documents.FK_Documents_Users_Slice;
         public virtual ICollection<Jobs> Jobs { get; set; } // Jobs.FK_Jobs_Users;
         public virtual ICollection<Slices> Slices { get; set; } // Slices.FK_Slices_Classificantion_Users;
         public virtual ICollection<Slices> Slices1 { get; set; } // Slices.FK_Slices_Slice_Users;
@@ -1926,6 +1956,8 @@ namespace DataEF.DataAccess
         {
             Active = true;
             CreatedDate = DateTime.Now;
+            Documents = new List<Documents>();
+            Documents1 = new List<Documents>();
             Jobs = new List<Jobs>();
             Slices = new List<Slices>();
             Slices1 = new List<Slices>();
@@ -2213,10 +2245,16 @@ namespace DataEF.DataAccess
             Property(x => x.Pages).HasColumnName("Pages").IsOptional();
             Property(x => x.Download).HasColumnName("Download").IsRequired();
             Property(x => x.DownloadDate).HasColumnName("DownloadDate").IsOptional();
+            Property(x => x.ClassificationStart).HasColumnName("ClassificationStart").IsOptional();
+            Property(x => x.ClassificationUser).HasColumnName("ClassificationUser").IsOptional();
+            Property(x => x.SliceStart).HasColumnName("SliceStart").IsOptional();
+            Property(x => x.SliceUser).HasColumnName("SliceUser").IsOptional();
 
             // Foreign keys
             HasRequired(a => a.DocumentStatus).WithMany(b => b.Documents).HasForeignKey(c => c.DocumentStatusId); // FK_Documents_DocumentStatus
             HasRequired(a => a.Units).WithMany(b => b.Documents).HasForeignKey(c => c.UnityId); // FK_Documents_Units
+            HasOptional(a => a.Users).WithMany(b => b.Documents).HasForeignKey(c => c.ClassificationUser); // FK_Documents_Users_Classification
+            HasOptional(a => a.Users1).WithMany(b => b.Documents1).HasForeignKey(c => c.SliceUser); // FK_Documents_Users_Slice
             InitializePartial();
         }
         partial void InitializePartial();
@@ -2494,6 +2532,7 @@ namespace DataEF.DataAccess
             Property(x => x.Url).HasColumnName("URL").IsRequired().HasMaxLength(255);
             Property(x => x.Interval).HasColumnName("Interval").IsRequired();
             Property(x => x.LastExecution).HasColumnName("LastExecution").IsRequired();
+            Property(x => x.IsExternal).HasColumnName("IsExternal").IsRequired();
             InitializePartial();
         }
         partial void InitializePartial();
