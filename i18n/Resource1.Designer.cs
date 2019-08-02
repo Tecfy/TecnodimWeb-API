@@ -907,6 +907,24 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Em processamento.
+        /// </summary>
+        public static string Processing {
+            get {
+                return ResourceManager.GetString("Processing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Data do processamento.
+        /// </summary>
+        public static string ProcessingDate {
+            get {
+                return ResourceManager.GetString("ProcessingDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Recebido.
         /// </summary>
         public static string Received {

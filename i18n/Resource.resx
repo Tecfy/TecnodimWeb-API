@@ -552,4 +552,10 @@
   <data name="DocumentValidateMessage" xml:space="preserve">
     <value>Este dossiê já está sendo acessado pelo usuário {0}, aguarde o tempo de segurança antes de tentar acessá-lo novamente.</value>
   </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Em processamento</value>
+  </data>
+  <data name="ProcessingDate" xml:space="preserve">
+    <value>Data do processamento</value>
+  </data>
 </root>
