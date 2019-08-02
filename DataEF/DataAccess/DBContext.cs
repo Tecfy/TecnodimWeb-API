@@ -5,7 +5,7 @@
 // 
 // The following connection settings were used to generate this file
 // 
-//     Configuration file:     "ApiTecnodim\Web.config"
+//     Configuration file:     "DataEF\App.config"
 //     Connection String Name: "Default"
 //     Connection String:      "Server=192.168.15.2;Database=TecnodimWeb;User Id=TecnodimWeb; password=**zapped**;"
 
@@ -1660,6 +1660,12 @@ namespace DataEF.DataAccess
 		[Display(Name = "SliceDate", ResourceType = typeof(i18n.Resource))]
 		public DateTime? SliceDate { get; set; } // SliceDate
 
+		[Display(Name = "Processing", ResourceType = typeof(i18n.Resource))]
+		public bool Processing { get; set; } // Processing
+
+		[Display(Name = "ProcessingDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? ProcessingDate { get; set; } // ProcessingDate
+
 		*/
 	}
 
@@ -1702,6 +1708,10 @@ namespace DataEF.DataAccess
 
         public DateTime? SliceDate { get; set; } // SliceDate
 
+        public bool Processing { get; set; } // Processing
+
+        public DateTime? ProcessingDate { get; set; } // ProcessingDate
+
         // Reverse navigation
         public virtual ICollection<SliceCategoryAdditionalFields> SliceCategoryAdditionalFields { get; set; } // SliceCategoryAdditionalFields.FK_SliceCategoryAdditionalFields_Slices;
         public virtual ICollection<SlicePages> SlicePages { get; set; } // SlicePages.FK_SlicePages_Slices;
@@ -1718,6 +1728,7 @@ namespace DataEF.DataAccess
             CreatedDate = DateTime.Now;
             Sent = false;
             Sending = false;
+            Processing = false;
             SliceCategoryAdditionalFields = new List<SliceCategoryAdditionalFields>();
             SlicePages = new List<SlicePages>();
             InitializePartial();
@@ -2505,6 +2516,8 @@ namespace DataEF.DataAccess
             Property(x => x.ClassificationUserId).HasColumnName("ClassificationUserId").IsOptional();
             Property(x => x.ClassificationDate).HasColumnName("ClassificationDate").IsOptional();
             Property(x => x.SliceDate).HasColumnName("SliceDate").IsOptional();
+            Property(x => x.Processing).HasColumnName("Processing").IsRequired();
+            Property(x => x.ProcessingDate).HasColumnName("ProcessingDate").IsOptional();
 
             // Foreign keys
             HasRequired(a => a.Documents).WithMany(b => b.Slices).HasForeignKey(c => c.DocumentId); // FK_Slices_Documents
