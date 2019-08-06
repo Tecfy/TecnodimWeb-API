@@ -1025,6 +1025,12 @@ namespace DataEF.DataAccess
 		[Display(Name = "DownloadDate", ResourceType = typeof(i18n.Resource))]
 		public DateTime? DownloadDate { get; set; } // DownloadDate
 
+		[Display(Name = "Processing", ResourceType = typeof(i18n.Resource))]
+		public bool Processing { get; set; } // Processing
+
+		[Display(Name = "ProcessingDate", ResourceType = typeof(i18n.Resource))]
+		public DateTime? ProcessingDate { get; set; } // ProcessingDate
+
 		*/
 	}
 
@@ -1071,6 +1077,10 @@ namespace DataEF.DataAccess
 
         public DateTime? DownloadDate { get; set; } // DownloadDate
 
+        public bool Processing { get; set; } // Processing
+
+        public DateTime? ProcessingDate { get; set; } // ProcessingDate
+
         // Reverse navigation
         public virtual ICollection<JobCategoryAdditionalFields> JobCategoryAdditionalFields { get; set; } // JobCategoryAdditionalFields.FK_JobCategoryAdditionalFields_JobCategories;
         public virtual ICollection<JobCategoryPages> JobCategoryPages { get; set; } // JobCategoryPages.FK_JobCategoryPages_JobCategories;
@@ -1088,6 +1098,7 @@ namespace DataEF.DataAccess
             Hash = Guid.NewGuid();
             Sent = false;
             Download = false;
+            Processing = false;
             JobCategoryAdditionalFields = new List<JobCategoryAdditionalFields>();
             JobCategoryPages = new List<JobCategoryPages>();
             InitializePartial();
@@ -2315,6 +2326,8 @@ namespace DataEF.DataAccess
             Property(x => x.Pages).HasColumnName("Pages").IsOptional();
             Property(x => x.Download).HasColumnName("Download").IsRequired();
             Property(x => x.DownloadDate).HasColumnName("DownloadDate").IsOptional();
+            Property(x => x.Processing).HasColumnName("Processing").IsRequired();
+            Property(x => x.ProcessingDate).HasColumnName("ProcessingDate").IsOptional();
 
             // Foreign keys
             HasRequired(a => a.Jobs).WithMany(b => b.JobCategories).HasForeignKey(c => c.JobId); // FK_JobCategories_Jobs
