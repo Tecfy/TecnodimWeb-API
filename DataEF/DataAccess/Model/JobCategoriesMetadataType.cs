@@ -56,5 +56,11 @@ namespace DataEF.DataAccess.Model
 
         [Display(Name = "DownloadDate", ResourceType = typeof(i18n.Resource))]
         public DateTime? DownloadDate { get; set; } // DownloadDate
+
+        [Display(Name = "Processing", ResourceType = typeof(i18n.Resource))]
+        public bool Processing { get; set; } // Processing
+
+        [Display(Name = "ProcessingDate", ResourceType = typeof(i18n.Resource))]
+        public DateTime? ProcessingDate { get; set; } // ProcessingDate
     }
 }
