@@ -1,5 +1,6 @@
 ﻿using Model.In;
 using Model.Out;
+using RegisterEvent.Events;
 using Repository;
 using System;
 using System.Web.Http;
@@ -8,7 +9,7 @@ namespace ApiTecnodim.Controllers
 {
     public class CategoriesController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        Events events = new Events();
         CategoryRepository categoryRepository = new CategoryRepository();
 
         [Authorize, HttpGet]
@@ -25,7 +26,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.CategoriesController.GetECMCategories", ex.Message);
+                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.CategoriesController.GetECMCategories", ex.Message);
 
                 ecmCategoriesOut.successMessage = null;
                 ecmCategoriesOut.messages.Add(ex.Message);

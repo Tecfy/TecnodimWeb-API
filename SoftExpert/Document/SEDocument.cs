@@ -2,9 +2,12 @@
 using Model.In;
 using Model.Out;
 using Model.VM;
+using RegisterEvent.Events;
 using SoftExpert.com.softexpert.tecfy;
 using System;
+using System.Configuration;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Web.Configuration;
 
@@ -12,7 +15,7 @@ namespace SoftExpert
 {
     public static class SEDocument
     {
-        #region .: Attributes :.
+        #region .: Attributes :.        
 
         private static readonly string searchAttributePendingValue = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingValue"];
         private static readonly string searchAttributePendingName = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingName"];
@@ -38,47 +41,79 @@ namespace SoftExpert
             }
         }
 
-        public static ECMDocumentsOut GetSEDocuments()
+        public static ECMDocumentsOut GetSEDocuments(ECMDocumentsIn ecmDocumentsIn)
         {
-            ECMDocumentsOut ecmDocumentsOut = new ECMDocumentsOut();
-
-            attributeData[] attributeDatas = new attributeData[1];
-            attributeDatas[0] = new attributeData
+            Events events = new Events();
+            try
             {
-                //search enrollment
-                IDATTRIBUTE = searchAttributePendingName,
-                VLATTRIBUTE = searchAttributePendingValue
-            };
+                events.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Log - Start", "SoftExpert.SEDocument.GetSEDocuments", "");
 
-            searchDocumentFilter searchDocumentFilter = new searchDocumentFilter { IDCATEGORY = searchAttributePendingCategory };
-            searchDocumentReturn searchDocumentReturn = seClient.searchDocument(searchDocumentFilter, "", attributeDatas);
-            if (searchDocumentReturn.RESULTS.Count() > 0)
-            {
-                documentDataReturn documentDataReturn = new documentDataReturn();
+                ECMDocumentsOut ecmDocumentsOut = new ECMDocumentsOut();
 
-                foreach (documentReturn item in searchDocumentReturn.RESULTS)
+                attributeData[] attributeDatas = new attributeData[1];
+                attributeDatas[0] = new attributeData
                 {
-                    documentDataReturn = new documentDataReturn();
+                    //search enrollment
+                    IDATTRIBUTE = searchAttributePendingName,
+                    VLATTRIBUTE = searchAttributePendingValue
+                };
 
-                    documentDataReturn = Common.GetDocumentProperties(item.IDDOCUMENT);
+                searchDocumentFilter searchDocumentFilter = new searchDocumentFilter { IDCATEGORY = searchAttributePendingCategory };
 
-                    ecmDocumentsOut.result.Add(new ECMDocumentsVM()
+                events.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Log - Start", "SoftExpert.SEDocument.GetSEDocuments", "seClient.searchDocument");
+                searchDocumentReturn searchDocumentReturn = seClient.searchDocument(searchDocumentFilter, "", attributeDatas);
+                events.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Log - End", "SoftExpert.SEDocument.GetSEDocuments", "seClient.searchDocument");
+
+                if (searchDocumentReturn.RESULTS.Count() > 0)
+                {
+                    events.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Log - Start", "SoftExpert.SEDocument.GetSEDocuments", string.Format("{0}. Qtd:{1}", "seClient.searchDocument - Reading", searchDocumentReturn.RESULTS.Count()));
+
+                    documentDataReturn documentDataReturn = new documentDataReturn();
+
+                    int import = 100;
+                    int.TryParse(ConfigurationManager.AppSettings["Document.Import"], out import);
+
+                    foreach (documentReturn item in searchDocumentReturn.RESULTS.Take(import))
                     {
-                        documentStatusId = (int)EDocumentStatus.New,
-                        externalId = item.IDDOCUMENT,
-                        registration = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Matricula.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Matricula.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
-                        name = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_NomedoAluno.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_NomedoAluno.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
-                        unityCode = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
-                        unity = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Unidade.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
-                    });
-                }
-            }
-            else
-            {
-                ecmDocumentsOut.result = null;
-            }
+                        documentDataReturn = new documentDataReturn();
 
-            return ecmDocumentsOut;
+                        documentDataReturn = Common.GetDocumentProperties(item.IDDOCUMENT);
+
+                        try
+                        {
+                            ECMDocumentsVM ecmDocumentsVM = new ECMDocumentsVM()
+                            {
+                                documentStatusId = (int)EDocumentStatus.New,
+                                externalId = item.IDDOCUMENT,
+                                registration = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Matricula.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Matricula.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                                name = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_NomedoAluno.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_NomedoAluno.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                                unityCode = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                                unity = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Unidade.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Unidade.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
+                            };
+
+                            ecmDocumentsOut.result.Add(ecmDocumentsVM);
+                        }
+                        catch (Exception ex)
+                        {
+                            events.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Erro", "SoftExpert.SEDocument.GetSEDocuments", string.Format("ExternalId: {0} Message: {1} InnerException: {2} Source: {3} StackTrace: {4}", item.IDDOCUMENT, ex.Message, ex.InnerException, ex.Source, ex.StackTrace));
+                        }                        
+                    }
+                }
+                else
+                {
+                    events.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Log - Start", "SoftExpert.SEDocument.GetSEDocuments", "seClient.searchDocument - Not Reading");
+
+                    ecmDocumentsOut.result = null;
+                }
+
+                events.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Log - End", "SoftExpert.SEDocument.GetSEDocuments", "");
+                return ecmDocumentsOut;
+            }
+            catch (Exception ex)
+            {
+                events.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Erro", "SoftExpert.SEDocument.GetSEDocuments", ex.Message);
+                throw ex;
+            }
         }
 
         public static bool SEDocumentSave(ECMDocumentSaveIn eCMDocumentSaveIn)

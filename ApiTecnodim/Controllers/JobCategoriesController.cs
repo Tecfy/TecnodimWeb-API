@@ -1,5 +1,6 @@
 ﻿using Model.In;
 using Model.Out;
+using RegisterEvent.Events;
 using Repository;
 using System;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace ApiTecnodim.Controllers
 {
     public class JobCategoriesController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        Events events = new Events();
         JobCategoryRepository jobCategoryRepository = new JobCategoryRepository();
 
         [Authorize, HttpGet]
@@ -28,7 +29,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.JobCategoriesController.GetECMJobCategory", ex.Message);
+                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.JobCategoriesController.GetECMJobCategory", ex.Message);
 
                 eCMJobCategoryOut.successMessage = null;
                 eCMJobCategoryOut.messages.Add(ex.Message);
@@ -69,7 +70,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.WorkCategorysController.GetSEWorkCategorySave", ex.Message);
+                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.WorkCategorysController.GetSEWorkCategorySave", ex.Message);
 
                 eCMJobCategorySaveOut.successMessage = null;
                 eCMJobCategorySaveOut.messages.Add(ex.Message);
@@ -111,7 +112,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.JobCategoriesController.PostECMJobSave", ex.Message);
+                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.JobCategoriesController.PostECMJobSave", ex.Message);
 
                 eCMJobSaveOut.successMessage = null;
                 eCMJobSaveOut.messages.Add(ex.Message);

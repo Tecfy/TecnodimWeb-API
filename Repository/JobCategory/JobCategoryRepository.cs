@@ -1,6 +1,7 @@
 ﻿using Helper.ServerMap;
 using Model.In;
 using Model.Out;
+using RegisterEvent.Events;
 using SoftExpert;
 using System;
 using System.Configuration;
@@ -12,7 +13,7 @@ namespace Repository
 {
     public class JobCategoryRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        Events events = new Events();
         private bool _proxy = WebConfigurationManager.AppSettings["Proxy"] == "true" ? true : false;
         private string _proxyUrl = WebConfigurationManager.AppSettings["ProxyUrl"];
 
@@ -20,7 +21,7 @@ namespace Repository
         {
             ECMJobCategorySaveOut eCMJobCategorySaveOut = new ECMJobCategorySaveOut();
 
-            registerEventRepository.SaveRegisterEvent(eCMJobCategorySaveIn.userId, eCMJobCategorySaveIn.key, "Log - Start", "Repository.JobCategoryRepository.SetECMJobCategorySave", "");
+            events.SaveRegisterEvent(eCMJobCategorySaveIn.userId, eCMJobCategorySaveIn.key, "Log - Start", "Repository.JobCategoryRepository.SetECMJobCategorySave", "");
 
             string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.JobCategoryRepository.Path"]);
             string name = eCMJobCategorySaveIn.FileName;
@@ -34,14 +35,14 @@ namespace Repository
 
             SEJobCategory.SEDocumentDeleteOldSaveNew(eCMJobCategorySaveIn);
 
-            registerEventRepository.SaveRegisterEvent(eCMJobCategorySaveIn.userId, eCMJobCategorySaveIn.key, "Log - End", "Repository.JobCategoryRepository.SetECMJobCategorySave", "");
+            events.SaveRegisterEvent(eCMJobCategorySaveIn.userId, eCMJobCategorySaveIn.key, "Log - End", "Repository.JobCategoryRepository.SetECMJobCategorySave", "");
             return eCMJobCategorySaveOut;
         }
 
         public ECMJobCategoryOut GetECMJobCategory(ECMJobCategoryIn eCMJobCategoryIn)
         {
             ECMJobCategoryOut eCMJobCategoryOut = new ECMJobCategoryOut();
-            registerEventRepository.SaveRegisterEvent(eCMJobCategoryIn.userId, eCMJobCategoryIn.key, "Log - Start", "Repository.JobCategoryRepository.GetECMJobCategory", "");
+            events.SaveRegisterEvent(eCMJobCategoryIn.userId, eCMJobCategoryIn.key, "Log - Start", "Repository.JobCategoryRepository.GetECMJobCategory", "");
 
             string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.JobCategoryRepository.Path"]);
             string name = eCMJobCategoryIn.externalId + ".pdf";
@@ -91,7 +92,7 @@ namespace Repository
                 }
             }
 
-            registerEventRepository.SaveRegisterEvent(eCMJobCategoryIn.userId, eCMJobCategoryIn.key, "Log - End", "Repository.JobCategoryRepository.GetECMJobCategory", "");
+            events.SaveRegisterEvent(eCMJobCategoryIn.userId, eCMJobCategoryIn.key, "Log - End", "Repository.JobCategoryRepository.GetECMJobCategory", "");
             return eCMJobCategoryOut;
         }
 
@@ -99,11 +100,11 @@ namespace Repository
         {
             ECMJobSaveOut ecmJobSaveOut = new ECMJobSaveOut();
 
-            registerEventRepository.SaveRegisterEvent(eCMJobSaveIn.userId, eCMJobSaveIn.key, "Log - Start", "Repository.JobRepository.PostECMJobSave", "");
+            events.SaveRegisterEvent(eCMJobSaveIn.userId, eCMJobSaveIn.key, "Log - Start", "Repository.JobRepository.PostECMJobSave", "");
 
             SEJobCategory.SEDocumentSave(eCMJobSaveIn);
 
-            registerEventRepository.SaveRegisterEvent(eCMJobSaveIn.userId, eCMJobSaveIn.key, "Log - End", "Repository.JobRepository.PostECMJobSave", "");
+            events.SaveRegisterEvent(eCMJobSaveIn.userId, eCMJobSaveIn.key, "Log - End", "Repository.JobRepository.PostECMJobSave", "");
             return ecmJobSaveOut;
         }
     }

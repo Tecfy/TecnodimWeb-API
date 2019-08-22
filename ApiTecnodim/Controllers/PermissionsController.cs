@@ -1,5 +1,6 @@
 ﻿using Model.In;
 using Model.Out;
+using RegisterEvent.Events;
 using Repository;
 using System;
 using System.Web.Http;
@@ -8,7 +9,7 @@ namespace ApiTecnodim.Controllers
 {
     public class PermissionsController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        Events events = new Events();
         PermissionRepository permissionRepository = new PermissionRepository();
 
         [Authorize, HttpGet]
@@ -25,7 +26,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.PermissionsController.GetECMPermissions", ex.Message);
+                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.PermissionsController.GetECMPermissions", ex.Message);
 
                 ecmPermissionsOut.result = null;
                 ecmPermissionsOut.successMessage = null;
@@ -49,7 +50,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.PermissionsController.GetECMPermissions", ex.Message);
+                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.PermissionsController.GetECMPermissions", ex.Message);
 
                 ecmPermissionOut.result = null;
                 ecmPermissionOut.successMessage = null;

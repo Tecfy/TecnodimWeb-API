@@ -2,12 +2,12 @@
 using Model.In;
 using Model.Out;
 using Model.VM;
+using RegisterEvent.Events;
 using SoftExpert;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Web.Configuration;
@@ -16,7 +16,7 @@ namespace Repository
 {
     public class DocumentRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        Events events = new Events();
         private bool _proxy = WebConfigurationManager.AppSettings["Proxy"] == "true" ? true : false;
         private string _proxyUrl = WebConfigurationManager.AppSettings["ProxyUrl"];
 
@@ -24,7 +24,7 @@ namespace Repository
         {
             ECMDocumentOut ecmDocumentOut = new ECMDocumentOut();
             string archive = "";
-            registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Log - Start", "Repository.DocumentRepository.GetECMDocument", "");
+            events.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Log - Start", "Repository.DocumentRepository.GetECMDocument", "");
 
             string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.DocumentRepository.Path"]);
             string name = ecmDocumentIn.externalId + ".pdf";
@@ -38,38 +38,38 @@ namespace Repository
                 }
                 catch (Exception ex)
                 {
-                    registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Erro", "Repository.DocumentRepository.GetECMDocument.DownloadFile", string.Format("DownloadFile: {0}, ExternalId: {1}", ex.Message, ecmDocumentIn.externalId));
+                    events.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Erro", "Repository.DocumentRepository.GetECMDocument.DownloadFile", string.Format("DownloadFile: {0}, ExternalId: {1}", ex.Message, ecmDocumentIn.externalId));
                 }
 
                 if (!string.IsNullOrEmpty(archive))
                 {
-                    registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Log - Start", "Repository.DocumentRepository.GetECMDocument.DownloadFile", string.Format("DownloadFile: {0}, ExternalId: {1}", archive, ecmDocumentIn.externalId));
+                    events.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Log - Start", "Repository.DocumentRepository.GetECMDocument.DownloadFile", string.Format("DownloadFile: {0}, ExternalId: {1}", archive, ecmDocumentIn.externalId));
 
                     DownloadFile(ecmDocumentIn.externalId, path, archive, pathFile, 1, ecmDocumentIn.userId, ecmDocumentIn.key);
 
-                    registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Log - End", "Repository.DocumentRepository.GetECMDocument.DownloadFile", string.Format("DownloadFile: {0}, ExternalId: {1}", archive, ecmDocumentIn.externalId));
+                    events.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Log - End", "Repository.DocumentRepository.GetECMDocument.DownloadFile", string.Format("DownloadFile: {0}, ExternalId: {1}", archive, ecmDocumentIn.externalId));
                 }
                 else
                 {
-                    registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Erro", "Repository.DocumentRepository.GetECMDocument.DownloadFile", string.Format("DownloadFile: {0}, ExternalId: {1}", i18n.Resource.FileNotFound, ecmDocumentIn.externalId));
+                    events.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Erro", "Repository.DocumentRepository.GetECMDocument.DownloadFile", string.Format("DownloadFile: {0}, ExternalId: {1}", i18n.Resource.FileNotFound, ecmDocumentIn.externalId));
 
                     throw new Exception(i18n.Resource.FileNotFound);
                 }
 
             }
 
-            registerEventRepository.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Log - End", "Repository.DocumentRepository.GetECMDocument", "");
+            events.SaveRegisterEvent(ecmDocumentIn.userId, ecmDocumentIn.key, "Log - End", "Repository.DocumentRepository.GetECMDocument", "");
             return ecmDocumentOut;
         }
 
         public ECMDocumentsOut GetECMDocuments(ECMDocumentsIn ecmDocumentsIn)
         {
             ECMDocumentsOut ecmDocumentsOut = new ECMDocumentsOut();
-            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Log - Start", "Repository.DocumentRepository.GetECMDocuments", "");
+            events.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Log - Start", "Repository.DocumentRepository.GetECMDocuments", "");
 
-            ecmDocumentsOut = SEDocument.GetSEDocuments();
+            ecmDocumentsOut = SEDocument.GetSEDocuments(ecmDocumentsIn);
 
-            registerEventRepository.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Log - End", "Repository.DocumentRepository.GetECMDocuments", "");
+            events.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Log - End", "Repository.DocumentRepository.GetECMDocuments", "");
             return ecmDocumentsOut;
         }
 
@@ -79,7 +79,7 @@ namespace Repository
             eCMDocumentsValidateOut.result = new List<ECMDocumentsValidateVM>();
             ECMDocumentsValidateVM eCMDocumentsValidateVM = new ECMDocumentsValidateVM();
 
-            registerEventRepository.SaveRegisterEvent(eCMDocumentsValidateIn.userId, eCMDocumentsValidateIn.key, "Log - Start", "Repository.DocumentRepository.GetECMValidateDocuments", "");
+            events.SaveRegisterEvent(eCMDocumentsValidateIn.userId, eCMDocumentsValidateIn.key, "Log - Start", "Repository.DocumentRepository.GetECMValidateDocuments", "");
 
             string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.DocumentRepository.Path"]);
             int.TryParse(ConfigurationManager.AppSettings["Days"], out int days);
@@ -103,7 +103,7 @@ namespace Repository
                 }
             }
 
-            registerEventRepository.SaveRegisterEvent(eCMDocumentsValidateIn.userId, eCMDocumentsValidateIn.key, "Log - End", "Repository.DocumentRepository.GetECMValidateDocuments", "");
+            events.SaveRegisterEvent(eCMDocumentsValidateIn.userId, eCMDocumentsValidateIn.key, "Log - End", "Repository.DocumentRepository.GetECMValidateDocuments", "");
             return eCMDocumentsValidateOut;
         }
 
@@ -111,7 +111,7 @@ namespace Repository
         {
             ECMDocumentsValidateAdInterfaceOut eCMDocumentsValidateAdInterfaceOut = new ECMDocumentsValidateAdInterfaceOut();
 
-            registerEventRepository.SaveRegisterEvent(eCMDocumentsValidateAdInterfaceIn.userId, eCMDocumentsValidateAdInterfaceIn.key, "Log - Start", "Repository.DocumentRepository.GetECMValidateAdInterfaceDocuments", "");
+            events.SaveRegisterEvent(eCMDocumentsValidateAdInterfaceIn.userId, eCMDocumentsValidateAdInterfaceIn.key, "Log - Start", "Repository.DocumentRepository.GetECMValidateAdInterfaceDocuments", "");
 
             string path = ConfigurationManager.AppSettings["Sesuite.Physical.Path"];
             int.TryParse(ConfigurationManager.AppSettings["Days"], out int days);
@@ -124,7 +124,7 @@ namespace Repository
                 }
             }
 
-            registerEventRepository.SaveRegisterEvent(eCMDocumentsValidateAdInterfaceIn.userId, eCMDocumentsValidateAdInterfaceIn.key, "Log - End", "Repository.DocumentRepository.GetECMValidateAdInterfaceDocuments", "");
+            events.SaveRegisterEvent(eCMDocumentsValidateAdInterfaceIn.userId, eCMDocumentsValidateAdInterfaceIn.key, "Log - End", "Repository.DocumentRepository.GetECMValidateAdInterfaceDocuments", "");
             return eCMDocumentsValidateAdInterfaceOut;
         }
 
@@ -132,22 +132,22 @@ namespace Repository
         {
             ECMDocumentSaveOut ecmDocumentSaveOut = new ECMDocumentSaveOut();
 
-            registerEventRepository.SaveRegisterEvent(ecmDocumentSaveIn.userId, ecmDocumentSaveIn.key, "Log - Start", "Repository.DocumentRepository.PostECMDocumentSave", "");
+            events.SaveRegisterEvent(ecmDocumentSaveIn.userId, ecmDocumentSaveIn.key, "Log - Start", "Repository.DocumentRepository.PostECMDocumentSave", "");
 
             SEDocument.SEDocumentSave(ecmDocumentSaveIn);
 
-            registerEventRepository.SaveRegisterEvent(ecmDocumentSaveIn.userId, ecmDocumentSaveIn.key, "Log - End", "Repository.DocumentRepository.PostECMDocumentSave", "");
+            events.SaveRegisterEvent(ecmDocumentSaveIn.userId, ecmDocumentSaveIn.key, "Log - End", "Repository.DocumentRepository.PostECMDocumentSave", "");
             return ecmDocumentSaveOut;
         }
 
         public ECMDocumentDeleteOut DeleteECMDocument(ECMDocumentDeleteIn eCMDocumentDeleteIn)
         {
             ECMDocumentDeleteOut eCMDocumentDeleteOut = new ECMDocumentDeleteOut();
-            registerEventRepository.SaveRegisterEvent(eCMDocumentDeleteIn.userId, eCMDocumentDeleteIn.key, "Log - Start", "Repository.DocumentRepository.DeleteECMDocument", "");
+            events.SaveRegisterEvent(eCMDocumentDeleteIn.userId, eCMDocumentDeleteIn.key, "Log - Start", "Repository.DocumentRepository.DeleteECMDocument", "");
 
             SEDocument.SEDocumentDelete(eCMDocumentDeleteIn.externalId);
 
-            registerEventRepository.SaveRegisterEvent(eCMDocumentDeleteIn.userId, eCMDocumentDeleteIn.key, "Log - End", "Repository.DocumentRepository.DeleteECMDocument", "");
+            events.SaveRegisterEvent(eCMDocumentDeleteIn.userId, eCMDocumentDeleteIn.key, "Log - End", "Repository.DocumentRepository.DeleteECMDocument", "");
             return eCMDocumentDeleteOut;
         }
 
@@ -172,7 +172,7 @@ namespace Repository
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(userId, key, "Erro", "Repository.DocumentRepository.GetECMDocument", string.Format("ExternalId: {0}. Arquivo: {1}. Erro: {2}", externalId, archive, ex.Message));
+                events.SaveRegisterEvent(userId, key, "Erro", "Repository.DocumentRepository.GetECMDocument", string.Format("ExternalId: {0}. Arquivo: {1}. Erro: {2}", externalId, archive, ex.Message));
 
                 if (exec < 5)
                 {

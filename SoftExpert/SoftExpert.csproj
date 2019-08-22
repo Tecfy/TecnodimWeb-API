@@ -139,6 +139,10 @@
       <Project>{9b431499-44c3-434c-8771-1ef05f1c9f5b}</Project>
       <Name>Model</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RegisterEvent\RegisterEvent.csproj">
+      <Project>{4c969a12-4acf-4ce2-a672-eb32a86845b5}</Project>
+      <Name>RegisterEvent</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WebReferences Include="Web References\" />
