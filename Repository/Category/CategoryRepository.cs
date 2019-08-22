@@ -1,6 +1,7 @@
 ﻿using Model.In;
 using Model.Out;
 using Model.VM;
+using RegisterEvent.Events;
 using SoftExpert;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,12 @@ namespace Repository
 {
     public class CategoryRepository
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        Events events = new Events();
 
         public ECMCategoriesOut GetECMCategories(ECMCategoriesIn ecmCategoriesIn)
         {
             ECMCategoriesOut ecmCategoriesOut = new ECMCategoriesOut();
-            registerEventRepository.SaveRegisterEvent(ecmCategoriesIn.userId, ecmCategoriesIn.key, "Log - Start", "Repository.CategoryRepository.GetECMCategories", "");
+            events.SaveRegisterEvent(ecmCategoriesIn.userId, ecmCategoriesIn.key, "Log - Start", "Repository.CategoryRepository.GetECMCategories", "");
 
             ecmCategoriesOut = SECategory.GetSECategories();
 
@@ -30,7 +31,7 @@ namespace Repository
             ecmCategoriesOut.result = new List<ECMCategoriesVM>();
             ecmCategoriesOut.result = ecmCategoriesVMs;
 
-            registerEventRepository.SaveRegisterEvent(ecmCategoriesIn.userId, ecmCategoriesIn.key, "Log - End", "Repository.CategoryRepository.GetECMCategories", "");
+            events.SaveRegisterEvent(ecmCategoriesIn.userId, ecmCategoriesIn.key, "Log - End", "Repository.CategoryRepository.GetECMCategories", "");
             return ecmCategoriesOut;
         }
 

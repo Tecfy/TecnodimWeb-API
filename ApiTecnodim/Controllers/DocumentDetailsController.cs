@@ -1,5 +1,6 @@
 ﻿using Model.In;
 using Model.Out;
+using RegisterEvent.Events;
 using Repository;
 using System;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace ApiTecnodim.Controllers
 {
     public class DocumentDetailsController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        Events events = new Events();
         DocumentDetailRepository documentDetailRepository = new DocumentDetailRepository();
 
         [Authorize, HttpGet]
@@ -27,7 +28,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.GetECMDocumentDetailsByRegistration", ex.Message);
+                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.GetECMDocumentDetailsByRegistration", ex.Message);
 
                 ecmDocumentDetailsByRegistrationOut.result = null;
                 ecmDocumentDetailsByRegistrationOut.successMessage = null;
@@ -51,7 +52,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.GetECMDocumentDetailByRegistration", ex.Message);
+                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.GetECMDocumentDetailByRegistration", ex.Message);
 
                 ecmDocumentDetailByRegistrationOut.result = null;
                 ecmDocumentDetailByRegistrationOut.successMessage = null;
@@ -75,7 +76,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.GetECMDocumentDetail", ex.Message);
+                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.GetECMDocumentDetail", ex.Message);
 
                 ecmDocumentDetailOut.result = null;
                 ecmDocumentDetailOut.successMessage = null;
@@ -117,7 +118,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.PostECMDocumentDetailSave", ex.Message);
+                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.PostECMDocumentDetailSave", ex.Message);
 
                 eCMDocumentDetailSaveOut.successMessage = null;
                 eCMDocumentDetailSaveOut.messages.Add(ex.Message);
