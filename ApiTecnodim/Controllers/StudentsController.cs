@@ -1,16 +1,15 @@
 ﻿using Model.In;
 using Model.Out;
+using RegisterEvent.Events;
 using Repository;
 using System;
-using System.Linq;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
 
 namespace ApiTecnodim.Controllers
 {
     public class StudentsController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        Events events = new Events();
         StudentRepository studentRepository = new StudentRepository();
 
         [Authorize, HttpGet]
@@ -27,7 +26,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.StudentsController.GetStudentDocuments", ex.Message);
+                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.StudentsController.GetStudentDocuments", ex.Message);
 
                 studentDocumentsOut.result = null;
                 studentDocumentsOut.successMessage = null;
@@ -51,7 +50,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.StudentsController.GetStudentDocument", ex.Message);
+                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.StudentsController.GetStudentDocument", ex.Message);
 
                 studentDocumentOut.result = null;
                 studentDocumentOut.successMessage = null;

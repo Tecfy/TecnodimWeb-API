@@ -41,12 +41,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -69,15 +63,10 @@
     <Compile Include="Document\DocumentRepository.cs" />
     <Compile Include="Category\CategoryRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RegisterEvent\RegisterEventRepository.cs" />
     <Compile Include="DocumentDetail\DocumentDetailRepository.cs" />
     <Compile Include="JobCategory\JobCategoryRepository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataEF\DataEF.csproj">
-      <Project>{008b818a-ade8-4772-81a9-c327f49e1cad}</Project>
-      <Name>DataEF</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Helper\Helper.csproj">
       <Project>{9ecddcfb-d233-46d6-b2a3-31f96e24085f}</Project>
       <Name>Helper</Name>
@@ -89,6 +78,10 @@
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{9b431499-44c3-434c-8771-1ef05f1c9f5b}</Project>
       <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RegisterEvent\RegisterEvent.csproj">
+      <Project>{4c969a12-4acf-4ce2-a672-eb32a86845b5}</Project>
+      <Name>RegisterEvent</Name>
     </ProjectReference>
     <ProjectReference Include="..\SoftExpert\SoftExpert.csproj">
       <Project>{0513bc0f-6d0c-4c19-997c-c1e7361213ca}</Project>

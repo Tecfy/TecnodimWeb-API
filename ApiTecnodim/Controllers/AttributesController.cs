@@ -1,5 +1,6 @@
 ﻿using Model.In;
 using Model.Out;
+using RegisterEvent.Events;
 using Repository;
 using System;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace ApiTecnodim.Controllers
 {
     public class AttributesController : ApiController
     {
-        RegisterEventRepository registerEventRepository = new RegisterEventRepository();
+        Events events = new Events();
         AttributeRepository attributeRepository = new AttributeRepository();
 
         [Authorize, HttpPost]
@@ -45,7 +46,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                registerEventRepository.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.AttributesController.PostECMAttributeUpdate", ex.Message);
+                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.AttributesController.PostECMAttributeUpdate", ex.Message);
 
                 ecmAttributeOut.successMessage = null;
                 ecmAttributeOut.messages.Add(ex.Message);

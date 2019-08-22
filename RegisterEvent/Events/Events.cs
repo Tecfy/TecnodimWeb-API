@@ -1,9 +1,9 @@
 ﻿using DataEF.DataAccess;
 using System.Web.Configuration;
 
-namespace Repository
+namespace RegisterEvent.Events
 {
-    public class RegisterEventRepository
+    public class Events
     {
         public void SaveRegisterEvent(string userId, string identifier, string type, string source, string text)
         {
