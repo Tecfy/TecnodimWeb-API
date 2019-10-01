@@ -82,17 +82,14 @@
     <Compile Include="Permission\In\ECMPermissionsIn.cs" />
     <Compile Include="Permission\Out\ECMPermissionsOut.cs" />
     <Compile Include="Permission\VM\ECMPermissionsVM.cs" />
-    <Compile Include="DocumentDetail\In\ECMDocumentDetailSaveIn.cs" />
     <Compile Include="DocumentDetail\In\ECMDocumentDetailByRegistrationIn.cs" />
     <Compile Include="DocumentDetail\In\ECMDocumentDetailsByRegistrationIn.cs" />
     <Compile Include="DocumentDetail\In\ECMDocumentDetailIn.cs" />
-    <Compile Include="DocumentDetail\Out\ECMDocumentDetailSaveOut.cs" />
     <Compile Include="DocumentDetail\Out\ECMDocumentDetailByRegistrationOut.cs" />
     <Compile Include="DocumentDetail\Out\ECMDocumentDetailsByRegistrationOut.cs" />
     <Compile Include="DocumentDetail\Out\ECMDocumentDetailOut.cs" />
     <Compile Include="DocumentDetail\VM\ECMDocumentDetailByRegistrationVM.cs" />
     <Compile Include="DocumentDetail\VM\ECMDocumentDetailsByRegistrationVM.cs" />
-    <Compile Include="DocumentDetail\VM\ECMDocumentDetailSaveVM.cs" />
     <Compile Include="DocumentDetail\VM\ECMDocumentDetailVM.cs" />
     <Compile Include="Document\In\ECMDocumentSaveIn.cs" />
     <Compile Include="Document\In\ECMDocumentIn.cs" />

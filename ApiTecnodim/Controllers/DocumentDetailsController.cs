@@ -3,9 +3,7 @@ using Model.Out;
 using RegisterEvent.Events;
 using Repository;
 using System;
-using System.Linq;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
 
 namespace ApiTecnodim.Controllers
 {
@@ -84,47 +82,6 @@ namespace ApiTecnodim.Controllers
             }
 
             return ecmDocumentDetailOut;
-        }
-
-        [Authorize, HttpPost]
-        public ECMDocumentDetailSaveOut PostECMDocumentDetailSave(ECMDocumentDetailSaveIn eCMDocumentDetailSaveIn)
-        {
-            ECMDocumentDetailSaveOut eCMDocumentDetailSaveOut = new ECMDocumentDetailSaveOut();
-            Guid Key = Guid.NewGuid();
-
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    eCMDocumentDetailSaveIn.userId = User.Identity.Name;
-                    eCMDocumentDetailSaveIn.key = Key.ToString();
-
-                    eCMDocumentDetailSaveOut = documentDetailRepository.PostECMDocumentDetailSave(eCMDocumentDetailSaveIn);
-                }
-                else
-                {
-                    foreach (ModelState modelState in ModelState.Values)
-                    {
-                        var errors = modelState.Errors;
-                        if (errors.Any())
-                        {
-                            foreach (ModelError error in errors)
-                            {
-                                throw new Exception(error.ErrorMessage);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentDetailsController.PostECMDocumentDetailSave", ex.Message);
-
-                eCMDocumentDetailSaveOut.successMessage = null;
-                eCMDocumentDetailSaveOut.messages.Add(ex.Message);
-            }
-
-            return eCMDocumentDetailSaveOut;
-        }
+        }     
     }
 }
