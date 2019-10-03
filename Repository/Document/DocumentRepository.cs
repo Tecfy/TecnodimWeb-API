@@ -1,11 +1,9 @@
 ﻿using Helper.ServerMap;
 using Model.In;
 using Model.Out;
-using Model.VM;
 using RegisterEvent.Events;
 using SoftExpert;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Net;
@@ -71,61 +69,6 @@ namespace Repository
 
             events.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Log - End", "Repository.DocumentRepository.GetECMDocuments", "");
             return ecmDocumentsOut;
-        }
-
-        public ECMDocumentsValidateOut GetECMValidateDocuments(ECMDocumentsValidateIn eCMDocumentsValidateIn)
-        {
-            ECMDocumentsValidateOut eCMDocumentsValidateOut = new ECMDocumentsValidateOut();
-            eCMDocumentsValidateOut.result = new List<ECMDocumentsValidateVM>();
-            ECMDocumentsValidateVM eCMDocumentsValidateVM = new ECMDocumentsValidateVM();
-
-            events.SaveRegisterEvent(eCMDocumentsValidateIn.userId, eCMDocumentsValidateIn.key, "Log - Start", "Repository.DocumentRepository.GetECMValidateDocuments", "");
-
-            string path = ServerMapHelper.GetServerMap(ConfigurationManager.AppSettings["Repository.DocumentRepository.Path"]);
-            int.TryParse(ConfigurationManager.AppSettings["Days"], out int days);
-
-            foreach (var item in Directory.GetFiles(path))
-            {
-                if (File.GetCreationTime(item).AddDays(days) < DateTime.Now)
-                {
-                    string externalId = Path.GetFileName(item).Replace(".pdf", "");
-
-                    if (!Common.CheckDocument(externalId))
-                    {
-                        eCMDocumentsValidateVM = new ECMDocumentsValidateVM
-                        {
-                            externalId = externalId
-                        };
-                        eCMDocumentsValidateOut.result.Add(eCMDocumentsValidateVM);
-
-                        File.Delete(item);
-                    }
-                }
-            }
-
-            events.SaveRegisterEvent(eCMDocumentsValidateIn.userId, eCMDocumentsValidateIn.key, "Log - End", "Repository.DocumentRepository.GetECMValidateDocuments", "");
-            return eCMDocumentsValidateOut;
-        }
-
-        public ECMDocumentsValidateAdInterfaceOut GetECMValidateAdInterfaceDocuments(ECMDocumentsValidateAdInterfaceIn eCMDocumentsValidateAdInterfaceIn)
-        {
-            ECMDocumentsValidateAdInterfaceOut eCMDocumentsValidateAdInterfaceOut = new ECMDocumentsValidateAdInterfaceOut();
-
-            events.SaveRegisterEvent(eCMDocumentsValidateAdInterfaceIn.userId, eCMDocumentsValidateAdInterfaceIn.key, "Log - Start", "Repository.DocumentRepository.GetECMValidateAdInterfaceDocuments", "");
-
-            string path = ConfigurationManager.AppSettings["Sesuite.Physical.Path"];
-            int.TryParse(ConfigurationManager.AppSettings["Days"], out int days);
-
-            foreach (var item in Directory.GetFiles(path))
-            {
-                if (File.GetCreationTime(item).AddDays(days) < DateTime.Now)
-                {
-                    File.Delete(item);
-                }
-            }
-
-            events.SaveRegisterEvent(eCMDocumentsValidateAdInterfaceIn.userId, eCMDocumentsValidateAdInterfaceIn.key, "Log - End", "Repository.DocumentRepository.GetECMValidateAdInterfaceDocuments", "");
-            return eCMDocumentsValidateAdInterfaceOut;
         }
 
         public ECMDocumentSaveOut PostECMDocumentSave(ECMDocumentSaveIn ecmDocumentSaveIn)
