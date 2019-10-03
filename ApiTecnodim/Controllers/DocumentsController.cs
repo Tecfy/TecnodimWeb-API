@@ -62,52 +62,6 @@ namespace ApiTecnodim.Controllers
             return ecmDocumentsOut;
         }
 
-        [Authorize, HttpGet]
-        public ECMDocumentsValidateOut GetECMValidateDocuments()
-        {
-            ECMDocumentsValidateOut eCMDocumentsValidateOut = new ECMDocumentsValidateOut();
-            Guid Key = Guid.NewGuid();
-
-            try
-            {
-                ECMDocumentsValidateIn eCMDocumentsValidateIn = new ECMDocumentsValidateIn() { userId = User.Identity.Name, key = Key.ToString() };
-
-                eCMDocumentsValidateOut = documentRepository.GetECMValidateDocuments(eCMDocumentsValidateIn);
-            }
-            catch (Exception ex)
-            {
-                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentsController.GetECMValidateDocuments", ex.Message);
-
-                eCMDocumentsValidateOut.successMessage = null;
-                eCMDocumentsValidateOut.messages.Add(ex.Message);
-            }
-
-            return eCMDocumentsValidateOut;
-        }
-
-        [Authorize, HttpGet]
-        public ECMDocumentsValidateAdInterfaceOut GetECMValidateAdInterfaceDocuments()
-        {
-            ECMDocumentsValidateAdInterfaceOut eCMDocumentsValidateAdInterfaceOut = new ECMDocumentsValidateAdInterfaceOut();
-            Guid Key = Guid.NewGuid();
-
-            try
-            {
-                ECMDocumentsValidateAdInterfaceIn eCMDocumentsValidateAdInterfaceIn = new ECMDocumentsValidateAdInterfaceIn() { userId = User.Identity.Name, key = Key.ToString() };
-
-                eCMDocumentsValidateAdInterfaceOut = documentRepository.GetECMValidateAdInterfaceDocuments(eCMDocumentsValidateAdInterfaceIn);
-            }
-            catch (Exception ex)
-            {
-                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.DocumentsController.GetECMValidateAdInterfaceDocuments", ex.Message);
-
-                eCMDocumentsValidateAdInterfaceOut.successMessage = null;
-                eCMDocumentsValidateAdInterfaceOut.messages.Add(ex.Message);
-            }
-
-            return eCMDocumentsValidateAdInterfaceOut;
-        }
-
         [Authorize, HttpPost]
         public ECMDocumentSaveOut PostECMDocumentSave(ECMDocumentSaveIn ecmDocumentSaveIn)
         {
