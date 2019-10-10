@@ -87,55 +87,6 @@ namespace SoftExpert
             }
         }
 
-        public static void SEDocumentDataSave(ECMDocumentSaveIn eCMDocumentSaveIn, documentDataReturn documentDataReturnOwner, documentDataReturn documentDataReturnDossier)
-        {
-            try
-            {
-                SEDocumentDataSaveAttributtes(eCMDocumentSaveIn.DocumentId, documentDataReturnOwner, documentDataReturnDossier);
-                SEDocumentDataSaveAttributtesSpecific(eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.additionalFields);
-                SEDocumentDataSaveAttributtesSpecificSlice(eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.sliceUser, eCMDocumentSaveIn.sliceUserRegistration, eCMDocumentSaveIn.classificationUser, eCMDocumentSaveIn.classificationUserRegistration, Convert.ToDateTime(eCMDocumentSaveIn.classificationDate), Convert.ToDateTime(eCMDocumentSaveIn.sliceDate));
-                SEDocumentDataSavePermission(eCMDocumentSaveIn.DocumentId, documentDataReturnOwner);
-                SEDocumentDataSaveAssociation(documentDataReturnOwner.IDDOCUMENT, searchAttributeOwnerCategory, eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.categoryId);
-                SEDocumentDataSaveUploadFile(eCMDocumentSaveIn.FileBinary, eCMDocumentSaveIn.FileName, eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.user, eCMDocumentSaveIn.categoryId);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public static void SEDocumentDataSave(ECMJobSaveIn eCMJobSaveIn, documentDataReturn documentDataReturnOwner)
-        {
-            try
-            {
-                SEDocumentDataSaveAttributtes(eCMJobSaveIn, documentDataReturnOwner);
-                SEDocumentDataSaveAttributtesSpecific(eCMJobSaveIn.DocumentId, eCMJobSaveIn.additionalFields);
-                SEDocumentDataSavePermission(eCMJobSaveIn.DocumentId, documentDataReturnOwner);
-                SEDocumentDataSaveAssociation(documentDataReturnOwner.IDDOCUMENT, searchAttributeOwnerCategory, eCMJobSaveIn.DocumentId, eCMJobSaveIn.categoryId);
-                SEDocumentDataSaveUploadFile(eCMJobSaveIn.FileBinary, eCMJobSaveIn.FileName, eCMJobSaveIn.DocumentId, eCMJobSaveIn.user, eCMJobSaveIn.categoryId);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public static void SEDocumentDataSave(ECMJobSaveIn eCMJobSaveIn, documentDataReturn documentDataReturnOwner, documentDataReturn documentDataReturnDossier)
-        {
-            try
-            {
-                SEDocumentDataSaveAttributtes(eCMJobSaveIn.DocumentId, documentDataReturnOwner, documentDataReturnDossier);
-                SEDocumentDataSaveAttributtesSpecific(eCMJobSaveIn.DocumentId, eCMJobSaveIn.additionalFields);
-                SEDocumentDataSavePermission(eCMJobSaveIn.DocumentId, documentDataReturnOwner);
-                SEDocumentDataSaveAssociation(documentDataReturnOwner.IDDOCUMENT, searchAttributeOwnerCategory, eCMJobSaveIn.DocumentId, eCMJobSaveIn.categoryId);
-                SEDocumentDataSaveUploadFile(eCMJobSaveIn.FileBinary, eCMJobSaveIn.FileName, eCMJobSaveIn.DocumentId, eCMJobSaveIn.user, eCMJobSaveIn.categoryId);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
         public static void SEDocumentDataSave(ECMJobCategorySaveIn eCMJobCategorySaveIn, documentDataReturn documentDataReturnOwner)
         {
             try
@@ -152,74 +103,32 @@ namespace SoftExpert
             }
         }
 
+        public static void SEDocumentDataSaveUploadFile(byte[] fileBinary, string fileName, string documentId, string user, string categoryId)
+        {
+            try
+            {
+                #region .: Upload File :.
+
+                if (physicalFile)
+                {
+                    SEDocumentPhysicalFile(fileBinary, fileName, documentId, user, categoryId, physicalPath, physicalPathSE);
+                }
+                else
+                {
+                    SEDocumentUpload(fileBinary, fileName, documentId, user);
+                }
+
+                #endregion
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
         #region .: Private Methods :.  
-
-        private static void SEDocumentDataSaveAttributtes(string documentId, documentDataReturn documentDataReturOwner, documentDataReturn documentDataReturnDossier)
-        {
-            #region .: Insert Attibuttes Owner :.
-
-            if (!documentDataReturnDossier.ATTRIBUTTES.Any(a => a.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()))
-            {
-                attributtes aux = documentDataReturOwner.ATTRIBUTTES.Where(a => a.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()).FirstOrDefault();
-                if (aux != null)
-                {
-                    documentDataReturnDossier.ATTRIBUTTES = documentDataReturnDossier.ATTRIBUTTES.Concat(new[] { aux }).ToArray();
-                }
-            }
-            foreach (attributtes item in documentDataReturnDossier.ATTRIBUTTES)
-            {
-                bool alreadySetted = false;
-
-                if (item.ATTRIBUTTENAME.Contains(prefix))
-                {
-                    string value = "";
-
-                    if (item.ATTRIBUTTEVALUE.Count() > 0)
-                    {
-                        if (item.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString())
-                        {
-                            attributtes aux = documentDataReturOwner.ATTRIBUTTES.Where(a => a.ATTRIBUTTENAME == EAttribute.SER_cad_unidades.ToString()).FirstOrDefault();
-                            if (aux != null)
-                            {
-                                alreadySetted = true;
-                                value = aux.ATTRIBUTTEVALUE[0];
-                                foreach (string val in aux.ATTRIBUTTEVALUE)
-                                {
-                                    try
-                                    {
-                                        seClient.setAttributeValue(documentId, "", item.ATTRIBUTTENAME, val);
-                                    }
-                                    catch (Exception)
-                                    {
-                                        throw new Exception(string.Format(i18n.Resource.FieldWithError, item.ATTRIBUTTENAME) + " Method: setAttributeValue");
-                                    }
-                                }
-                            }
-                        }
-                        else
-                        {
-                            value = item.ATTRIBUTTEVALUE[0];
-                        }
-                    }
-
-                    try
-                    {
-                        if (!alreadySetted)
-                        {
-                            seClient.setAttributeValue(documentId, "", item.ATTRIBUTTENAME, value);
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        throw new Exception(string.Format(i18n.Resource.FieldWithError, item.ATTRIBUTTENAME) + " Method: setAttributeValue");
-                    }
-                }
-            }
-
-            #endregion
-        }
 
         private static void SEDocumentDataSaveAttributtes(string documentId, documentDataReturn documentDataReturOwner)
         {
@@ -250,90 +159,6 @@ namespace SoftExpert
             #endregion
         }
 
-        private static void SEDocumentDataSaveAttributtes(ECMJobSaveIn job, documentDataReturn documentDataReturOwner)
-        {
-            #region .: Insert Attibuttes Owner :.
-
-            foreach (attributtes item in documentDataReturOwner.ATTRIBUTTES)
-            {
-                if (item.ATTRIBUTTENAME.Contains(prefix))
-                {
-                    string value = "";
-
-                    if (item.ATTRIBUTTEVALUE.Count() > 0)
-                    {
-                        if (item.ATTRIBUTTENAME == EAttribute.SER_cad_cod_unidade.ToString())
-                        {
-                            value = job.unityName;
-                        }
-                        else if (item.ATTRIBUTTENAME == EAttribute.SER_cad_Unidade.ToString())
-                        {
-                            value = job.unityCode;
-                        }
-                        else
-                        {
-                            value = item.ATTRIBUTTEVALUE[0];
-                        }
-                    }
-
-                    try
-                    {
-                        seClient.setAttributeValue(job.DocumentId, "", item.ATTRIBUTTENAME, value);
-                    }
-                    catch (Exception)
-                    {
-                        throw new Exception(string.Format(i18n.Resource.FieldWithError, item.ATTRIBUTTENAME) + " Method: setAttributeValue");
-                    }
-                }
-            }
-
-            #endregion
-        }
-
-        private static void SEDocumentDataSaveAttributtesSpecific(string documentId, List<ECMAdditionalFieldSaveIn> additionalFields)
-        {
-            #region .: Insert Attibuttes Specific :.
-
-            foreach (ECMAdditionalFieldSaveIn item in additionalFields)
-            {
-                try
-                {
-                    if (item.additionalFieldId == (int)EAdditionalField.Identifier)
-                    {
-                        seClient.setAttributeValue(documentId, "", EAttribute.SER_Input_NumDoc.ToString(), item.value);
-                    }
-                    else if (item.additionalFieldId == (int)EAdditionalField.Competence)
-                    {
-                        DateTime competence = DateTime.MinValue;
-                        DateTime.TryParse(item.value, out competence);
-
-                        seClient.setAttributeValue(documentId, "", EAttribute.SER_Input_DataRef.ToString(), competence.ToString("yyyy-MM-dd"));
-                    }
-                    else if (item.additionalFieldId == (int)EAdditionalField.Validity)
-                    {
-                        DateTime validity = DateTime.MinValue;
-                        DateTime.TryParse(item.value, out validity);
-
-                        seClient.setAttributeValue(documentId, "", EAttribute.SER_Input_Data_Vencto.ToString(), validity.ToString("yyyy-MM-dd"));
-                    }
-                    else if (item.additionalFieldId == (int)EAdditionalField.DocumentView)
-                    {
-                        seClient.setAttributeValue(documentId, "", EAttribute.SER_Input_Compl.ToString(), item.value);
-                    }
-                    else if (item.additionalFieldId == (int)EAdditionalField.Note)
-                    {
-                        seClient.setAttributeValue(documentId, "", EAttribute.SER_Input_Obs.ToString(), item.value);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception(ex.Message);
-                }
-            }
-
-            #endregion
-        }
-
         private static void SEDocumentDataSaveAttributtesSpecificJob(string documentId, DateTime dataJob, string categoryId, string user)
         {
             #region .: Insert Attibuttes Specific :.
@@ -344,30 +169,6 @@ namespace SoftExpert
                 seClient.setAttributeValue(documentId, "", EAttribute.MFP_Status.ToString(), classify);
                 seClient.setAttributeValue(documentId, "", EAttribute.MFP_Categoria.ToString(), categoryId);
                 seClient.setAttributeValue(documentId, "", EAttribute.MFP_Usuario.ToString(), user);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-
-            #endregion
-        }
-
-        private static void SEDocumentDataSaveAttributtesSpecificSlice(string documentId, string sliceUser, string sliceUserRegistration, string classificationUser, string classificationUserRegistration, DateTime classificationDate, DateTime sliceDate)
-        {
-            #region .: Insert Attibuttes Specific :.
-
-            try
-            {
-                seClient.setAttributeValue(documentId, "", EAttribute.SER_id_classificador.ToString(), classificationUserRegistration);
-                seClient.setAttributeValue(documentId, "", EAttribute.SER_id_recortador.ToString(), sliceUserRegistration);
-                seClient.setAttributeValue(documentId, "", EAttribute.SER_nome_classificador.ToString(), classificationUser);
-                seClient.setAttributeValue(documentId, "", EAttribute.SER_nome_recortador.ToString(), sliceUser);
-
-                seClient.setAttributeValue(documentId, "", EAttribute.SER_classificacao_data.ToString(), classificationDate.ToString("yyyy-MM-dd"));
-                seClient.setAttributeValue(documentId, "", EAttribute.SER_classificacao_hora.ToString(), classificationDate.ToString("HH:mm"));
-                seClient.setAttributeValue(documentId, "", EAttribute.SER_recorte_data.ToString(), sliceDate.ToString("yyyy-MM-dd"));
-                seClient.setAttributeValue(documentId, "", EAttribute.SER_recorte_hora.ToString(), sliceDate.ToString("HH:mm"));
             }
             catch (Exception ex)
             {
@@ -417,30 +218,7 @@ namespace SoftExpert
 
             #endregion
         }
-
-        public static void SEDocumentDataSaveUploadFile(byte[] fileBinary, string fileName, string documentId, string user, string categoryId)
-        {
-            try
-            {
-                #region .: Upload File :.
-
-                if (physicalFile)
-                {
-                    SEDocumentPhysicalFile(fileBinary, fileName, documentId, user, categoryId, physicalPath, physicalPathSE);
-                }
-                else
-                {
-                    SEDocumentUpload(fileBinary, fileName, documentId, user);
-                }
-
-                #endregion
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
+        
         private static bool SEDocumentUpload(byte[] fileBinary, string fileName, string documentId, string user)
         {
             try

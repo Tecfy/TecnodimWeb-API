@@ -131,7 +131,7 @@ namespace SoftExpert
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    using (SqlCommand command = new SqlCommand("p_Dossier_Document", connection))
+                    using (SqlCommand command = new SqlCommand("p_Document", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
