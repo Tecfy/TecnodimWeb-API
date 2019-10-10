@@ -418,7 +418,7 @@ namespace SoftExpert
             #endregion
         }
 
-        private static void SEDocumentDataSaveUploadFile(byte[] fileBinary, string fileName, string documentId, string user, string categoryId)
+        public static void SEDocumentDataSaveUploadFile(byte[] fileBinary, string fileName, string documentId, string user, string categoryId)
         {
             try
             {
