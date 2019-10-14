@@ -6,6 +6,8 @@ using RegisterEvent.Events;
 using SoftExpert.com.softexpert.tecfy;
 using System;
 using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -20,7 +22,6 @@ namespace SoftExpert
         private static readonly string searchAttributePendingValue = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingValue"];
         private static readonly string searchAttributePendingName = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingName"];
         private static readonly string searchAttributePendingCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingCategory"];
-        private static readonly string searchAttributeOwnerCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
         private static readonly string messageDeleteDocument = WebConfigurationManager.AppSettings["SoftExpert.MessageDeleteDocument"];
         private static readonly SEClient seClient = SEConnection.GetConnection();
 
@@ -96,7 +97,7 @@ namespace SoftExpert
                         catch (Exception ex)
                         {
                             events.SaveRegisterEvent(ecmDocumentsIn.userId, ecmDocumentsIn.key, "Erro", "SoftExpert.SEDocument.GetSEDocuments", string.Format("ExternalId: {0} Message: {1} InnerException: {2} Source: {3} StackTrace: {4}", item.IDDOCUMENT, ex.Message, ex.InnerException, ex.Source, ex.StackTrace));
-                        }                        
+                        }
                     }
                 }
                 else
@@ -120,46 +121,66 @@ namespace SoftExpert
         {
             try
             {
-                //Checks whether the document exists
-                documentDataReturn documentDataReturnOwner = Common.GetDocumentProperties(eCMDocumentSaveIn.registration);
-                documentDataReturn documentDataReturnDossier = Common.GetDocumentProperties(eCMDocumentSaveIn.externalId);
+                #region .: Connection :.
 
-                if (!string.IsNullOrEmpty(documentDataReturnOwner.ERROR))
+                string connectionString = WebConfigurationManager.ConnectionStrings["DefaultSesuite"].ConnectionString;
+
+                #endregion
+
+                #region .: Synchronization :.
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    throw new Exception(documentDataReturnOwner.ERROR);
-                }
-
-                if (!string.IsNullOrEmpty(documentDataReturnDossier.ERROR))
-                {
-                    throw new Exception(documentDataReturnDossier.ERROR);
-                }
-
-                documentDataReturn documentDataReturnDocument = Common.GetDocumentProperties(eCMDocumentSaveIn.DocumentId);
-
-                //If the document already exists in the specified category, it uploads the document and properties 
-                if (documentDataReturnDocument.IDDOCUMENT == eCMDocumentSaveIn.DocumentId)
-                {
-                    Common.SEDocumentDataSave(eCMDocumentSaveIn, documentDataReturnOwner, documentDataReturnDossier);
-                }
-                //If you do not insert a new document
-                else
-                {
-                    string document = seClient.newDocument(eCMDocumentSaveIn.categoryId, eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.title, "", "", "", eCMDocumentSaveIn.user, null, 0, null);
-
-                    string[] documentMatrix = document.Split(':');
-
-                    if (documentMatrix.Count() > 0)
+                    using (SqlCommand command = new SqlCommand("p_Document", connection))
                     {
-                        if (documentMatrix.Count() >= 3 && documentMatrix[2].ToUpper().Contains("SUCESSO"))
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.Add("@Registration", SqlDbType.VarChar).Value = eCMDocumentSaveIn.registration;
+                        command.Parameters.Add("@Dossier", SqlDbType.VarChar).Value = eCMDocumentSaveIn.externalId;
+                        command.Parameters.Add("@Document", SqlDbType.VarChar).Value = eCMDocumentSaveIn.DocumentId;
+                        command.Parameters.Add("@Category", SqlDbType.VarChar).Value = eCMDocumentSaveIn.categoryId;
+                        command.Parameters.Add("@User", SqlDbType.VarChar).Value = eCMDocumentSaveIn.user;
+                        command.Parameters.Add("@Title", SqlDbType.VarChar).Value = eCMDocumentSaveIn.title;
+                        command.Parameters.Add("@Identifier", SqlDbType.VarChar).Value = eCMDocumentSaveIn.additionalFields.Any(x => x.additionalFieldId == (int)EAdditionalField.Identifier) ? eCMDocumentSaveIn.additionalFields.Where(x => x.additionalFieldId == (int)EAdditionalField.Identifier).FirstOrDefault().value : null;
+                        DateTime? Competence;
+                        if (eCMDocumentSaveIn.additionalFields.Any(x => x.additionalFieldId == (int)EAdditionalField.Competence))
                         {
-                            Common.SEDocumentDataSave(eCMDocumentSaveIn, documentDataReturnOwner, documentDataReturnDossier);
+                            Competence = Convert.ToDateTime(eCMDocumentSaveIn.additionalFields.Where(x => x.additionalFieldId == (int)EAdditionalField.Competence).FirstOrDefault().value).Date;
                         }
                         else
                         {
-                            throw new Exception(string.Format("Method: newDocument. Message: {0}", document));
+                            Competence = null;
                         }
+                        command.Parameters.Add("@Competence", SqlDbType.DateTime).Value = Competence;
+                        DateTime? Validity;
+                        if (eCMDocumentSaveIn.additionalFields.Any(x => x.additionalFieldId == (int)EAdditionalField.Validity))
+                        {
+                            Validity = Convert.ToDateTime(eCMDocumentSaveIn.additionalFields.Where(x => x.additionalFieldId == (int)EAdditionalField.Validity).FirstOrDefault().value).Date;
+                        }
+                        else
+                        {
+                            Validity = null;
+                        }
+                        command.Parameters.Add("@Validity", SqlDbType.DateTime).Value = Validity;
+                        command.Parameters.Add("@DocumentView", SqlDbType.VarChar).Value = eCMDocumentSaveIn.additionalFields.Any(x => x.additionalFieldId == (int)EAdditionalField.DocumentView) ? eCMDocumentSaveIn.additionalFields.Where(x => x.additionalFieldId == (int)EAdditionalField.DocumentView).FirstOrDefault().value : null;
+                        command.Parameters.Add("@Note", SqlDbType.VarChar).Value = eCMDocumentSaveIn.additionalFields.Any(x => x.additionalFieldId == (int)EAdditionalField.Note) ? eCMDocumentSaveIn.additionalFields.Where(x => x.additionalFieldId == (int)EAdditionalField.Note).FirstOrDefault().value : null;
+                        command.Parameters.Add("@SliceUser", SqlDbType.VarChar).Value = eCMDocumentSaveIn.sliceUser;
+                        command.Parameters.Add("@SliceUserRegistration", SqlDbType.VarChar).Value = eCMDocumentSaveIn.sliceUserRegistration;
+                        command.Parameters.Add("@ClassificationUser", SqlDbType.VarChar).Value = eCMDocumentSaveIn.classificationUser;
+                        command.Parameters.Add("@ClassificationUserRegistration", SqlDbType.VarChar).Value = eCMDocumentSaveIn.classificationUserRegistration;
+                        command.Parameters.Add("@SliceDate", SqlDbType.DateTime).Value = Convert.ToDateTime(eCMDocumentSaveIn.sliceDate).Date;
+                        command.Parameters.Add("@SliceTime", SqlDbType.Decimal).Value = Convert.ToDateTime(eCMDocumentSaveIn.sliceDate).TimeOfDay.TotalHours;
+                        command.Parameters.Add("@ClassificationDate", SqlDbType.DateTime).Value = Convert.ToDateTime(eCMDocumentSaveIn.classificationDate).Date;
+                        command.Parameters.Add("@ClassificationTime", SqlDbType.Decimal).Value = Convert.ToDateTime(eCMDocumentSaveIn.classificationDate).TimeOfDay.TotalHours;
+
+                        connection.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        Common.SEDocumentDataSaveUploadFile(eCMDocumentSaveIn.FileBinary, eCMDocumentSaveIn.FileName, eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.user, eCMDocumentSaveIn.categoryId);
                     }
                 }
+
+                #endregion
 
                 return true;
             }
