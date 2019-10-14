@@ -39,7 +39,7 @@ namespace ApiTecnodim.Controllers
         }
 
         [Authorize, HttpPost]
-        public ECMJobCategorySaveOut SetECMJobCategorySave(ECMJobCategorySaveIn ecmWorkCategorySaveIn)
+        public ECMJobCategorySaveOut SetECMJobCategorySave(ECMJobCategorySaveIn eCMJobCategorySaveIn)
         {
             ECMJobCategorySaveOut eCMJobCategorySaveOut = new ECMJobCategorySaveOut();
             Guid Key = Guid.NewGuid();
@@ -48,10 +48,10 @@ namespace ApiTecnodim.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    ecmWorkCategorySaveIn.userId = User.Identity.Name;
-                    ecmWorkCategorySaveIn.key = Key.ToString();
+                    eCMJobCategorySaveIn.userId = User.Identity.Name;
+                    eCMJobCategorySaveIn.key = Key.ToString();
 
-                    eCMJobCategorySaveOut = jobCategoryRepository.SetECMJobCategorySave(ecmWorkCategorySaveIn);
+                    eCMJobCategorySaveOut = jobCategoryRepository.SetECMJobCategorySave(eCMJobCategorySaveIn);
                 }
                 else
                 {
@@ -70,7 +70,7 @@ namespace ApiTecnodim.Controllers
             }
             catch (Exception ex)
             {
-                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.WorkCategorysController.GetSEWorkCategorySave", ex.Message);
+                events.SaveRegisterEvent(User.Identity.Name, Key.ToString(), "Erro", "ApiTecnodim.Controllers.WorkCategorysController.SetECMJobCategorySave", ex.Message);
 
                 eCMJobCategorySaveOut.successMessage = null;
                 eCMJobCategorySaveOut.messages.Add(ex.Message);
