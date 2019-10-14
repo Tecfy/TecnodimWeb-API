@@ -17,11 +17,6 @@ namespace SoftExpert
         private readonly static string searchAttributeOwnerUnity = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerUnity"];
         private readonly static string searchAttributeOwnerRegistration = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerRegistration"];
         private readonly static string searchAttributeOwnerCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
-        private static readonly string searchAttributePendingCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributePendingCategory"];
-        private readonly static int newAccessPermissionUserType = int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.UserType"].ToString());
-        private readonly static string newAccessPermissionPermission = WebConfigurationManager.AppSettings["NewAccessPermission.Permission"].ToString();
-        private readonly static int newAccessPermissionPermissionType = int.Parse(WebConfigurationManager.AppSettings["NewAccessPermission.PermissionType"].ToString());
-        private readonly static string newAccessPermissionFgaddLowerLevel = WebConfigurationManager.AppSettings["NewAccessPermission.FgaddLowerLevel"].ToString();
         private readonly static SEClient seClient = SEConnection.GetConnection();
 
         #endregion
@@ -155,36 +150,5 @@ namespace SoftExpert
         }
 
         #endregion
-
-
-        private static void SetSEPermissionDocuments(string registration, string unityCode)
-        {
-            attributeData[] attributeDatas = new attributeData[1];
-            attributeDatas[0] = new attributeData
-            {
-                //search registration
-                IDATTRIBUTE = EAttribute.SER_cad_Matricula.ToString(),
-                VLATTRIBUTE = registration
-            };
-
-            searchDocumentFilter searchDocumentFilter = new searchDocumentFilter();
-
-            searchDocumentReturn searchDocumentReturn = seClient.searchDocument(searchDocumentFilter, "", attributeDatas);
-            documentReturn retorno = new documentReturn();
-            if (searchDocumentReturn.RESULTS.Count() > 0)
-            {
-                foreach (documentReturn item in (searchDocumentReturn.RESULTS))
-                {
-                    documentDataReturn documentDataReturn = Common.GetDocumentProperties(item.IDDOCUMENT);
-
-                    if (documentDataReturn.IDCATEGORY != searchAttributeOwnerCategory && documentDataReturn.IDCATEGORY != searchAttributePendingCategory)
-                    {
-                        var returnUnityCodes = seClient.setAttributeValue(documentDataReturn.IDDOCUMENT, "", EAttribute.SER_cad_unidades.ToString(), unityCode);
-
-                        var returnNewAccessPermission = seClient.newAccessPermission(documentDataReturn.IDDOCUMENT, unityCode + ";" + unityCode, newAccessPermissionUserType, newAccessPermissionPermission, newAccessPermissionPermissionType, newAccessPermissionFgaddLowerLevel);
-                    }
-                }
-            }
-        }
     }
 }

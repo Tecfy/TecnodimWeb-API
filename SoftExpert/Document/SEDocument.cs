@@ -176,7 +176,7 @@ namespace SoftExpert
                         connection.Open();
                         SqlDataReader reader = command.ExecuteReader();
 
-                        Common.SEDocumentDataSaveUploadFile(eCMDocumentSaveIn.FileBinary, eCMDocumentSaveIn.FileName, eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.user, eCMDocumentSaveIn.categoryId);
+                        Common.SEDocumentPhysicalFile(eCMDocumentSaveIn.FileBinary, eCMDocumentSaveIn.FileName, eCMDocumentSaveIn.DocumentId, eCMDocumentSaveIn.user, eCMDocumentSaveIn.categoryId);
                     }
                 }
 

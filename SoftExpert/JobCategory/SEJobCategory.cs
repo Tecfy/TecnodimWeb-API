@@ -19,6 +19,7 @@ namespace SoftExpert
         private static readonly string searchAttributeOwnerCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerCategory"];
         private static readonly string jobCategory = WebConfigurationManager.AppSettings["SoftExpert.Category.JobCategory"];
         private static readonly string messageDeleteDocument = WebConfigurationManager.AppSettings["SoftExpert.MessageDeleteDocument"];
+        private static readonly string classify = WebConfigurationManager.AppSettings["SoftExpert.EstagioDoc.Classify"];
         private static readonly SEClient seClient = SEConnection.GetConnection();
 
         #endregion
@@ -45,46 +46,57 @@ namespace SoftExpert
             return eCMJobCategoryOut;
         }
 
-        public static bool SEDocumentDeleteOldSaveNew(ECMJobCategorySaveIn ecmJobCategorySaveIn)
+        public static bool SEDocumentDeleteOldSaveNew(ECMJobCategorySaveIn eCMJobCategorySaveIn)
         {
             try
             {
-                //Check if there is a registered owner document
-                documentReturn documentReturnOwner = Common.CheckRegisteredDocument(ecmJobCategorySaveIn.registration, searchAttributeOwnerCategory);
-                if (documentReturnOwner == null)
-                {
-                    throw new Exception(i18n.Resource.StudentNotFound);
-                }
+                #region .: Validation Document :.
 
                 //Checks whether the document exists
-                documentDataReturn documentDataReturn = Common.GetDocumentProperties(ecmJobCategorySaveIn.DocumentId);
+                documentDataReturn documentDataReturn = Common.GetDocumentProperties(eCMJobCategorySaveIn.DocumentId);
 
                 //If the document already exists in the specified category, it deletes the document to re-create it
-                if (documentDataReturn.IDDOCUMENT == ecmJobCategorySaveIn.DocumentId)
+                if (documentDataReturn.IDDOCUMENT == eCMJobCategorySaveIn.DocumentId)
                 {
-                    seClient.deleteDocument(jobCategory, ecmJobCategorySaveIn.DocumentId, "", messageDeleteDocument);
+                    seClient.deleteDocument(jobCategory, eCMJobCategorySaveIn.DocumentId, "", messageDeleteDocument);
                 }
 
-                //Insert a new document
-                documentDataReturn documentDataReturnOwner = Common.GetDocumentProperties(ecmJobCategorySaveIn.registration);
-                if (documentDataReturnOwner.ATTRIBUTTES.Count() > 0)
+                #endregion
+
+                #region .: Connection :.
+
+                string connectionString = WebConfigurationManager.ConnectionStrings["DefaultSesuite"].ConnectionString;
+
+                #endregion
+
+                #region .: Synchronization :.
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string message = seClient.newDocument(jobCategory, ecmJobCategorySaveIn.DocumentId, ecmJobCategorySaveIn.title, "", "", "", "", null, 0, null);
-
-                    string[] documentMatrix = message.Split(':');
-
-                    if (documentMatrix.Count() > 0)
+                    using (SqlCommand command = new SqlCommand("p_Scan_Temp_Document", connection))
                     {
-                        if (documentMatrix.Count() >= 3 && documentMatrix[2].ToUpper().Contains("SUCESSO"))
-                        {
-                            Common.SEDocumentDataSave(ecmJobCategorySaveIn, documentDataReturnOwner);
-                        }
-                        else
-                        {
-                            throw new Exception(message);
-                        }
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.Add("@Registration", SqlDbType.VarChar).Value = eCMJobCategorySaveIn.registration;
+                        command.Parameters.Add("@Document", SqlDbType.VarChar).Value = eCMJobCategorySaveIn.DocumentId;
+                        command.Parameters.Add("@Category", SqlDbType.VarChar).Value = jobCategory;
+                        command.Parameters.Add("@User", SqlDbType.VarChar).Value = eCMJobCategorySaveIn.user;
+                        command.Parameters.Add("@Title", SqlDbType.VarChar).Value = eCMJobCategorySaveIn.title;
+                        command.Parameters.Add("@UnityCode", SqlDbType.VarChar).Value = eCMJobCategorySaveIn.unityCode;
+                        command.Parameters.Add("@UnityName", SqlDbType.VarChar).Value = eCMJobCategorySaveIn.unityName;                        
+                        command.Parameters.Add("@JobData", SqlDbType.DateTime).Value = eCMJobCategorySaveIn.dataJob;
+                        command.Parameters.Add("@JobStatus", SqlDbType.VarChar).Value = classify;
+                        command.Parameters.Add("@JobCategory", SqlDbType.VarChar).Value = eCMJobCategorySaveIn.categoryId;
+                        command.Parameters.Add("@JobUser", SqlDbType.VarChar).Value = eCMJobCategorySaveIn.user;
+
+                        connection.Open();
+                        SqlDataReader reader = command.ExecuteReader();
+
+                        Common.SEDocumentPhysicalFile(eCMJobCategorySaveIn.FileBinary, eCMJobCategorySaveIn.FileName, eCMJobCategorySaveIn.DocumentId, eCMJobCategorySaveIn.user, jobCategory);
                     }
                 }
+
+                #endregion
 
                 return true;
             }
@@ -146,7 +158,7 @@ namespace SoftExpert
                         connection.Open();
                         SqlDataReader reader = command.ExecuteReader();
 
-                        Common.SEDocumentDataSaveUploadFile(eCMJobSaveIn.FileBinary, eCMJobSaveIn.FileName, eCMJobSaveIn.DocumentId, eCMJobSaveIn.user, eCMJobSaveIn.categoryId);
+                        Common.SEDocumentPhysicalFile(eCMJobSaveIn.FileBinary, eCMJobSaveIn.FileName, eCMJobSaveIn.DocumentId, eCMJobSaveIn.user, eCMJobSaveIn.categoryId);
                     }
                 }
 
