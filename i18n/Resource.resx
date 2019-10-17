@@ -558,4 +558,7 @@
   <data name="ProcessingDate" xml:space="preserve">
     <value>Data do processamento</value>
   </data>
+  <data name="PagesNotFound" xml:space="preserve">
+    <value>Páginas não encontradas, favor adicionar pelo menos uma página.</value>
+  </data>
 </root>

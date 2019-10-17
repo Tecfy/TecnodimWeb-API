@@ -169,9 +169,9 @@ namespace SoftExpert
                         command.Parameters.Add("@ClassificationUser", SqlDbType.VarChar).Value = eCMDocumentSaveIn.classificationUser;
                         command.Parameters.Add("@ClassificationUserRegistration", SqlDbType.VarChar).Value = eCMDocumentSaveIn.classificationUserRegistration;
                         command.Parameters.Add("@SliceDate", SqlDbType.DateTime).Value = Convert.ToDateTime(eCMDocumentSaveIn.sliceDate).Date;
-                        command.Parameters.Add("@SliceTime", SqlDbType.Decimal).Value = Convert.ToDateTime(eCMDocumentSaveIn.sliceDate).TimeOfDay.TotalHours;
+                        command.Parameters.Add("@SliceTime", SqlDbType.Decimal).Value = (Convert.ToDateTime(eCMDocumentSaveIn.sliceDate).TimeOfDay.TotalHours * 60);
                         command.Parameters.Add("@ClassificationDate", SqlDbType.DateTime).Value = Convert.ToDateTime(eCMDocumentSaveIn.classificationDate).Date;
-                        command.Parameters.Add("@ClassificationTime", SqlDbType.Decimal).Value = Convert.ToDateTime(eCMDocumentSaveIn.classificationDate).TimeOfDay.TotalHours;
+                        command.Parameters.Add("@ClassificationTime", SqlDbType.Decimal).Value = (Convert.ToDateTime(eCMDocumentSaveIn.classificationDate).TimeOfDay.TotalHours * 60);
 
                         connection.Open();
                         SqlDataReader reader = command.ExecuteReader();
