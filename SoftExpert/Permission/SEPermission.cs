@@ -112,6 +112,7 @@ namespace SoftExpert
 
             return ecmPermissionsOut;
         }
+
         #endregion
     }
 }

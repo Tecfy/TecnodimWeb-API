@@ -60,17 +60,5 @@ namespace Repository
             events.SaveRegisterEvent(ecmDocumentDetailIn.userId, ecmDocumentDetailIn.key, "Log - End", "Repository.DocumentDetailRepository.GetECMDocumentDetail", "");
             return ecmDocumentDetailOut;
         }
-
-        public ECMDocumentDetailSaveOut PostECMDocumentDetailSave(ECMDocumentDetailSaveIn eCMDocumentDetailSaveIn)
-        {
-            ECMDocumentDetailSaveOut eCMDocumentDetailSaveOut = new ECMDocumentDetailSaveOut();
-
-            events.SaveRegisterEvent(eCMDocumentDetailSaveIn.userId, eCMDocumentDetailSaveIn.key, "Log - Start", "Repository.DocumentDetailRepository.PostECMDocumentDetailSave", "");
-
-            eCMDocumentDetailSaveOut.result.registration = SEDocumentDetail.SEDocumentDetailSave(eCMDocumentDetailSaveIn);
-
-            events.SaveRegisterEvent(eCMDocumentDetailSaveIn.userId, eCMDocumentDetailSaveIn.key, "Log - End", "Repository.DocumentDetailRepository.PostECMDocumentDetailSave", "");
-            return eCMDocumentDetailSaveOut;
-        }
     }
 }

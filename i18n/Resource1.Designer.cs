@@ -844,6 +844,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Páginas não encontradas, favor adicionar pelo menos uma página..
+        /// </summary>
+        public static string PagesNotFound {
+            get {
+                return ResourceManager.GetString("PagesNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Exibindo {0} a {1} de {2} registros.
         /// </summary>
         public static string PaginationInfo {
