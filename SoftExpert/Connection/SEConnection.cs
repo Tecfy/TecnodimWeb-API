@@ -9,10 +9,11 @@ namespace SoftExpert
         readonly static string Password = WebConfigurationManager.AppSettings["SoftExpert.Password"];
         readonly static string URL = WebConfigurationManager.AppSettings["SoftExpert.Url"];
         readonly static string URLAdm = WebConfigurationManager.AppSettings["SoftExpert.UrlAdm"];
+        readonly static string URLGn = WebConfigurationManager.AppSettings["SoftExpert.UrlGn"];
 
         public static SEClient GetConnection()
         {
-            SEClient seClient = new SEClient { Url = URL};
+            SEClient seClient = new SEClient { Url = URL };
             seClient.SetAuthentication(Username, Password);
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
@@ -41,6 +42,17 @@ namespace SoftExpert
             ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
 
             return seAdministration;
+        }
+
+        public static SEGeneric GetConnectionGn()
+        {
+            SEGeneric sEGeneric = new SEGeneric { Url = URLGn };
+            sEGeneric.SetAuthentication(Username, Password);
+
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+            ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
+
+            return sEGeneric;
         }
     }
 }

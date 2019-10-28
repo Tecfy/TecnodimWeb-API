@@ -8,5 +8,8 @@
     <Setting Name="SoftExpert_com_softexpert_tecfy_adm_Administration" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">https://tecfy.softexpert.com/softexpert/webserviceproxy/se/ws/adm_ws.php</Value>
     </Setting>
+    <Setting Name="SoftExpert_com_softexpert_tecfy_gn_Generic" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">https://tecfy.softexpert.com/softexpert/webserviceproxy/se/ws/gn_ws.php</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
