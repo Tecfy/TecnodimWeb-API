@@ -42,5 +42,15 @@ namespace SoftExpert.Properties {
                 return ((string)(this["SoftExpert_com_softexpert_tecfy_adm_Administration"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://tecfy.softexpert.com/softexpert/webserviceproxy/se/ws/gn_ws.php")]
+        public string SoftExpert_com_softexpert_tecfy_gn_Generic {
+            get {
+                return ((string)(this["SoftExpert_com_softexpert_tecfy_gn_Generic"]));
+            }
+        }
     }
 }

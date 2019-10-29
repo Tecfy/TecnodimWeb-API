@@ -56,6 +56,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdditionalField\In\ECMAdditionalFieldSaveIn.cs" />
+    <Compile Include="UserPermission\In\ECMUserPermissionIn.cs" />
+    <Compile Include="UserPermission\Out\ECMUserPermissionOut.cs" />
     <Compile Include="Attribute\In\ECMAttributeIn.cs" />
     <Compile Include="Attribute\Out\ECMAttributeOut.cs" />
     <Compile Include="Category\In\ECMCategoriesIn.cs" />
@@ -107,6 +109,7 @@
     <Folder Include="AdditionalField\VM\" />
     <Folder Include="Attribute\VM\" />
     <Folder Include="Common\Out\" />
+    <Folder Include="UserPermission\VM\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UserPermission\UserPermissionRepository.cs" />
     <Compile Include="Attribute\AttributeRepository.cs" />
     <Compile Include="Student\StudentRepository.cs" />
     <Compile Include="Permission\PermissionRepository.cs" />

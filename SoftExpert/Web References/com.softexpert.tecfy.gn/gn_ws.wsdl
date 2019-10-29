@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="urn:generic" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns="http://schemas.xmlsoap.org/wsdl/" targetNamespace="urn:generic" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema elementFormDefault="qualified" targetNamespace="urn:generic">
+      <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/" />
+      <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/" />
+      <xsd:complexType name="addAreaToTeamRequestType">
+        <xsd:all>
+          <xsd:element name="IDTEAM" type="xsd:string" />
+          <xsd:element name="AREAS" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="addAreaToTeamResponseType">
+        <xsd:all>
+          <xsd:element name="return" type="xsd:int" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="removeUserFromTeamRequestType">
+        <xsd:all>
+          <xsd:element name="IDTEAM" type="xsd:string" />
+          <xsd:element name="USERS" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="removeUserFromTeamResponseType">
+        <xsd:all>
+          <xsd:element name="return" type="xsd:int" />
+          <xsd:element name="Status" type="xsd:string" />
+          <xsd:element name="Detail" type="xsd:string" />
+          <xsd:element name="Code" type="xsd:int" />
+          <xsd:element name="RecordKey" type="xsd:string" />
+          <xsd:element name="RecordId" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="addPositionToTeamRequestType">
+        <xsd:all>
+          <xsd:element name="IDTEAM" type="xsd:string" />
+          <xsd:element name="POSITIONS" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="addPositionToTeamResponseType">
+        <xsd:all>
+          <xsd:element name="return" type="xsd:int" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="addUserToTeamRequestType">
+        <xsd:all>
+          <xsd:element name="IDTEAM" type="xsd:string" />
+          <xsd:element name="USERS" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="addUserToTeamResponseType">
+        <xsd:all>
+          <xsd:element name="return" type="xsd:int" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="createTeamByAreaRequestType">
+        <xsd:all>
+          <xsd:element name="IDTEAM" type="xsd:string" />
+          <xsd:element name="NMTEAM" type="xsd:string" />
+          <xsd:element name="AREAS" type="xsd:string" />
+          <xsd:element name="COMPONENT" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="createTeamByAreaResponseType">
+        <xsd:all>
+          <xsd:element name="return" type="xsd:int" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="createTeamByPositionRequestType">
+        <xsd:all>
+          <xsd:element name="IDTEAM" type="xsd:string" />
+          <xsd:element name="NMTEAM" type="xsd:string" />
+          <xsd:element name="POSITIONS" type="xsd:string" />
+          <xsd:element name="COMPONENT" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="createTeamByPositionResponseType">
+        <xsd:all>
+          <xsd:element name="return" type="xsd:int" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="createTeamByUserRequestType">
+        <xsd:all>
+          <xsd:element name="IDTEAM" type="xsd:string" />
+          <xsd:element name="NMTEAM" type="xsd:string" />
+          <xsd:element name="USERS" type="xsd:string" />
+          <xsd:element name="COMPONENT" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="createTeamByUserResponseType">
+        <xsd:all>
+          <xsd:element name="return" type="xsd:int" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="editTeamByAreaRequestType">
+        <xsd:all>
+          <xsd:element name="IDTEAM_OLD" type="xsd:string" />
+          <xsd:element name="IDTEAM_NEW" type="xsd:string" />
+          <xsd:element name="NMTEAM" type="xsd:string" />
+          <xsd:element name="AREAS" type="xsd:string" />
+          <xsd:element name="COMPONENT" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="editTeamByAreaResponseType">
+        <xsd:all>
+          <xsd:element name="return" type="xsd:int" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="editTeamByPositionRequestType">
+        <xsd:all>
+          <xsd:element name="IDTEAM_OLD" type="xsd:string" />
+          <xsd:element name="IDTEAM_NEW" type="xsd:string" />
+          <xsd:element name="NMTEAM" type="xsd:string" />
+          <xsd:element name="POSITIONS" type="xsd:string" />
+          <xsd:element name="COMPONENT" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="editTeamByPositionResponseType">
+        <xsd:all>
+          <xsd:element name="return" type="xsd:int" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="editTeamByUserRequestType">
+        <xsd:all>
+          <xsd:element name="IDTEAM_OLD" type="xsd:string" />
+          <xsd:element name="IDTEAM_NEW" type="xsd:string" />
+          <xsd:element name="NMTEAM" type="xsd:string" />
+          <xsd:element name="USERS" type="xsd:string" />
+          <xsd:element name="COMPONENT" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="editTeamByUserResponseType">
+        <xsd:all>
+          <xsd:element name="return" type="xsd:int" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="removeAreaFromTeamRequestType">
+        <xsd:all>
+          <xsd:element name="IDTEAM" type="xsd:string" />
+          <xsd:element name="AREAS" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="removeAreaFromTeamResponseType">
+        <xsd:all>
+          <xsd:element name="return" type="xsd:int" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="removePositionFromTeamRequestType">
+        <xsd:all>
+          <xsd:element name="IDTEAM" type="xsd:string" />
+          <xsd:element name="POSITIONS" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="removePositionFromTeamResponseType">
+        <xsd:all>
+          <xsd:element name="return" type="xsd:int" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="removeTeamRequestType">
+        <xsd:all>
+          <xsd:element name="IDTEAM" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="removeTeamResponseType">
+        <xsd:all>
+          <xsd:element name="return" type="xsd:int" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="newTeamRequestType">
+        <xsd:all>
+          <xsd:element name="IDTEAM" type="xsd:string" />
+          <xsd:element name="NMTEAM" type="xsd:string" />
+          <xsd:element name="COMPONENT" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="newTeamResponseType">
+        <xsd:all>
+          <xsd:element name="Status" type="xsd:string" />
+          <xsd:element name="Code" type="xsd:long" />
+          <xsd:element name="Detail" type="xsd:string" />
+          <xsd:element name="RecordID" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="newTeamMemberRequestType">
+        <xsd:all>
+          <xsd:element name="IDTEAM" type="xsd:string" />
+          <xsd:element name="FGTYPE" type="xsd:string" />
+          <xsd:element name="IDDEPARTMENT" type="xsd:string" />
+          <xsd:element name="SUBLEVELS" type="xsd:string" />
+          <xsd:element name="IDPOSITION" type="xsd:string" />
+          <xsd:element name="IDUSER" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="newTeamMemberResponseType">
+        <xsd:all>
+          <xsd:element name="Status" type="xsd:string" />
+          <xsd:element name="Code" type="xsd:long" />
+          <xsd:element name="Detail" type="xsd:string" />
+          <xsd:element name="RecordID" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="deleteTeamMemberRequestType">
+        <xsd:all>
+          <xsd:element name="IDTEAM" type="xsd:string" />
+          <xsd:element name="FGTYPE" type="xsd:string" />
+          <xsd:element name="IDDEPARTMENT" type="xsd:string" />
+          <xsd:element name="IDPOSITION" type="xsd:string" />
+          <xsd:element name="IDUSER" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:complexType name="deleteTeamMemberResponseType">
+        <xsd:all>
+          <xsd:element name="Status" type="xsd:string" />
+          <xsd:element name="Code" type="xsd:long" />
+          <xsd:element name="Detail" type="xsd:string" />
+        </xsd:all>
+      </xsd:complexType>
+      <xsd:element name="addAreaToTeam" type="tns:addAreaToTeamRequestType" />
+      <xsd:element name="addAreaToTeamResponse" type="tns:addAreaToTeamResponseType" />
+      <xsd:element name="removeUserFromTeam" type="tns:removeUserFromTeamRequestType" />
+      <xsd:element name="removeUserFromTeamResponse" type="tns:removeUserFromTeamResponseType" />
+      <xsd:element name="addPositionToTeam" type="tns:addPositionToTeamRequestType" />
+      <xsd:element name="addPositionToTeamResponse" type="tns:addPositionToTeamResponseType" />
+      <xsd:element name="addUserToTeam" type="tns:addUserToTeamRequestType" />
+      <xsd:element name="addUserToTeamResponse" type="tns:addUserToTeamResponseType" />
+      <xsd:element name="createTeamByArea" type="tns:createTeamByAreaRequestType" />
+      <xsd:element name="createTeamByAreaResponse" type="tns:createTeamByAreaResponseType" />
+      <xsd:element name="createTeamByPosition" type="tns:createTeamByPositionRequestType" />
+      <xsd:element name="createTeamByPositionResponse" type="tns:createTeamByPositionResponseType" />
+      <xsd:element name="createTeamByUser" type="tns:createTeamByUserRequestType" />
+      <xsd:element name="createTeamByUserResponse" type="tns:createTeamByUserResponseType" />
+      <xsd:element name="editTeamByArea" type="tns:editTeamByAreaRequestType" />
+      <xsd:element name="editTeamByAreaResponse" type="tns:editTeamByAreaResponseType" />
+      <xsd:element name="editTeamByPosition" type="tns:editTeamByPositionRequestType" />
+      <xsd:element name="editTeamByPositionResponse" type="tns:editTeamByPositionResponseType" />
+      <xsd:element name="editTeamByUser" type="tns:editTeamByUserRequestType" />
+      <xsd:element name="editTeamByUserResponse" type="tns:editTeamByUserResponseType" />
+      <xsd:element name="removeAreaFromTeam" type="tns:removeAreaFromTeamRequestType" />
+      <xsd:element name="removeAreaFromTeamResponse" type="tns:removeAreaFromTeamResponseType" />
+      <xsd:element name="removePositionFromTeam" type="tns:removePositionFromTeamRequestType" />
+      <xsd:element name="removePositionFromTeamResponse" type="tns:removePositionFromTeamResponseType" />
+      <xsd:element name="removeTeam" type="tns:removeTeamRequestType" />
+      <xsd:element name="removeTeamResponse" type="tns:removeTeamResponseType" />
+      <xsd:element name="newTeam" type="tns:newTeamRequestType" />
+      <xsd:element name="newTeamResponse" type="tns:newTeamResponseType" />
+      <xsd:element name="newTeamMember" type="tns:newTeamMemberRequestType" />
+      <xsd:element name="newTeamMemberResponse" type="tns:newTeamMemberResponseType" />
+      <xsd:element name="deleteTeamMember" type="tns:deleteTeamMemberRequestType" />
+      <xsd:element name="deleteTeamMemberResponse" type="tns:deleteTeamMemberResponseType" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="addAreaToTeamRequest">
+    <wsdl:part name="parameters" element="tns:addAreaToTeam" />
+  </wsdl:message>
+  <wsdl:message name="addAreaToTeamResponse">
+    <wsdl:part name="parameters" element="tns:addAreaToTeamResponse" />
+  </wsdl:message>
+  <wsdl:message name="removeUserFromTeamRequest">
+    <wsdl:part name="parameters" element="tns:removeUserFromTeam" />
+  </wsdl:message>
+  <wsdl:message name="removeUserFromTeamResponse">
+    <wsdl:part name="parameters" element="tns:removeUserFromTeamResponse" />
+  </wsdl:message>
+  <wsdl:message name="addPositionToTeamRequest">
+    <wsdl:part name="parameters" element="tns:addPositionToTeam" />
+  </wsdl:message>
+  <wsdl:message name="addPositionToTeamResponse">
+    <wsdl:part name="parameters" element="tns:addPositionToTeamResponse" />
+  </wsdl:message>
+  <wsdl:message name="addUserToTeamRequest">
+    <wsdl:part name="parameters" element="tns:addUserToTeam" />
+  </wsdl:message>
+  <wsdl:message name="addUserToTeamResponse">
+    <wsdl:part name="parameters" element="tns:addUserToTeamResponse" />
+  </wsdl:message>
+  <wsdl:message name="createTeamByAreaRequest">
+    <wsdl:part name="parameters" element="tns:createTeamByArea" />
+  </wsdl:message>
+  <wsdl:message name="createTeamByAreaResponse">
+    <wsdl:part name="parameters" element="tns:createTeamByAreaResponse" />
+  </wsdl:message>
+  <wsdl:message name="createTeamByPositionRequest">
+    <wsdl:part name="parameters" element="tns:createTeamByPosition" />
+  </wsdl:message>
+  <wsdl:message name="createTeamByPositionResponse">
+    <wsdl:part name="parameters" element="tns:createTeamByPositionResponse" />
+  </wsdl:message>
+  <wsdl:message name="createTeamByUserRequest">
+    <wsdl:part name="parameters" element="tns:createTeamByUser" />
+  </wsdl:message>
+  <wsdl:message name="createTeamByUserResponse">
+    <wsdl:part name="parameters" element="tns:createTeamByUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="editTeamByAreaRequest">
+    <wsdl:part name="parameters" element="tns:editTeamByArea" />
+  </wsdl:message>
+  <wsdl:message name="editTeamByAreaResponse">
+    <wsdl:part name="parameters" element="tns:editTeamByAreaResponse" />
+  </wsdl:message>
+  <wsdl:message name="editTeamByPositionRequest">
+    <wsdl:part name="parameters" element="tns:editTeamByPosition" />
+  </wsdl:message>
+  <wsdl:message name="editTeamByPositionResponse">
+    <wsdl:part name="parameters" element="tns:editTeamByPositionResponse" />
+  </wsdl:message>
+  <wsdl:message name="editTeamByUserRequest">
+    <wsdl:part name="parameters" element="tns:editTeamByUser" />
+  </wsdl:message>
+  <wsdl:message name="editTeamByUserResponse">
+    <wsdl:part name="parameters" element="tns:editTeamByUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="removeAreaFromTeamRequest">
+    <wsdl:part name="parameters" element="tns:removeAreaFromTeam" />
+  </wsdl:message>
+  <wsdl:message name="removeAreaFromTeamResponse">
+    <wsdl:part name="parameters" element="tns:removeAreaFromTeamResponse" />
+  </wsdl:message>
+  <wsdl:message name="removePositionFromTeamRequest">
+    <wsdl:part name="parameters" element="tns:removePositionFromTeam" />
+  </wsdl:message>
+  <wsdl:message name="removePositionFromTeamResponse">
+    <wsdl:part name="parameters" element="tns:removePositionFromTeamResponse" />
+  </wsdl:message>
+  <wsdl:message name="removeTeamRequest">
+    <wsdl:part name="parameters" element="tns:removeTeam" />
+  </wsdl:message>
+  <wsdl:message name="removeTeamResponse">
+    <wsdl:part name="parameters" element="tns:removeTeamResponse" />
+  </wsdl:message>
+  <wsdl:message name="newTeamRequest">
+    <wsdl:part name="parameters" element="tns:newTeam" />
+  </wsdl:message>
+  <wsdl:message name="newTeamResponse">
+    <wsdl:part name="parameters" element="tns:newTeamResponse" />
+  </wsdl:message>
+  <wsdl:message name="newTeamMemberRequest">
+    <wsdl:part name="parameters" element="tns:newTeamMember" />
+  </wsdl:message>
+  <wsdl:message name="newTeamMemberResponse">
+    <wsdl:part name="parameters" element="tns:newTeamMemberResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteTeamMemberRequest">
+    <wsdl:part name="parameters" element="tns:deleteTeamMember" />
+  </wsdl:message>
+  <wsdl:message name="deleteTeamMemberResponse">
+    <wsdl:part name="parameters" element="tns:deleteTeamMemberResponse" />
+  </wsdl:message>
+  <wsdl:portType name="GenericPortType">
+    <wsdl:operation name="addAreaToTeam">
+      <documentation>Adiciona Ã¡reas em uma equipe&lt;BR&gt;ParÃ¢metros requeridos: &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM -&gt; Identificador da equipe que deseja adicionar Ã¡reas.&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;AREAS -&gt; String separada por "," contendo os identificadores das Ã¡reas Ex: ("Area1,Area2");</documentation>
+      <wsdl:input message="tns:addAreaToTeamRequest" />
+      <wsdl:output message="tns:addAreaToTeamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="removeUserFromTeam">
+      <documentation>Remover Ã¡reas de uma equipe&lt;BR&gt;ParÃ¢metros requeridos: &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM -&gt; Identificador da equipe que deseja remover; &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;USERS -&gt; String separada por "," contendo os identificadores dos usuÃ¡rios Ex: ("User1,User2");</documentation>
+      <wsdl:input message="tns:removeUserFromTeamRequest" />
+      <wsdl:output message="tns:removeUserFromTeamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="addPositionToTeam">
+      <documentation>Adiciona Ã¡reas em uma equipe&lt;BR&gt;ParÃ¢metros requeridos: &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM -&gt; Identificador da equipe que deseja adicionar Ã¡reas.&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;POSITIONS -&gt; String separada por "," contendo os identificadores das funÃ§Ãµes. Ex: ("Funcao1,Funcao2")</documentation>
+      <wsdl:input message="tns:addPositionToTeamRequest" />
+      <wsdl:output message="tns:addPositionToTeamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="addUserToTeam">
+      <documentation>Adiciona Ã¡reas em uma equipe&lt;BR&gt;ParÃ¢metros requeridos: &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM -&gt; Identificador da equipe que deseja adicionar Ã¡reas.&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;USERS -&gt; String separada por "," contendo os identificadores dos usuÃ¡rios Ex: ("User1,User2");</documentation>
+      <wsdl:input message="tns:addUserToTeamRequest" />
+      <wsdl:output message="tns:addUserToTeamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="createTeamByArea">
+      <documentation>Cria uma equipe informando as Ã¡reas que estarÃ£o contidas nela&lt;BR&gt;ParÃ¢metros requeridos: &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM -&gt; Identificador da equipe; &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;NMTEAM -&gt; Nome da equipe;&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;AREAS -&gt; String separada por "," contendo os identificadores das Ã¡reas Ex: ("Area1,Area2");&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;COMPONENT -&gt; String separada com "," com os cÃ³digos dos componentes Ex: ("109,107,73");</documentation>
+      <wsdl:input message="tns:createTeamByAreaRequest" />
+      <wsdl:output message="tns:createTeamByAreaResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="createTeamByPosition">
+      <documentation>Cria uma equipe informando as funÃ§Ãµes que estarÃ£o contidas nela&lt;BR&gt;ParÃ¢metros requeridos: &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM -&gt; Identificador da equipe; &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;NMTEAM -&gt; Nome da equipe;&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;POSITIONS -&gt; String separada por "," contendo os identificadores das funÃ§Ãµes. Ex: ("Funcao1,Funcao2")&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;COMPONENT -&gt; String separada com "," com os cÃ³digos dos componentes Ex: ("109,107,73");</documentation>
+      <wsdl:input message="tns:createTeamByPositionRequest" />
+      <wsdl:output message="tns:createTeamByPositionResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="createTeamByUser">
+      <documentation>Cria uma equipe informando os usuÃ¡rios que estarÃ£o contidos nela&lt;BR&gt;ParÃ¢metros requeridos: &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM -&gt; Identificador da equipe; &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;NMTEAM -&gt; Nome da equipe;&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;USERS -&gt; String separada por "," contendo os identificadores dos usuÃ¡rios Ex: ("User1,User2");&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;COMPONENT -&gt; String separada com "," com os cÃ³digos dos componentes Ex: ("109,107,73");</documentation>
+      <wsdl:input message="tns:createTeamByUserRequest" />
+      <wsdl:output message="tns:createTeamByUserResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="editTeamByArea">
+      <documentation>Edita uma equipe informando as Ã¡reas nela contida&lt;BR&gt;ParÃ¢metros requeridos: &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM_OLD -&gt; Identificador da equipe que deseja alterar; &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM_NEW -&gt; Identificador da nova equipe caso deseja alterar. Se o identificador continuar o mesmo deverÃ¡ ser informado o que estÃ¡ sendo editado.&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;NMTEAM -&gt; Nome da equipe;&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;AREAS -&gt; String separada por "," contendo os identificadores das Ã¡reas Ex: ("Area1,Area2");&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;COMPONENT -&gt; String separada com "," com os cÃ³digos dos componentes Ex: ("109,107,73");</documentation>
+      <wsdl:input message="tns:editTeamByAreaRequest" />
+      <wsdl:output message="tns:editTeamByAreaResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="editTeamByPosition">
+      <documentation>Edita uma equipe informando as funÃ§Ãµes nela contidas&lt;BR&gt;ParÃ¢metros requeridos: &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM_OLD -&gt; Identificador da equipe que deseja alterar; &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM_NEW -&gt; Identificador da nova equipe caso deseja alterar. Se o identificador continuar o mesmo deverÃ¡ ser informado o que estÃ¡ sendo editado.&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;NMTEAM -&gt; Nome da equipe;&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;POSITIONS -&gt; String separada por "," contendo os identificadores das funÃ§Ãµes. Ex: ("Funcao1,Funcao2")&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;COMPONENT -&gt; String separada com "," com os cÃ³digos dos componentes Ex: ("109,107,73");</documentation>
+      <wsdl:input message="tns:editTeamByPositionRequest" />
+      <wsdl:output message="tns:editTeamByPositionResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="editTeamByUser">
+      <documentation>Edita uma equipe informando quais os usuÃ¡rios estÃ£o contidos&lt;BR&gt;ParÃ¢metros requeridos: &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM_OLD -&gt; Identificador da equipe que deseja alterar; &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM_NEW -&gt; Identificador da nova equipe caso deseja alterar. Se o identificador continuar o mesmo deverÃ¡ ser informado o que estÃ¡ sendo editado.&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;NMTEAM -&gt; Nome da equipe;&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;USERS -&gt; String separada por "," contendo os identificadores dos usuÃ¡rios Ex: ("User1,User2");&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;COMPONENT -&gt; String separada com "," com os cÃ³digos dos componentes Ex: ("109,107,73");</documentation>
+      <wsdl:input message="tns:editTeamByUserRequest" />
+      <wsdl:output message="tns:editTeamByUserResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="removeAreaFromTeam">
+      <documentation>Remover Ã¡reas de uma equipe&lt;BR&gt;ParÃ¢metros requeridos: &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM -&gt; Identificador da equipe que deseja remover; &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;AREAS -&gt; String separada por "," contendo os identificadores das Ã¡reas Ex: ("Area1,Area2");</documentation>
+      <wsdl:input message="tns:removeAreaFromTeamRequest" />
+      <wsdl:output message="tns:removeAreaFromTeamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="removePositionFromTeam">
+      <documentation>Remover Ã¡reas de uma equipe&lt;BR&gt;ParÃ¢metros requeridos: &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM -&gt; Identificador da equipe que deseja remover; &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;POSITIONS -&gt; String separada por "," contendo os identificadores das funÃ§Ãµes. Ex: ("Funcao1,Funcao2")</documentation>
+      <wsdl:input message="tns:removePositionFromTeamRequest" />
+      <wsdl:output message="tns:removePositionFromTeamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="removeTeam">
+      <documentation>Remover uma equipe&lt;BR&gt;ParÃ¢metros requeridos: &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM -&gt; Identificador da equipe que deseja remover; </documentation>
+      <wsdl:input message="tns:removeTeamRequest" />
+      <wsdl:output message="tns:removeTeamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="newTeam">
+      <documentation>Cadastro de equipes&lt;BR&gt;ParÃ¢metros requeridos: &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM -&gt; Identificador da equipe; &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;NMTEAM -&gt; Nome da equipe;&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;COMPONENT -&gt; String separada com "," com os cÃ³digos dos componentes Ex: ("109,107,73");&lt;BR&gt;RETORNO:                 &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Sucesso:   &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Status : SUCCESS  &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Code : CÃ³digo do registro incluÃ­do pelo mÃ©todo  &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Detail : Registro incluÃ­do com sucesso  &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;RecordID : Identificador do registro incluÃ­do pelo mÃ©todo  &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Falha:   &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Status : FAILURE  &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Code : -1  &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Detail : Em caso de FALHA, retorna uma mensagem com o erro ocorrido.  &lt;BR&gt;</documentation>
+      <wsdl:input message="tns:newTeamRequest" />
+      <wsdl:output message="tns:newTeamResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="newTeamMember">
+      <documentation>Membros da equipe&lt;BR&gt;ParÃ¢metros requeridos: &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM -&gt; Identificador da equipe; &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;FGTYPE -&gt; Identifica tipo do membro da equipe [1 - Ãrea; 2 - FunÃ§Ã£o; 3 - Ãrea/FunÃ§Ã£o; 4 - UsuÃ¡rio];&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDDEPARTMENT -&gt; Identificador da Ã¡rea (obrigatÃ³rio quando FGTYPE = 1 ou FGTYPE = 3);&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDPOSITION -&gt; Identificador da funÃ§Ã£o (obrigatÃ³rio quando FGTYPE = 2 ou FGTYPE = 3); &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDUSER -&gt; Identificador do usuÃ¡rio (obrigatÃ³rio quando FGTYPE = 4);&lt;BR&gt;ParÃ¢metros nÃ£o requeridos: &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;SUBLEVELS -&gt; Indica se serÃ£o considerados os subnÃ­veis da Ã¡rea associada [1 - Sim; 2 - NÃ£o] (Valor padrÃ£o = 2);&lt;BR&gt;RETORNO:                 &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Sucesso:   &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Status : SUCCESS  &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Code : CÃ³digo do registro incluÃ­do pelo mÃ©todo  &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Detail : Registro incluÃ­do com sucesso  &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;RecordID : Identificador do registro incluÃ­do pelo mÃ©todo  &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Falha:   &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Status : FAILURE  &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Code : -1  &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Detail : Em caso de FALHA, retorna uma mensagem com o erro ocorrido.  &lt;BR&gt;</documentation>
+      <wsdl:input message="tns:newTeamMemberRequest" />
+      <wsdl:output message="tns:newTeamMemberResponse" />
+    </wsdl:operation>
+    <wsdl:operation name="deleteTeamMember">
+      <documentation>Excluir&amp;nbsp;Membros da equipe&lt;BR&gt;ParÃ¢metros requeridos: &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDTEAM -&gt; Identificador da equipe; &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;FGTYPE -&gt; Identifica tipo do membro da equipe [1 - Ãrea; 2 - FunÃ§Ã£o; 3 - Ãrea/FunÃ§Ã£o; 4 - UsuÃ¡rio];&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDDEPARTMENT -&gt; Identificador da Ã¡rea (obrigatÃ³rio quando FGTYPE = 1 ou FGTYPE = 3);&lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDPOSITION -&gt; Identificador da funÃ§Ã£o (obrigatÃ³rio quando FGTYPE = 2 ou FGTYPE = 3); &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;IDUSER -&gt; Identificador do usuÃ¡rio (obrigatÃ³rio quando FGTYPE = 4);&lt;BR&gt;RETORNO:                 &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Sucesso:   &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Status : SUCCESS  &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Code : 1  &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Detail : Registro excluÃ­do com sucesso  &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Falha:   &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Status : FAILURE  &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Code : -1  &lt;BR&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;Detail : Em caso de FALHA, retorna uma mensagem com o erro ocorrido.  &lt;BR&gt;</documentation>
+      <wsdl:input message="tns:deleteTeamMemberRequest" />
+      <wsdl:output message="tns:deleteTeamMemberResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GenericBinding" type="tns:GenericPortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="addAreaToTeam">
+      <soap:operation soapAction="urn:generic#addAreaToTeam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="removeUserFromTeam">
+      <soap:operation soapAction="urn:generic#removeUserFromTeam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addPositionToTeam">
+      <soap:operation soapAction="urn:generic#addPositionToTeam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="addUserToTeam">
+      <soap:operation soapAction="urn:generic#addUserToTeam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createTeamByArea">
+      <soap:operation soapAction="urn:generic#createTeamByArea" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createTeamByPosition">
+      <soap:operation soapAction="urn:generic#createTeamByPosition" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="createTeamByUser">
+      <soap:operation soapAction="urn:generic#createTeamByUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="editTeamByArea">
+      <soap:operation soapAction="urn:generic#editTeamByArea" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="editTeamByPosition">
+      <soap:operation soapAction="urn:generic#editTeamByPosition" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="editTeamByUser">
+      <soap:operation soapAction="urn:generic#editTeamByUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="removeAreaFromTeam">
+      <soap:operation soapAction="urn:generic#removeAreaFromTeam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="removePositionFromTeam">
+      <soap:operation soapAction="urn:generic#removePositionFromTeam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="removeTeam">
+      <soap:operation soapAction="urn:generic#removeTeam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="newTeam">
+      <soap:operation soapAction="urn:generic#newTeam" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="newTeamMember">
+      <soap:operation soapAction="urn:generic#newTeamMember" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="deleteTeamMember">
+      <soap:operation soapAction="urn:generic#deleteTeamMember" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" namespace="urn:generic" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Generic">
+    <wsdl:port name="GenericPort" binding="tns:GenericBinding">
+      <soap:address location="https://tecfy.softexpert.com/softexpert/webserviceproxy/se/ws/gn_ws.php" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
