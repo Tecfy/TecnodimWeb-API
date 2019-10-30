@@ -21,13 +21,13 @@ namespace Model.In
 
         public string unityCode { get; set; }
 
-        public string unityName{ get; set; }
+        public string unityName { get; set; }
 
         public string DocumentId
         {
             get
             {
-                return registration.Trim() + "-" + unityCode.Trim() + "-" + categoryId.Trim();
+                return "E-" + registration.Trim() + "-" + unityCode.Trim() + "-" + categoryId.Trim();
             }
         }
 
