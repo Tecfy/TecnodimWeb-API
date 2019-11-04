@@ -55,6 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connection\SEGeneric.cs" />
+    <Compile Include="ResendDocument\SEResendDocument.cs" />
     <Compile Include="UserPermission\SEUserPermission.cs" />
     <Compile Include="Attribute\SEAttribute.cs" />
     <Compile Include="Category\SECategory.cs" />
