@@ -54,6 +54,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Connection\SEGeneric.cs" />
+    <Compile Include="UserPermission\SEUserPermission.cs" />
     <Compile Include="Attribute\SEAttribute.cs" />
     <Compile Include="Category\SECategory.cs" />
     <Compile Include="Common\Common.cs" />
@@ -76,6 +78,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Web References\com.softexpert.tecfy.gn\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="Web References\com.softexpert.tecfy\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -93,6 +100,11 @@
     </None>
     <None Include="Web References\com.softexpert.tecfy.adm\adm_ws.wsdl" />
     <None Include="Web References\com.softexpert.tecfy.adm\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\com.softexpert.tecfy.gn\gn_ws.wsdl" />
+    <None Include="Web References\com.softexpert.tecfy.gn\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
@@ -169,6 +181,17 @@
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>SoftExpert_com_softexpert_tecfy_Documento</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="https://tecfy.softexpert.com/se/ws/gn_ws.php%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\com.softexpert.tecfy.gn\</RelPath>
+      <UpdateFromURL>https://tecfy.softexpert.com/se/ws/gn_ws.php%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>SoftExpert_com_softexpert_tecfy_gn_Generic</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup />
