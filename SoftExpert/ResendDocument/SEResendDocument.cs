@@ -82,7 +82,10 @@ namespace SoftExpert
                         eCMResendDocumentsVM.itens = null;
                     }
 
-                    eCMResendDocumentsOut.result.Add(eCMResendDocumentsVM);
+                    if (eCMResendDocumentsVM.itens == null || eCMResendDocumentsVM.itens.Count > 0)
+                    {
+                        eCMResendDocumentsOut.result.Add(eCMResendDocumentsVM);
+                    }
                 }
             }
             else
