@@ -17,7 +17,6 @@ namespace SoftExpert
 
         private readonly static string searchAttributeOwnerUnity = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerUnity"];
         private readonly static string searchAttributeOwnerRegistration = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeOwnerRegistration"];
-        private readonly static string searchAttributeResendCategory = WebConfigurationManager.AppSettings["SoftExpert.SearchAttributeResendCategory"];
         private readonly static SEClient seClient = SEConnection.GetConnection();
 
         #endregion
@@ -42,10 +41,7 @@ namespace SoftExpert
                 VLATTRIBUTE = eCMResendDocumentsIn.registration
             };
 
-            searchDocumentFilter searchDocumentFilter = new searchDocumentFilter
-            {
-                IDCATEGORY = searchAttributeResendCategory
-            };
+            searchDocumentFilter searchDocumentFilter = new searchDocumentFilter();
 
             searchDocumentReturn searchDocumentReturn = seClient.searchDocument(searchDocumentFilter, "", attributeDatas);
             documentReturn retorno = new documentReturn();
@@ -57,6 +53,8 @@ namespace SoftExpert
 
                     ECMResendDocumentsVM eCMResendDocumentsVM = new ECMResendDocumentsVM()
                     {
+                        id = item.IDDOCUMENT,
+                        title = item.NMTITLE,
                         name = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_NomedoAluno.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_NomedoAluno.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
                         registration = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Matricula.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Matricula.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
                         cpf = documentDataReturn.ATTRIBUTTES.Any(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Cpf.ToString()) ? documentDataReturn.ATTRIBUTTES.Where(x => x.ATTRIBUTTENAME == EAttribute.SER_cad_Cpf.ToString()).FirstOrDefault().ATTRIBUTTEVALUE.FirstOrDefault() : null,
@@ -82,7 +80,7 @@ namespace SoftExpert
                         eCMResendDocumentsVM.itens = null;
                     }
 
-                    if (eCMResendDocumentsVM.itens == null || eCMResendDocumentsVM.itens.Count > 0)
+                    if (eCMResendDocumentsVM.itens != null && eCMResendDocumentsVM.itens.Count > 0)
                     {
                         eCMResendDocumentsOut.result.Add(eCMResendDocumentsVM);
                     }
