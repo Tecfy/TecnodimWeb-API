@@ -4,7 +4,7 @@ namespace Model.VM
 {
     public class ECMResendDocumentsVM
     {
-        public string id { get; set; }
+        public string documentId { get; set; }
 
         public string registration { get; set; }
 
