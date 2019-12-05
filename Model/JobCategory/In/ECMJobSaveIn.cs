@@ -27,7 +27,7 @@ namespace Model.In
         {
             get
             {
-                return "E-" + registration.Trim() + "-" + unityCode.Trim() + "-" + categoryId.Trim();
+                return registration.Trim() + "-" + unityCode.Trim() + "-" + categoryId.Trim();
             }
         }
 

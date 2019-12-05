@@ -403,6 +403,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Documentos não encontrados,favor adicionar pelo menos um documento..
+        /// </summary>
+        public static string DocumentsNotFound {
+            get {
+                return ResourceManager.GetString("DocumentsNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Este dossiê já está sendo acessado pelo usuário {0}, aguarde o tempo de segurança antes de tentar acessá-lo novamente..
         /// </summary>
         public static string DocumentValidateMessage {

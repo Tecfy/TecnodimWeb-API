@@ -56,6 +56,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdditionalField\In\ECMAdditionalFieldSaveIn.cs" />
+    <Compile Include="ResendDocument\In\ECMResendDocumentsIn.cs" />
+    <Compile Include="ResendDocument\Out\ECMResendDocumentsOut.cs" />
+    <Compile Include="ResendDocument\VM\ECMResendDocumentItemVM.cs" />
+    <Compile Include="ResendDocument\VM\ECMResendDocumentsVM.cs" />
     <Compile Include="UserPermission\In\ECMUserPermissionIn.cs" />
     <Compile Include="UserPermission\Out\ECMUserPermissionOut.cs" />
     <Compile Include="Attribute\In\ECMAttributeIn.cs" />

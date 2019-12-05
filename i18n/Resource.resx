@@ -561,4 +561,7 @@
   <data name="PagesNotFound" xml:space="preserve">
     <value>Páginas não encontradas, favor adicionar pelo menos uma página.</value>
   </data>
+  <data name="DocumentsNotFound" xml:space="preserve">
+    <value>Documentos não encontrados,favor adicionar pelo menos um documento.</value>
+  </data>
 </root>
