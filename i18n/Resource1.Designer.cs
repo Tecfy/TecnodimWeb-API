@@ -682,6 +682,15 @@ namespace i18n {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Página.
+        /// </summary>
+        public static string JobCategoryPage {
+            get {
+                return ResourceManager.GetString("JobCategoryPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Trabalhos.
         /// </summary>
         public static string Jobs {

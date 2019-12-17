@@ -564,4 +564,7 @@
   <data name="DocumentsNotFound" xml:space="preserve">
     <value>Documentos não encontrados,favor adicionar pelo menos um documento.</value>
   </data>
+  <data name="JobCategoryPage" xml:space="preserve">
+    <value>Página</value>
+  </data>
 </root>
